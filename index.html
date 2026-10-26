@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decant Finder</title>
+<meta name="description" content="Add the perfume decants you want and see the cheapest way to buy them from Indian decant sellers, shipping included.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #eef2ef;
+    --card: #ffffff;
+    --ink: #17211c;
+    --muted: #5b6862;
+    --line: #d3dbd6;
+    --glass: #1d6b58;
+    --glass-soft: #e0eee8;
+    --amber: #a8620a;
+    --amber-soft: #fbecd2;
+    --focus: #1d6b58;
+    --shadow: 0 1px 0 rgba(23, 33, 28, .06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #111714;
+      --card: #19221e;
+      --ink: #e6eee9;
+      --muted: #98a69f;
+      --line: #2c3833;
+      --glass: #5cc2a3;
+      --glass-soft: #1c3a30;
+      --amber: #eaa84c;
+      --amber-soft: #3a2b13;
+      --focus: #5cc2a3;
+      --shadow: none;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.55 "Hind", system-ui, sans-serif;
+  }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+  .num, h1, h2, h3, .tab, .chip, .price, .total, .stamp {
+    font-family: "Rajdhani", "Hind", sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+  /* ---------- header ---------- */
+  header.top { padding: 28px 0 8px; }
+  .masthead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
+  .vial { display: inline-block; width: 10px; height: 26px; margin-right: 8px; vertical-align: -3px;
+    border: 2px solid var(--glass); border-radius: 3px 3px 6px 6px; position: relative; overflow: hidden; }
+  .vial::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: var(--glass); }
+  .lede { margin: 10px 0 0; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  nav.tabs { display: flex; gap: 4px; margin: 20px 0 0; border-bottom: 1.5px solid var(--line); }
+  .tab { background: none; border: 0; padding: 10px 14px 9px; font-size: 19px; font-weight: 600; color: var(--muted);
+    border-bottom: 3px solid transparent; margin-bottom: -1.5px; }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--glass); }
+  .tab .count { font-size: 15px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+
+  main { padding: 22px 0 40px; }
+  [hidden] { display: none !important; }
+
+  /* ---------- order screen ---------- */
+  .order { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+  @media (max-width: 860px) { .order { grid-template-columns: minmax(0, 1fr); } }
+  h2 { font-size: 22px; font-weight: 700; margin: 0 0 10px; }
+  .hint { color: var(--muted); font-size: 15px; margin: 0; }
+
+  .search { position: relative; }
+  .search input {
+    width: 100%; padding: 14px 16px; font-size: 18px; border-radius: 10px;
+    border: 2px solid var(--line); background: var(--card); box-shadow: var(--shadow);
+  }
+  .search input:focus { border-color: var(--glass); outline: none; }
+  .results { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: 6px;
+    list-style: none; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.14); max-height: 60vh; overflow: auto; }
+  .results li { padding: 9px 10px; border-radius: 7px; display: flex; justify-content: space-between; gap: 12px; cursor: pointer; }
+  .results li[aria-selected="true"], .results li:hover { background: var(--glass-soft); }
+  .results .r-name { font-weight: 600; }
+  .results .r-sub { color: var(--muted); font-size: 14px; }
+  .results .r-side { text-align: right; color: var(--muted); font-size: 14px; white-space: nowrap; }
+  .results .empty { color: var(--muted); cursor: default; }
+  .results .empty:hover { background: none; }
+
+  .picker { margin-top: 12px; padding: 14px; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; }
+  .picker-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .picker-head .name { font-weight: 600; font-size: 17px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chip { border: 1.5px solid var(--line); background: var(--card); border-radius: 8px; padding: 6px 12px 5px;
+    text-align: left; line-height: 1.15; }
+  .chip:hover { border-color: var(--glass); }
+  .chip .ml { font-size: 19px; font-weight: 700; display: block; }
+  .chip .from { font-size: 14px; color: var(--muted); font-weight: 500; }
+  .chip[aria-pressed="true"] { border-color: var(--glass); background: var(--glass-soft); }
+  .link { background: none; border: 0; padding: 0; color: var(--glass); text-decoration: underline; text-underline-offset: 3px; }
+
+  .list { margin: 18px 0 0; padding: 0; list-style: none; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; }
+  .list li { padding: 12px 14px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; }
+  .list li:first-child { border-top: 0; }
+  .list .name { font-weight: 600; }
+  .list .brand { color: var(--muted); font-weight: 400; }
+  .size { font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 16px; border: 1.5px solid var(--ink);
+    border-radius: 4px; padding: 0 5px; margin-left: 6px; white-space: nowrap; }
+  .offers { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
+  .offers .best { color: var(--glass); font-weight: 600; }
+  .remove { background: none; border: 0; color: var(--muted); font-size: 22px; line-height: 1; padding: 0 4px; align-self: start; }
+  .remove:hover { color: var(--ink); }
+  .list-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 15px; color: var(--muted); }
+  .missing { color: var(--amber); }
+
+  .empty-state { margin-top: 18px; padding: 18px; border: 1.5px dashed var(--line); border-radius: 10px; color: var(--muted); }
+  .empty-state p { margin: 0 0 10px; }
+  .btn { border: 1.5px solid var(--ink); background: var(--card); border-radius: 8px; padding: 7px 14px 6px; font-weight: 600; }
+  .btn:hover { background: var(--glass-soft); }
+  .btn.primary { background: var(--glass); border-color: var(--glass); color: var(--card); }
+  .btn.primary:hover { filter: brightness(1.08); background: var(--glass); }
+
+  /* ---------- plan: parcels ---------- */
+  .plan { position: sticky; top: 12px; }
+  @media (max-width: 860px) { .plan { position: static; } }
+  .switch { display: inline-flex; border: 1.5px solid var(--line); border-radius: 9px; padding: 3px; gap: 3px; background: var(--card); margin-bottom: 12px; }
+  .switch button { border: 0; background: none; border-radius: 6px; padding: 5px 12px 4px; font-weight: 600; color: var(--muted); }
+  .switch button[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+  .summary { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .total { font-size: 40px; font-weight: 700; line-height: 1; }
+  .total small { font-size: 16px; font-weight: 600; color: var(--muted); margin-left: 6px; }
+  .compare { color: var(--muted); font-size: 15px; margin: 0 0 14px; }
+  .compare b { color: var(--glass); font-weight: 600; }
+
+  .parcel { position: relative; background: var(--card); border: 1.5px solid var(--ink); border-radius: 8px; margin-bottom: 14px; }
+  .parcel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px;
+    border-bottom: 2px dashed var(--line); position: relative; }
+  .parcel-head::before, .parcel-head::after { content: ""; position: absolute; bottom: -9px; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); }
+  .parcel-head::before { left: -9px; clip-path: inset(0 0 0 50%); }
+  .parcel-head::after { right: -9px; clip-path: inset(0 50% 0 0); }
+  .parcel h3 { margin: 0; font-size: 21px; font-weight: 700; line-height: 1.1; }
+  .parcel .count { color: var(--muted); font-size: 14px; }
+  .stamp { font-size: 15px; font-weight: 700; padding: 2px 8px 1px; border: 2px solid currentColor; border-radius: 4px;
+    transform: rotate(-4deg); white-space: nowrap; }
+  .stamp.free { color: var(--glass); }
+  .stamp.paid { color: var(--muted); }
+  .parcel ul { list-style: none; margin: 0; padding: 8px 16px; }
+  .parcel li { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }
+  .parcel li .price { font-weight: 600; font-size: 17px; }
+  .parcel-foot { padding: 8px 16px 12px; border-top: 1px solid var(--line); font-size: 15px; }
+  .parcel-foot .row { display: flex; justify-content: space-between; }
+  .parcel-foot .nudge { color: var(--amber); margin-top: 4px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .note { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+  /* ---------- deals ---------- */
+  .deals-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .deals-bar input { padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); min-width: 0; flex: 1 1 220px; max-width: 340px; }
+  .rows { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; }
+  .rows li { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr) auto; gap: 4px 16px; align-items: center;
+    padding: 12px 14px; border-top: 1px solid var(--line); }
+  .rows li:first-child { border-top: 0; }
+  @media (max-width: 640px) { .rows li { grid-template-columns: minmax(0, 1fr) auto; } .rows .where { grid-column: 1 / 2; } }
+  .rows .name { font-weight: 600; }
+  .rows .sub { color: var(--muted); font-size: 14px; }
+  .rows .where .price { font-weight: 700; font-size: 18px; }
+  .gap { display: inline-block; font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 15px; color: var(--amber);
+    background: var(--amber-soft); border-radius: 4px; padding: 1px 6px 0; margin-right: 6px; }
+  .rows .add { grid-row: 1 / span 2; grid-column: -2 / -1; }
+  @media (min-width: 641px) { .rows .add { grid-row: auto; } }
+  .section-gap { margin-top: 34px; }
+
+  footer { border-top: 1.5px solid var(--line); padding: 18px 0 40px; color: var(--muted); font-size: 14px; }
+  footer p { margin: 0 0 8px; max-width: 75ch; }
+  footer details summary { cursor: pointer; color: var(--ink); }
+  footer table { border-collapse: collapse; margin-top: 8px; }
+  footer td, footer th { text-align: left; padding: 3px 14px 3px 0; font-weight: 400; }
+  footer th { color: var(--ink); font-weight: 600; }
+
+  .mbar { display: none; }
+  @media (max-width: 860px) {
+    .mbar:not([hidden]) { display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 30;
+      align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 16px;
+      background: var(--card); border: 1.5px solid var(--ink); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+    .mbar .total { font-size: 26px; }
+    .mbar .hint { font-size: 14px; }
+    .mbar .btn { white-space: nowrap; }
+    body.has-bar main { padding-bottom: 90px; }
+  }
+  .status { padding: 40px 0; color: var(--muted); }
+  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--card);
+    padding: 9px 16px; border-radius: 8px; font-weight: 500; z-index: 50; }
+  @media (prefers-reduced-motion: no-preference) {
+    .toast { animation: rise .18s ease-out; }
+    @keyframes rise { from { opacity: 0; transform: translate(-50%, 8px); } }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="masthead"><h1><span class="vial" aria-hidden="true"></span>Decant Finder</h1></div>
+    <p class="lede" id="lede">Add the decants you want. It works out which sellers to buy from so the total, shipping included, is as low as possible.</p>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-order" aria-selected="true" aria-controls="panel-order">Build an order<span class="count" id="list-count"></span></button>
+      <button class="tab" role="tab" id="tab-deals" aria-selected="false" aria-controls="panel-deals">Deals</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="status" id="status">Loading today's prices…</div>
+
+    <section id="panel-order" role="tabpanel" aria-labelledby="tab-order" hidden>
+      <div class="order">
+        <div>
+          <h2>Your list</h2>
+          <div class="search">
+            <input id="q" type="search" autocomplete="off" spellcheck="false"
+              placeholder="Search, e.g. zenith santal 5ml"
+              role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list" aria-label="Search perfumes">
+            <ul class="results" id="results" role="listbox" hidden></ul>
+          </div>
+          <div class="picker" id="picker" hidden></div>
+          <ul class="list" id="list" hidden></ul>
+          <div class="list-foot" id="list-foot" hidden>
+            <span id="list-summary"></span>
+            <button class="link" id="clear">Clear list</button>
+          </div>
+          <div class="empty-state" id="empty">
+            <p>Search for a perfume, pick a size, and it goes on your list. Add everything you're planning to buy, even 20 or 30 decants.</p>
+            <button class="btn" id="sample">Try a sample list</button>
+          </div>
+        </div>
+        <div class="plan" id="plan" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="panel-deals" role="tabpanel" aria-labelledby="tab-deals" hidden>
+      <h2>Biggest price gaps</h2>
+      <p class="hint" id="deals-hint"></p>
+      <div class="deals-bar" style="margin-top:12px">
+        <div class="chips" id="deal-sizes" style="margin-top:0"></div>
+        <input id="deal-filter" type="search" placeholder="Filter by name or seller" aria-label="Filter deals">
+      </div>
+      <ul class="rows" id="deals"></ul>
+      <div class="section-gap" id="drops-wrap">
+        <h2>Price drops this week</h2>
+        <p class="hint">Listings that got cheaper in the last 7 days and are still at the lower price.</p>
+        <ul class="rows" id="drops" style="margin-top:12px"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Prices are copied once a day from sellers' public price lists, so a decant may have sold out or changed price since. Confirm with the seller before you pay. Shipping marked "estimate" is a guess of ₹<span id="fee-default">100</span> where the seller's rules aren't known yet.</p>
+    <details id="seller-info"><summary>Sellers and shipping rules</summary><div id="seller-table"></div></details>
+  </footer>
+</div>
+<div class="mbar" id="mbar" hidden><div><div class="total" id="mbar-total"></div><div class="hint" id="mbar-sub"></div></div><button class="btn primary" id="mbar-go">See the plan</button></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* ======================= SETTINGS ======================= */
+const CONFIG = {
+  // Paste the Web app URL from Apps Script (Deploy → Manage deployments) between the quotes.
+  feedUrl: 'PASTE_YOUR_WEB_APP_URL_HERE',
+  maxExtraSellers: 3,     // how many sellers beyond the "only seller for an item" ones a plan may add
+  minSavingPerParcel: 50, // an extra parcel is only suggested if it saves at least this much (₹)
+  dealSizes: ['3–4 ml', '5 ml', '7.5–10 ml', '20 ml', '30 ml'],
+  storageKey: 'decant-finder-list',
+};
+
+/* ======================= STATE ======================= */
+let DATA = null;
+let LIST = [];                 // [{ p: product index, size }]
+let planMode = 'best';
+let dealSize = '5 ml';
+let picked = null;             // product shown in the size picker
+let activeResult = -1;
+let results = [];
+
+const $ = id => document.getElementById(id);
+const rupees = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmtDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+
+/* ======================= LOADING ======================= */
+async function load() {
+  if (CONFIG.feedUrl.indexOf('PASTE_') === 0) {
+    $('status').textContent = 'One setup step left: paste your Apps Script Web app URL into feedUrl near the top of the script in index.html.';
+    return;
+  }
+  try {
+    const res = await fetch(CONFIG.feedUrl, { cache: 'no-store' });
+    const raw = await res.json();
+    if (raw.error) throw new Error(raw.error);
+    prepare(raw);
+  } catch (e) {
+    $('status').textContent = "Couldn't load prices right now. Refresh the page in a minute to try again.";
+    return;
+  }
+  $('status').hidden = true;
+  restoreList();
+  renderHeader();
+  showTab('order');
+  renderAll();
+  renderDealSizes();
+  renderDeals();
+  renderDrops();
+  renderSellerTable();
+}
+
+function prepare(raw) {
+  const sellers = raw.sellers.map((s, i) => ({ i, name: s.n, ff: s.ff || 0, fc: s.fc || 0, fee: s.fee }));
+  const products = raw.products.map((p, i) => {
+    const offers = p[4].map(o => ({ s: o[0], size: o[1], price: o[2] }));
+    const bySize = {};
+    offers.forEach(o => { (bySize[o.size] = bySize[o.size] || []).push(o); });
+    Object.values(bySize).forEach(list => list.sort((a, b) => a.price - b.price));
+    const text = norm(p[1] + ' ' + p[2]);
+    return {
+      i, id: p[0], brand: p[1], name: p[2], insp: p[3], offers, bySize,
+      sizes: Object.keys(bySize).map(Number).sort((a, b) => a - b),
+      sellerCount: new Set(offers.map(o => o.s)).size,
+      tokens: text.split(' '), compact: text.replace(/ /g, ''), inspNorm: norm(p[3] || ''),
+    };
+  });
+  const byId = {};
+  products.forEach(p => { byId[p.id] = p; });
+  DATA = {
+    sellers, products, byId,
+    buckets: raw.buckets.map(b => ({ label: b[0], sizes: b[1] })),
+    drops: raw.drops.map(d => ({ p: d[0], s: d[1], size: d[2], was: d[3], now: d[4], date: d[5] })),
+    defaultFee: raw.defaultFee, threshold: raw.dealThreshold, checked: raw.checked,
+  };
+}
+
+function renderHeader() {
+  $('lede').innerHTML = 'Add the decants you want. It works out which sellers to buy from so the total, shipping included, is as low as possible. ' +
+    '<b>' + DATA.products.length.toLocaleString('en-IN') + ' perfumes from ' + DATA.sellers.length + ' sellers</b>, prices checked ' + fmtDate(DATA.checked) + '.';
+  $('fee-default').textContent = DATA.defaultFee;
+}
+
+/* ======================= SEARCH ======================= */
+function norm(s) {
+  return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/&/g, ' and ').replace(/(\d)\s+(am|pm)\b/g, '$1$2').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function lev(a, b) {
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) cur.push(Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)));
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+function parseQuery(q) {
+  let size = null;
+  const m = q.match(/(\d+(?:\.\d+)?)\s*ml\b/i);
+  if (m) { size = Number(m[1]); q = q.replace(m[0], ' '); }
+  return { tokens: norm(q).split(' ').filter(Boolean), size };
+}
+
+function tokenScore(t, p) {
+  let best = 0;
+  for (const w of p.tokens) {
+    if (w === t) return 3;
+    if (w.startsWith(t)) best = Math.max(best, 2.2);
+    else if (t.length >= 4) {
+      const cut = w.slice(0, t.length);
+      const d = lev(t, w.length > t.length + 2 ? cut : w);
+      if (d <= (t.length >= 7 ? 2 : 1)) best = Math.max(best, 1.2);
+    }
+  }
+  if (!best && t.length >= 3 && p.compact.includes(t)) best = 1.6;
+  if (!best && t.length >= 3 && p.inspNorm.includes(t)) best = 0.8;
+  return best;
+}
+
+function search(q) {
+  const { tokens, size } = parseQuery(q);
+  if (!tokens.length) return { size, list: [] };
+  const scored = [];
+  for (const p of DATA.products) {
+    let score = 0;
+    for (const t of tokens) {
+      const s = tokenScore(t, p);
+      if (!s) { score = 0; break; }
+      score += s;
+    }
+    if (!score) continue;
+    if (p.tokens[0] && norm(p.name).startsWith(tokens[0])) score += 0.6;
+    if (size && p.bySize[size]) score += 0.8;
+    score += Math.min(p.sellerCount, 8) * 0.05;
+    scored.push({ p, score });
+  }
+  scored.sort((a, b) => b.score - a.score || a.p.name.localeCompare(b.p.name));
+  return { size, list: scored.slice(0, 8).map(x => x.p) };
+}
+
+function cheapestPerMl(p) {
+  return Math.min(...p.offers.map(o => o.price / o.size));
+}
+
+function renderResults() {
+  const q = $('q').value;
+  const box = $('results');
+  if (!q.trim()) { box.hidden = true; $('q').setAttribute('aria-expanded', 'false'); return; }
+  const found = search(q);
+  results = found.list;
+  activeResult = results.length ? 0 : -1;
+  box.innerHTML = results.length ? results.map((p, i) =>
+    '<li role="option" id="opt-' + i + '" data-i="' + i + '" aria-selected="' + (i === activeResult) + '">' +
+      '<div><div class="r-name">' + esc(p.name) + '</div><div class="r-sub">' + esc(p.brand) +
+      (p.insp ? ', inspired by ' + esc(p.insp) : '') + '</div></div>' +
+      '<div class="r-side">' + p.sellerCount + (p.sellerCount === 1 ? ' seller' : ' sellers') +
+      '<br>from ₹' + cheapestPerMl(p).toFixed(1) + '/ml</div></li>').join('')
+    : '<li class="empty">No match. Try fewer words, or the brand name.</li>';
+  box.hidden = false;
+  $('q').setAttribute('aria-expanded', 'true');
+  $('q').setAttribute('aria-activedescendant', activeResult >= 0 ? 'opt-0' : '');
+}
+
+function chooseResult(i) {
+  const p = results[i];
+  if (!p) return;
+  const { size } = parseQuery($('q').value);
+  $('results').hidden = true;
+  $('q').setAttribute('aria-expanded', 'false');
+  if (size && p.bySize[size]) {
+    addItem(p.i, size);
+    $('q').value = '';
+    $('picker').hidden = true;
+    $('q').focus();
+    return;
+  }
+  picked = p;
+  renderPicker();
+}
+
+function renderPicker() {
+  const p = picked, box = $('picker');
+  if (!p) { box.hidden = true; return; }
+  box.innerHTML =
+    '<div class="picker-head"><div><div class="name">' + esc(p.name) + '</div><div class="hint">' + esc(p.brand) +
+    (p.insp ? ', inspired by ' + esc(p.insp) : '') + '</div></div><button class="link" id="picker-close">Cancel</button></div>' +
+    '<div class="chips">' + p.sizes.map(size => {
+      const offers = p.bySize[size];
+      const inList = LIST.some(it => it.p === p.i && it.size === size);
+      return '<button class="chip" data-size="' + size + '" aria-pressed="' + inList + '"><span class="ml">' + size + ' ml</span>' +
+        '<span class="from">' + (inList ? 'On your list' : 'from ' + rupees(offers[0].price) + ', ' + offers.length + (offers.length === 1 ? ' seller' : ' sellers')) + '</span></button>';
+    }).join('') + '</div>';
+  box.hidden = false;
+}
+
+/* ======================= LIST ======================= */
+function addItem(pi, size) {
+  if (LIST.some(it => it.p === pi && it.size === size)) { toast('Already on your list'); return; }
+  LIST.push({ p: pi, size });
+  saveList();
+  renderAll();
+  const p = DATA.products[pi];
+  toast('Added ' + p.name + ' ' + size + ' ml');
+}
+
+function removeItem(idx) {
+  LIST.splice(idx, 1);
+  saveList();
+  renderAll();
+}
+
+function saveList() {
+  try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(LIST.map(it => ({ id: DATA.products[it.p].id, size: it.size })))); } catch (e) {}
+}
+
+function restoreList() {
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(CONFIG.storageKey) || '[]'); } catch (e) {}
+  LIST = (Array.isArray(saved) ? saved : []).map(it => DATA.byId[it.id] ? { p: DATA.byId[it.id].i, size: Number(it.size) } : null).filter(Boolean);
+}
+
+function renderList() {
+  const ul = $('list');
+  $('empty').hidden = LIST.length > 0;
+  ul.hidden = $('list-foot').hidden = LIST.length === 0;
+  $('list-count').textContent = LIST.length ? '(' + LIST.length + ')' : '';
+  ul.innerHTML = LIST.map((it, idx) => {
+    const p = DATA.products[it.p];
+    const offers = p.bySize[it.size] || [];
+    let line;
+    if (!offers.length) line = '<span class="missing">No seller lists this size today.</span>';
+    else {
+      const shown = offers.slice(0, 4).map((o, k) => '<span class="' + (k === 0 ? 'best' : '') + '">' +
+        esc(DATA.sellers[o.s].name) + ' ' + rupees(o.price) + '</span>').join(', ');
+      line = shown + (offers.length > 4 ? ', and ' + (offers.length - 4) + ' more' : '');
+    }
+    return '<li><div><span class="name">' + esc(p.name) + '</span> <span class="brand">' + esc(p.brand) + '</span>' +
+      '<span class="size">' + it.size + ' ml</span></div>' +
+      '<button class="remove" data-idx="' + idx + '" aria-label="Remove ' + esc(p.name) + ' ' + it.size + ' ml">×</button>' +
+      '<div class="offers">' + line + '</div></li>';
+  }).join('');
+  $('list-summary').textContent = LIST.length + (LIST.length === 1 ? ' decant' : ' decants');
+}
+
+/* ======================= OPTIMISER ======================= */
+function sellerFee(s) { const x = DATA.sellers[s]; return x.fee == null ? DATA.defaultFee : x.fee; }
+function shippingFor(s, subtotal, count) {
+  const x = DATA.sellers[s];
+  if ((x.ff && subtotal >= x.ff) || (x.fc && count >= x.fc)) return 0;
+  return sellerFee(s);
+}
+
+function costOf(assign, items) {
+  const groups = {};
+  assign.forEach((s, i) => { const g = groups[s] = groups[s] || { sub: 0, n: 0 }; g.sub += items[i].price[s]; g.n++; });
+  let total = 0;
+  for (const s in groups) total += groups[s].sub + shippingFor(+s, groups[s].sub, groups[s].n);
+  return total;
+}
+
+function combos(arr, k, start = 0, pick = [], out = []) {
+  if (pick.length === k) { out.push(pick.slice()); return out; }
+  for (let i = start; i < arr.length; i++) { pick.push(arr[i]); combos(arr, k, i + 1, pick, out); pick.pop(); }
+  return out;
+}
+
+// Moves items into a seller whose order is just short of free shipping, when that lowers the total.
+function topUp(assign, items, total) {
+  for (let round = 0; round < 12; round++) {
+    let improved = false;
+    const used = [...new Set(assign)];
+    for (const s of used) {
+      const x = DATA.sellers[s];
+      if (!x.ff && !x.fc) continue;
+      let sub = 0, n = 0;
+      assign.forEach((t, i) => { if (t === s) { sub += items[i].price[s]; n++; } });
+      if (shippingFor(s, sub, n) === 0) continue;
+      const movable = items.map((_, i) => i).filter(i => assign[i] !== s && items[i].price[s] != null)
+        .sort((a, b) => (items[a].price[s] - items[a].price[assign[a]]) - (items[b].price[s] - items[b].price[assign[b]]));
+      const trial = assign.slice();
+      for (const i of movable) {
+        trial[i] = s; sub += items[i].price[s]; n++;
+        if (shippingFor(s, sub, n) === 0) break;
+      }
+      if (shippingFor(s, sub, n) !== 0) continue;
+      const t = costOf(trial, items);
+      if (t < total - 0.5) { assign = trial; total = t; improved = true; }
+    }
+    if (!improved) break;
+  }
+  return { assign, total };
+}
+
+function bestPlans(items) {
+  const candidates = [...new Set(items.flatMap(it => Object.keys(it.price).map(Number)))];
+  const forced = [...new Set(items.filter(it => Object.keys(it.price).length === 1).map(it => +Object.keys(it.price)[0]))];
+  const others = candidates.filter(s => !forced.includes(s));
+  const found = {};
+  const consider = (assign, total) => {
+    const sellers = [...new Set(assign)].sort((a, b) => a - b);
+    const key = sellers.join(',');
+    if (!found[key] || total < found[key].total) found[key] = { assign, total, sellers };
+  };
+  for (let k = 0; k <= Math.min(CONFIG.maxExtraSellers, others.length); k++) {
+    for (const extra of combos(others, k)) {
+      const set = forced.concat(extra);
+      if (!set.length) continue;
+      const assign = [];
+      let ok = true;
+      for (const it of items) {
+        let best = -1, bp = Infinity;
+        for (const s of set) { const pr = it.price[s]; if (pr != null && pr < bp) { bp = pr; best = s; } }
+        if (best < 0) { ok = false; break; }
+        assign.push(best);
+      }
+      if (!ok || set.some(s => !assign.includes(s))) continue;
+      const better = topUp(assign, items, costOf(assign, items));
+      consider(better.assign, better.total);
+    }
+  }
+  // Every item from its own cheapest seller, for comparison
+  const each = items.map(it => +Object.entries(it.price).sort((a, b) => a[1] - b[1])[0][0]);
+  const eachTotal = costOf(each, items);
+  const all = Object.values(found);
+  if (!all.length) all.push({ assign: each, total: eachTotal, sellers: [...new Set(each)] });
+  // Best value: every extra parcel has to save at least CONFIG.minSavingPerParcel to be worth it
+  const score = x => x.total + CONFIG.minSavingPerParcel * (x.sellers.length - 1);
+  const best = all.slice().sort((a, b) => score(a) - score(b) || a.total - b.total)[0];
+  const lowest = all.slice().sort((a, b) => a.total - b.total || a.sellers.length - b.sellers.length)[0];
+  const fewest = all.slice().sort((a, b) => a.sellers.length - b.sellers.length || a.total - b.total)[0];
+  return { best, lowest, fewest, each: { assign: each, total: eachTotal, sellers: [...new Set(each)] } };
+}
+
+function currentItems() {
+  return LIST.map(it => {
+    const p = DATA.products[it.p];
+    const price = {};
+    (p.bySize[it.size] || []).forEach(o => { price[o.s] = o.price; });
+    return { p, size: it.size, price };
+  }).filter(it => Object.keys(it.price).length);
+}
+
+function describe(plan, items) {
+  const groups = {};
+  plan.assign.forEach((s, i) => {
+    const g = groups[s] = groups[s] || { s, items: [], sub: 0 };
+    g.items.push({ p: items[i].p, size: items[i].size, price: items[i].price[s] });
+    g.sub += items[i].price[s];
+  });
+  return Object.values(groups).map(g => {
+    const x = DATA.sellers[g.s];
+    const ship = shippingFor(g.s, g.sub, g.items.length);
+    let nudge = '';
+    if (ship > 0) {
+      if (x.ff) nudge = 'Add ' + rupees(x.ff - g.sub) + ' more for free shipping.';
+      else if (x.fc) nudge = 'Add ' + (x.fc - g.items.length) + ' more decant' + (x.fc - g.items.length === 1 ? '' : 's') + ' for free shipping.';
+    }
+    return Object.assign(g, { name: x.name, ship, known: x.fee != null || ship === 0, nudge });
+  }).sort((a, b) => b.items.length - a.items.length || b.sub - a.sub);
+}
+
+/* ======================= PLAN VIEW ======================= */
+let lastPlan = null;
+
+function renderPlan() {
+  const box = $('plan');
+  const items = currentItems();
+  if (!items.length) {
+    box.innerHTML = '<h2>Best way to buy</h2><p class="hint">Your cheapest combination of sellers shows up here as soon as you add a decant.</p>';
+    lastPlan = null;
+    updateMobileBar(0, 0, 0);
+    return;
+  }
+  const plans = bestPlans(items);
+  const same = plans.best.sellers.join() === plans.fewest.sellers.join();
+  if (same) planMode = 'best';
+  const plan = planMode === 'fewest' ? plans.fewest : plans.best;
+  const parcels = describe(plan, items);
+  lastPlan = { parcels, total: plan.total };
+  const shipTotal = parcels.reduce((n, g) => n + g.ship, 0);
+
+  const plural = (n, word) => n + ' ' + word + (n === 1 ? '' : 's');
+  const notes = [];
+  if (!same) {
+    const diff = plans.fewest.total - plans.best.total;
+    const fewer = plans.best.sellers.length - plans.fewest.sellers.length;
+    const other = plans.fewest.sellers.length === 1
+      ? 'ordering everything from ' + esc(DATA.sellers[plans.fewest.sellers[0]].name)
+      : 'the ' + plans.fewest.sellers.length + '-parcel option';
+    notes.push(planMode === 'best'
+      ? 'Saves <b>' + rupees(diff) + '</b> compared with ' + other + '.'
+      : 'Costs ' + rupees(diff) + ' more than the best-value split, with ' + plural(fewer, 'fewer parcel') + '.');
+  }
+  if (planMode === 'best' && plans.lowest.total < plans.best.total) {
+    const extra = plans.lowest.sellers.length - plans.best.sellers.length;
+    notes.push('Adding ' + (extra === 1 ? 'another seller' : extra + ' more sellers') + ' would save only ' + rupees(plans.best.total - plans.lowest.total) +
+      ', which isn\'t worth the extra ' + (extra === 1 ? 'parcel' : 'parcels') + '.');
+  }
+  const eachExtra = plans.each.total - plans.best.total;
+  if (planMode === 'best' && plans.each.sellers.length > plans.best.sellers.length && eachExtra > 0) {
+    notes.push('Buying each decant from its own cheapest seller would mean ' + plans.each.sellers.length +
+      ' parcels and cost ' + rupees(eachExtra) + ' more once shipping is added.');
+  }
+  const compare = notes.join(' ');
+  updateMobileBar(plan.total, items.length, parcels.length);
+
+  box.innerHTML =
+    '<h2>Best way to buy</h2>' +
+    (same ? '' : '<div class="switch" role="group" aria-label="Plan">' +
+      '<button data-mode="best" aria-pressed="' + (planMode === 'best') + '">Best value</button>' +
+      '<button data-mode="fewest" aria-pressed="' + (planMode === 'fewest') + '">Fewest parcels</button></div>') +
+    '<div class="summary"><div class="total">' + rupees(plan.total) + ' <small>incl. ' + (shipTotal ? rupees(shipTotal) + ' shipping' : 'free shipping') + '</small></div>' +
+    '<div class="hint">' + items.length + ' decants, ' + parcels.length + (parcels.length === 1 ? ' parcel' : ' parcels') + '</div></div>' +
+    (compare ? '<p class="compare">' + compare + '</p>' : '') +
+    parcels.map(g =>
+      '<article class="parcel"><div class="parcel-head"><div><h3>' + esc(g.name) + '</h3><span class="count">' +
+        g.items.length + (g.items.length === 1 ? ' decant' : ' decants') + (g.ship && !g.known ? ', shipping is an estimate' : '') + '</span></div>' +
+        (g.ship === 0 ? '<span class="stamp free">Free shipping</span>' : '<span class="stamp paid">+' + rupees(g.ship) + ' shipping</span>') +
+      '</div><ul>' + g.items.map(x => '<li><span>' + esc(x.p.name) + ' <span class="brand hint">' + esc(x.p.brand) + '</span><span class="size">' + x.size + ' ml</span></span><span class="price">' + rupees(x.price) + '</span></li>').join('') +
+      '</ul><div class="parcel-foot"><div class="row"><span>Subtotal' + (g.ship ? ' + shipping' : '') + '</span><span class="price">' + rupees(g.sub + g.ship) + '</span></div>' +
+        (g.nudge ? '<div class="nudge">' + g.nudge + '</div>' : '') + '</div></article>').join('') +
+    '<div class="actions"><button class="btn primary" id="copy-wa">Copy for WhatsApp</button><button class="btn" id="copy-reddit">Copy as Reddit table</button></div>' +
+    '<p class="note">Prices checked ' + fmtDate(DATA.checked) + '. Confirm stock and shipping with each seller before paying.</p>';
+}
+
+function whatsappText() {
+  const { parcels, total } = lastPlan;
+  const lines = ['Cheapest split for my decant list (prices checked ' + fmtDate(DATA.checked) + '):', ''];
+  parcels.forEach(g => {
+    lines.push('*' + g.name + ' – ' + g.items.length + (g.items.length === 1 ? ' decant' : ' decants') + ' – ' + rupees(g.sub) +
+      (g.ship ? ' + ' + rupees(g.ship) + ' shipping' + (g.known ? '' : ' (est.)') : ', free shipping') + '*');
+    g.items.forEach(x => lines.push('• ' + x.p.brand + ' ' + x.p.name + ' ' + x.size + 'ml – ' + rupees(x.price)));
+    lines.push('');
+  });
+  lines.push('*Total: ' + rupees(total) + ' incl. shipping*');
+  lines.push('Please confirm stock with each seller before paying.');
+  return lines.join('\n');
+}
+
+function redditText() {
+  const { parcels, total } = lastPlan;
+  const rows = ['**Cheapest split for my list** (prices checked ' + fmtDate(DATA.checked) + ')', '',
+    '| Scent | Size | Buy from | Price |', '|:--|:-:|:--|--:|'];
+  parcels.forEach(g => g.items.forEach(x => rows.push('| ' + x.p.brand + ' ' + x.p.name + ' | ' + x.size + ' ml | ' + g.name + ' | ' + rupees(x.price) + ' |')));
+  rows.push('', '| Seller | Decants | Subtotal | Shipping |', '|:--|:-:|--:|--:|');
+  parcels.forEach(g => rows.push('| ' + g.name + ' | ' + g.items.length + ' | ' + rupees(g.sub) + ' | ' + (g.ship ? rupees(g.ship) + (g.known ? '' : ' (est.)') : 'Free') + ' |'));
+  rows.push('| **Total** | **' + parcels.reduce((n, g) => n + g.items.length, 0) + '** | | **' + rupees(total) + '** |');
+  rows.push('', '*Please confirm stock and shipping with each seller before paying.*');
+  return rows.join('\n');
+}
+
+async function copy(text, label) {
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e2) {}
+    ta.remove();
+  }
+  toast(label);
+}
+
+/* ======================= DEALS ======================= */
+function deals(label) {
+  const bucket = DATA.buckets.find(b => b.label === label);
+  if (!bucket) return [];
+  const out = [];
+  for (const p of DATA.products) {
+    const bySeller = {};
+    for (const o of p.offers) {
+      if (!bucket.sizes.includes(o.size)) continue;
+      const perMl = o.price / o.size;
+      if (!bySeller[o.s] || perMl < bySeller[o.s].perMl) bySeller[o.s] = Object.assign({ perMl }, o);
+    }
+    const offers = Object.values(bySeller).sort((a, b) => a.perMl - b.perMl);
+    if (offers.length < 2) continue;
+    const gap = 1 - offers[0].perMl / offers[1].perMl;
+    if (gap >= DATA.threshold) out.push({ p, a: offers[0], b: offers[1], gap, n: offers.length });
+  }
+  return out.sort((x, y) => y.gap - x.gap);
+}
+
+function renderDealSizes() {
+  const sizes = CONFIG.dealSizes.filter(l => DATA.buckets.some(b => b.label === l));
+  $('deal-sizes').innerHTML = sizes.map(l => '<button class="chip" data-deal-size="' + esc(l) + '" aria-pressed="' + (l === dealSize) + '"><span class="ml">' + esc(l) + '</span></button>').join('');
+}
+
+function matchesFilter(text, filter) {
+  const f = norm(filter).split(' ').filter(Boolean);
+  const t = norm(text);
+  return f.every(w => t.includes(w));
+}
+
+function renderDeals() {
+  const filter = $('deal-filter').value;
+  const all = deals(dealSize);
+  const list = all.filter(d => !filter || matchesFilter(d.p.brand + ' ' + d.p.name + ' ' + d.p.insp + ' ' + DATA.sellers[d.a.s].name, filter)).slice(0, 60);
+  $('deals-hint').textContent = all.length + (all.length === 1 ? ' perfume at ' : ' perfumes at ') + dealSize + ' where the cheapest seller is at least ' +
+    Math.round(DATA.threshold * 100) + '% below the next one, compared per ml.';
+  $('deals').innerHTML = list.length ? list.map(d =>
+    '<li><div><div class="name">' + esc(d.p.name) + '</div><div class="sub">' + esc(d.p.brand) + (d.p.insp ? ', inspired by ' + esc(d.p.insp) : '') + '</div></div>' +
+    '<div class="where"><span class="price num">' + rupees(d.a.price) + '</span> <span class="sub">for ' + d.a.size + ' ml at ' + esc(DATA.sellers[d.a.s].name) + '</span>' +
+      '<div class="sub"><span class="gap">' + Math.round(d.gap * 100) + '% less</span> than ' + esc(DATA.sellers[d.b.s].name) +
+      ' (₹' + d.a.perMl.toFixed(1) + ' vs ₹' + d.b.perMl.toFixed(1) + ' per ml)</div></div>' +
+    '<button class="btn add" data-add="' + d.p.i + '" data-size="' + d.a.size + '">Add ' + d.a.size + ' ml</button></li>').join('')
+    : '<li><div class="sub">' + (filter ? 'Nothing matches that filter at this size.' : 'No big price gaps at this size today.') + '</div></li>';
+}
+
+function renderDrops() {
+  const drops = DATA.drops;
+  $('drops-wrap').hidden = !drops.length;
+  $('drops').innerHTML = drops.map(d => {
+    const p = DATA.products[d.p];
+    const pct = Math.round((1 - d.now / d.was) * 100);
+    return '<li><div><div class="name">' + esc(p.name) + '</div><div class="sub">' + esc(p.brand) + ', dropped ' + fmtDate(d.date) + '</div></div>' +
+      '<div class="where"><span class="price num">' + rupees(d.now) + '</span> <span class="sub">was ' + rupees(d.was) + ', ' + d.size + ' ml at ' + esc(DATA.sellers[d.s].name) + '</span>' +
+      '<div class="sub"><span class="gap">' + pct + '% off</span></div></div>' +
+      '<button class="btn add" data-add="' + p.i + '" data-size="' + d.size + '">Add ' + d.size + ' ml</button></li>';
+  }).join('');
+}
+
+function renderSellerTable() {
+  $('seller-table').innerHTML = '<table><tr><th>Seller</th><th>Shipping</th></tr>' + DATA.sellers.map(s => {
+    let rule;
+    if (s.fee === 0) rule = 'Always free';
+    else {
+      const parts = [];
+      if (s.ff) parts.push('free from ' + rupees(s.ff));
+      if (s.fc) parts.push('free from ' + s.fc + ' decants');
+      const fee = s.fee == null ? 'about ' + rupees(DATA.defaultFee) + ' (estimate)' : rupees(s.fee);
+      rule = (parts.length ? parts.join(' or ') + ', otherwise ' : '') + fee;
+    }
+    return '<tr><td>' + esc(s.name) + '</td><td>' + rule + '</td></tr>';
+  }).join('') + '</table>';
+}
+
+/* ======================= MISC ======================= */
+let planVisible = false;
+function updateMobileBar(total, n, parcels) {
+  const bar = $('mbar');
+  const show = n > 0 && !planVisible && !$('panel-order').hidden;
+  bar.hidden = !show;
+  document.body.classList.toggle('has-bar', n > 0);
+  if (n) { $('mbar-total').textContent = rupees(total); $('mbar-sub').textContent = n + (n === 1 ? ' decant, ' : ' decants, ') + parcels + (parcels === 1 ? ' parcel' : ' parcels'); }
+}
+function refreshBar() { updateMobileBar(lastPlan ? lastPlan.total : 0, lastPlan ? currentItems().length : 0, lastPlan ? lastPlan.parcels.length : 0); }
+
+function renderAll() { renderList(); renderPlan(); if (picked) renderPicker(); }
+
+function showTab(name) {
+  ['order', 'deals'].forEach(t => {
+    $('tab-' + t).setAttribute('aria-selected', String(t === name));
+    $('panel-' + t).hidden = t !== name;
+  });
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.hidden = true; }, 1800);
+}
+
+function loadSample() {
+  const popular = DATA.products.filter(p => (p.bySize[5] || []).length >= 2)
+    .sort((a, b) => b.bySize[5].length - a.bySize[5].length).slice(0, 4).map(p => ({ p: p.i, size: 5 }));
+  const tens = DATA.products.filter(p => (p.bySize[10] || []).length >= 3 && !popular.some(x => x.p === p.i))
+    .sort((a, b) => b.bySize[10].length - a.bySize[10].length).slice(0, 3).map(p => ({ p: p.i, size: 10 }));
+  LIST = popular.concat(tens);
+  saveList();
+  renderAll();
+}
+
+/* ======================= EVENTS ======================= */
+$('tab-order').onclick = () => { showTab('order'); refreshBar(); };
+$('tab-deals').onclick = () => { showTab('deals'); refreshBar(); };
+$('mbar-go').onclick = () => $('plan').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(entries => { planVisible = entries[0].isIntersecting; refreshBar(); }, { threshold: 0.15 }).observe($('plan'));
+}
+$('q').addEventListener('input', renderResults);
+$('q').addEventListener('keydown', e => {
+  const box = $('results');
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (box.hidden || !results.length) return;
+    e.preventDefault();
+    activeResult = (activeResult + (e.key === 'ArrowDown' ? 1 : -1) + results.length) % results.length;
+    box.querySelectorAll('[role=option]').forEach((li, i) => li.setAttribute('aria-selected', String(i === activeResult)));
+    $('q').setAttribute('aria-activedescendant', 'opt-' + activeResult);
+    box.querySelector('#opt-' + activeResult).scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (!box.hidden && activeResult >= 0) chooseResult(activeResult);
+  } else if (e.key === 'Escape') {
+    box.hidden = true; $('q').setAttribute('aria-expanded', 'false');
+  }
+});
+$('results').addEventListener('mousedown', e => {
+  const li = e.target.closest('[data-i]');
+  if (li) { e.preventDefault(); chooseResult(Number(li.dataset.i)); }
+});
+$('q').addEventListener('blur', () => setTimeout(() => { $('results').hidden = true; $('q').setAttribute('aria-expanded', 'false'); }, 120));
+$('picker').addEventListener('click', e => {
+  if (e.target.closest('#picker-close')) { picked = null; renderPicker(); return; }
+  const chip = e.target.closest('[data-size]');
+  if (chip && picked) {
+    addItem(picked.i, Number(chip.dataset.size));
+    picked = null; renderPicker();
+    $('q').value = ''; $('q').focus();
+  }
+});
+$('list').addEventListener('click', e => {
+  const b = e.target.closest('.remove');
+  if (b) removeItem(Number(b.dataset.idx));
+});
+$('clear').onclick = () => { LIST = []; saveList(); renderAll(); };
+$('sample').onclick = loadSample;
+$('plan').addEventListener('click', e => {
+  const m = e.target.closest('[data-mode]');
+  if (m) { planMode = m.dataset.mode; renderPlan(); return; }
+  if (e.target.closest('#copy-wa') && lastPlan) copy(whatsappText(), 'Copied. Paste it into WhatsApp.');
+  if (e.target.closest('#copy-reddit') && lastPlan) copy(redditText(), 'Copied. Paste it in Reddit\'s Markdown mode.');
+});
+$('deal-sizes').addEventListener('click', e => {
+  const c = e.target.closest('[data-deal-size]');
+  if (c) { dealSize = c.dataset.dealSize; renderDealSizes(); renderDeals(); }
+});
+$('deal-filter').addEventListener('input', renderDeals);
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-add]');
+  if (b) addItem(Number(b.dataset.add), Number(b.dataset.size));
+});
+
+load();
+</script>
+</body>
+</html>
