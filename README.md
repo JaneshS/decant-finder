@@ -1,6 +1,11 @@
 # Decant Finder
 
-Add the perfume decants you want and see the cheapest way to buy them from Indian decant sellers, with shipping included. There's also a Deals tab showing the biggest price gaps between sellers and this week's price drops.
+Add the perfume decants you want, one at a time or by pasting a whole WhatsApp/Reddit list, and see the cheapest way to buy them from Indian decant sellers, with shipping included. There's also:
+
+- **Deals:** the biggest price gaps between sellers, and this week's price drops.
+- **New:** perfumes that showed up in the tracker for the first time in the last 7 days, with the best value and every price.
+
+Seller names link to each seller's own price list.
 
 **Live site:** https://janeshs.github.io/decant-finder/
 
@@ -8,7 +13,8 @@ Add the perfume decants you want and see the cheapest way to buy them from India
 
 - `index.html` is the whole app: one page with no build step. GitHub Pages serves it straight from the `main` branch.
 - Prices come from a private Google Sheet (the Decant Tracker), which reads sellers' public price lists once a day. A small Apps Script file in that sheet (`PublicFeed.gs`, kept here for reference) publishes only seller names, perfumes, sizes, prices and shipping rules as JSON. The page loads that JSON and does all the matching and calculating in the visitor's browser.
-- Seller shipping rules and whether a seller appears in the app are set in the tracker's **Sources** tab, columns G–K.
+- Seller settings live in the tracker's **Sources** tab, columns G–L: show in app, display name, free shipping from ₹ and/or number of decants (either counts), shipping fee, and an optional link (otherwise the sheet link in column C is used).
+- A perfume counts as **new** when every seller listing it added it in the last 7 days, it doesn't appear earlier in the Changes log, and it wasn't a same-day rename. Seller-specific spellings can still slip through; add them to the Aliases tab.
 
 ## How the plan is worked out
 
