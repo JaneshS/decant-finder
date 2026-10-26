@@ -503,6 +503,9 @@ function searchScored(q, limit = 8) {
     if (p.brandTokens.length && p.brandTokens.every(b => tokens.includes(b))) score += 1.5;
     else if (p.brandTokens[0] && p.brandTokens[0].length >= 4 && tokens.some(t => t.length >= 4 && lev(t, p.brandTokens[0]) <= 1)) score += 1.0;
     if (norm(p.name).split(' ')[0] === tokens[0]) score += 0.6;
+    // The whole name typed exactly ("khamrah" means Khamrah, not Khamrah Qahwa)
+    const nameOnly = tokens.filter(t => !p.brandTokens.includes(t)).join(' ');
+    if (nameOnly && norm(p.name) === nameOnly) score += 1.5;
     if (size && p.bySize[size]) score += 0.8;
     score += Math.min(p.sellerCount, 10) * 0.08;
     scored.push({ p, score, weakest });
