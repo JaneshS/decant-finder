@@ -276,7 +276,8 @@
 const CONFIG = {
   // Paste the Web app URL from Apps Script (Deploy → Manage deployments) between the quotes.
   feedUrl: 'https://script.google.com/macros/s/AKfycbzq3mw_hSAaD11Y8K4MnAhAmsix9dlszTqZQpgNh1RqYWyCx-IEF-AD-gMNlQdGQJj9/exec',
-  maxExtraSellers: 3,     // how many sellers beyond the "only seller for an item" ones a plan may add
+  maxSearchSteps: 300000, // safety limits for the cheapest-plan search (it normally needs far less)
+  maxSearchMs: 1500,
   minSavingPerParcel: 50, // an extra parcel is only suggested if it saves at least this much (₹)
   dealSizes: ['3–4 ml', '5 ml', '7.5–10 ml', '20 ml', '30 ml'],
   maxDrops: 40,           // price drops shown on the Deals tab
@@ -537,12 +538,6 @@ function costOf(assign, items) {
   return total;
 }
 
-function combos(arr, k, start = 0, pick = [], out = []) {
-  if (pick.length === k) { out.push(pick.slice()); return out; }
-  for (let i = start; i < arr.length; i++) { pick.push(arr[i]); combos(arr, k, i + 1, pick, out); pick.pop(); }
-  return out;
-}
-
 // Moves items into a seller whose order is just short of free shipping, when that lowers the total.
 function topUp(assign, items, total) {
   for (let round = 0; round < 12; round++) {
@@ -570,44 +565,164 @@ function topUp(assign, items, total) {
   return { assign, total };
 }
 
-function bestPlans(items) {
-  const candidates = [...new Set(items.flatMap(it => Object.keys(it.price).map(Number)))];
-  const forced = [...new Set(items.filter(it => Object.keys(it.price).length === 1).map(it => +Object.keys(it.price)[0]))];
-  const others = candidates.filter(s => !forced.includes(s));
-  const found = {};
-  const consider = (assign, total) => {
-    const sellers = [...new Set(assign)].sort((a, b) => a - b);
-    const key = sellers.join(',');
-    if (!found[key] || total < found[key].total) found[key] = { assign, total, sellers };
+// For a fixed set of sellers: tries every way of filling sellers' orders up to their free-shipping
+// rule (moving the items that cost least extra) and keeps the cheapest result.
+function settle(base, items, cache) {
+  const key = cache && base.join(',');
+  if (cache && cache.has(key)) return cache.get(key);
+  const result = settleUncached(base, items);
+  if (cache) cache.set(key, result);
+  return result;
+}
+
+function settleUncached(base, items) {
+  let best = { assign: base, total: costOf(base, items) };
+  const rules = [...new Set(base)].filter(s => DATA.sellers[s].ff || DATA.sellers[s].fc);
+  if (!rules.length) return best;
+  if (rules.length > 3) return topUp(base.slice(), items, best.total);
+  const orders = [];
+  const build = (seq, rest) => {
+    if (seq.length) orders.push(seq);
+    rest.forEach((t, k) => build(seq.concat(t), rest.slice(0, k).concat(rest.slice(k + 1))));
   };
-  for (let k = 0; k <= Math.min(CONFIG.maxExtraSellers, others.length); k++) {
-    for (const extra of combos(others, k)) {
-      const set = forced.concat(extra);
-      if (!set.length) continue;
-      const assign = [];
-      let ok = true;
-      for (const it of items) {
-        let best = -1, bp = Infinity;
-        for (const s of set) { const pr = it.price[s]; if (pr != null && pr < bp) { bp = pr; best = s; } }
-        if (best < 0) { ok = false; break; }
-        assign.push(best);
-      }
-      if (!ok || set.some(s => !assign.includes(s))) continue;
-      const better = topUp(assign, items, costOf(assign, items));
-      consider(better.assign, better.total);
+  build([], rules);
+  for (const seq of orders) {
+    const a = base.slice(), locked = new Set();
+    let ok = true;
+    for (const t of seq) {
+      if (!fillTo(a, items, t, locked)) { ok = false; break; }
+      locked.add(t);
+    }
+    if (!ok) continue;
+    const c = costOf(a, items);
+    if (c < best.total - 1e-6) best = { assign: a, total: c };
+  }
+  return best;
+}
+
+// Moves the cheapest-to-move items to seller t until its order qualifies for free shipping.
+function fillTo(a, items, t, locked) {
+  const x = DATA.sellers[t];
+  let sub = 0, cnt = 0;
+  a.forEach((s, i) => { if (s === t) { sub += items[i].price[t]; cnt++; } });
+  if ((x.ff && sub >= x.ff) || (x.fc && cnt >= x.fc)) return true;
+  const cands = [];
+  a.forEach((s, i) => {
+    const pr = items[i].price[t];
+    if (s !== t && pr != null && !locked.has(s)) cands.push({ i, d: pr - items[i].price[s], v: pr });
+  });
+  let pick = null, pickCost = Infinity;
+  if (x.fc && cands.length >= x.fc - cnt) {
+    const chosen = cands.slice().sort((p, q) => p.d - q.d).slice(0, x.fc - cnt);
+    const cost = chosen.reduce((n, c) => n + c.d, 0);
+    if (cost < pickCost) { pickCost = cost; pick = chosen; }
+  }
+  if (x.ff) {
+    const r = cheapestCover(cands, Math.ceil(x.ff - sub));
+    if (r && r.cost < pickCost) { pickCost = r.cost; pick = r.set; }
+  }
+  if (!pick) return false;
+  pick.forEach(c => { a[c.i] = t; });
+  return true;
+}
+
+// Cheapest set of candidates whose prices add up to at least `need` (small knapsack).
+function cheapestCover(cands, need) {
+  const n = cands.length, W = need + 1;
+  if (!n) return null;
+  const dp = new Float64Array(W).fill(Infinity);
+  const src = new Int32Array(n * W).fill(-1);
+  dp[0] = 0;
+  for (let k = 0; k < n; k++) {
+    const d = cands[k].d, v = cands[k].v, row = k * W;
+    for (let w = need - 1; w >= 0; w--) {     // descending, so each candidate is used at most once
+      if (dp[w] === Infinity) continue;
+      const to = w + v >= need ? need : w + v;
+      if (dp[w] + d < dp[to]) { dp[to] = dp[w] + d; src[row + to] = w; }
     }
   }
-  // Every item from its own cheapest seller, for comparison
+  if (dp[need] === Infinity) return null;
+  // Walk back: the last candidate that improved a cell is the one that set its final value
+  const set = [];
+  let w = need;
+  for (let k = n - 1; k >= 0 && w > 0; k--) {
+    const from = src[k * W + w];
+    if (from >= 0) { set.push(cands[k]); w = from; }
+  }
+  return w === 0 ? { cost: dp[need], set } : null;
+}
+
+// Finds the cheapest plan exactly with a branch-and-bound search over which sellers to order from.
+// `perParcel` is added for every seller used: about 0 gives the lowest total, CONFIG.minSavingPerParcel
+// gives "best value", and a huge number gives the fewest parcels. `start` is a known plan to beat.
+function searchPlans(items, perParcel, start, cache) {
+  const deadline = Date.now() + CONFIG.maxSearchMs;
+  const n = items.length;
+  const cand = [...new Set(items.flatMap(it => Object.keys(it.price).map(Number)))];
+  const cheapestFor = items.map(it => +Object.entries(it.price).sort((a, b) => a[1] - b[1])[0][0]);
+  const weight = s => items.reduce((w, it, i) => w + (it.price[s] != null ? 1 : 0) + (cheapestFor[i] === s ? 3 : 0), 0);
+  cand.sort((a, b) => weight(b) - weight(a));
+  const m = cand.length;
+  // suffix[k][i]: cheapest price for item i among the sellers not yet decided (cand[k] onwards)
+  const suffix = Array.from({ length: m + 1 }, () => new Array(n).fill(Infinity));
+  for (let k = m - 1; k >= 0; k--) {
+    for (let i = 0; i < n; i++) {
+      const pr = items[i].price[cand[k]];
+      suffix[k][i] = Math.min(suffix[k + 1][i], pr == null ? Infinity : pr);
+    }
+  }
+  const hasRule = s => !!(DATA.sellers[s].ff || DATA.sellers[s].fc);
+  const curMin = new Array(n).fill(Infinity), curArg = new Array(n).fill(-1);
+  const chosen = [];
+  let fixedFees = 0, steps = 0;
+  let best = start ? Object.assign({}, start, { obj: start.total + perParcel * start.sellers.length }) : { obj: Infinity };
+  const evaluate = () => {
+    if (curArg.some(a => a < 0)) return;
+    const r = settle(curArg.slice(), items, cache);
+    const sellers = [...new Set(r.assign)].sort((a, b) => a - b);
+    const obj = r.total + perParcel * sellers.length;
+    if (obj < best.obj - 1e-6) best = { assign: r.assign, total: r.total, sellers, obj };
+  };
+  const dfs = k => {
+    if (++steps > CONFIG.maxSearchSteps || Date.now() > deadline) return;
+    let bound = fixedFees + perParcel * chosen.length;
+    for (let i = 0; i < n; i++) bound += Math.min(curMin[i], suffix[k][i]);
+    if (!(bound < best.obj - 1e-6) || k === m) return;
+    // Branch 1: order from cand[k] as well (only worth it if it's cheaper for something)
+    const s = cand[k], saved = [];
+    for (let i = 0; i < n; i++) {
+      const pr = items[i].price[s];
+      if (pr != null && pr < curMin[i]) { saved.push([i, curMin[i], curArg[i]]); curMin[i] = pr; curArg[i] = s; }
+    }
+    if (saved.length) {
+      chosen.push(s);
+      if (!hasRule(s)) fixedFees += sellerFee(s);
+      evaluate();
+      dfs(k + 1);
+      chosen.pop();
+      if (!hasRule(s)) fixedFees -= sellerFee(s);
+      for (const [i, mn, ar] of saved) { curMin[i] = mn; curArg[i] = ar; }
+    }
+    // Branch 2: leave cand[k] out
+    dfs(k + 1);
+  };
+  dfs(0);
+  return best.assign ? best : start;
+}
+
+function bestPlans(items) {
+  // Every item from its own cheapest seller, for comparison and as a starting point
   const each = items.map(it => +Object.entries(it.price).sort((a, b) => a[1] - b[1])[0][0]);
-  const eachTotal = costOf(each, items);
-  const all = Object.values(found);
-  if (!all.length) all.push({ assign: each, total: eachTotal, sellers: [...new Set(each)] });
-  // Best value: every extra parcel has to save at least CONFIG.minSavingPerParcel to be worth it
-  const score = x => x.total + CONFIG.minSavingPerParcel * (x.sellers.length - 1);
-  const best = all.slice().sort((a, b) => score(a) - score(b) || a.total - b.total)[0];
-  const lowest = all.slice().sort((a, b) => a.total - b.total || a.sellers.length - b.sellers.length)[0];
-  const fewest = all.slice().sort((a, b) => a.sellers.length - b.sellers.length || a.total - b.total)[0];
-  return { best, lowest, fewest, each: { assign: each, total: eachTotal, sellers: [...new Set(each)] } };
+  const eachPlan = { assign: each, total: costOf(each, items), sellers: [...new Set(each)].sort((a, b) => a - b) };
+  const cache = new Map();
+  const t = settle(each.slice(), items, cache);
+  const start = { assign: t.assign, total: t.total, sellers: [...new Set(t.assign)].sort((a, b) => a - b) };
+  // A tiny per-parcel amount breaks ties in favour of fewer parcels
+  const lowest = searchPlans(items, 0.01, start, cache);
+  // Best value: each extra parcel has to save at least CONFIG.minSavingPerParcel to be worth it
+  const best = searchPlans(items, CONFIG.minSavingPerParcel + 0.01, lowest, cache);
+  const fewest = searchPlans(items, 1e6, best, cache);
+  return { best, lowest, fewest, each: eachPlan };
 }
 
 function currentItems() {
