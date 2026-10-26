@@ -257,7 +257,7 @@
       <ul class="rows" id="deals"></ul>
       <div class="section-gap" id="drops-wrap">
         <h2>Price drops this week</h2>
-        <p class="hint">Listings that got cheaper in the last 7 days and are still at the lower price.</p>
+        <p class="hint" id="drops-hint"></p>
         <ul class="rows" id="drops" style="margin-top:12px"></ul>
       </div>
     </section>
@@ -275,10 +275,11 @@
 /* ======================= SETTINGS ======================= */
 const CONFIG = {
   // Paste the Web app URL from Apps Script (Deploy → Manage deployments) between the quotes.
-  feedUrl: 'PASTE_YOUR_WEB_APP_URL_HERE',
+  feedUrl: 'https://script.google.com/macros/s/AKfycbzq3mw_hSAaD11Y8K4MnAhAmsix9dlszTqZQpgNh1RqYWyCx-IEF-AD-gMNlQdGQJj9/exec',
   maxExtraSellers: 3,     // how many sellers beyond the "only seller for an item" ones a plan may add
   minSavingPerParcel: 50, // an extra parcel is only suggested if it saves at least this much (₹)
   dealSizes: ['3–4 ml', '5 ml', '7.5–10 ml', '20 ml', '30 ml'],
+  maxDrops: 40,           // price drops shown on the Deals tab
   storageKey: 'decant-finder-list',
 };
 
@@ -782,16 +783,21 @@ function renderDeals() {
 }
 
 function renderDrops() {
-  const drops = DATA.drops;
-  $('drops-wrap').hidden = !drops.length;
-  $('drops').innerHTML = drops.map(d => {
+  const filter = $('deal-filter').value;
+  $('drops-wrap').hidden = !DATA.drops.length;
+  const drops = DATA.drops
+    .filter(d => !filter || matchesFilter(DATA.products[d.p].brand + ' ' + DATA.products[d.p].name + ' ' + DATA.products[d.p].insp + ' ' + DATA.sellers[d.s].name, filter))
+    .sort((a, b) => (1 - b.now / b.was) - (1 - a.now / a.was) || b.date.localeCompare(a.date));
+  $('drops-hint').textContent = DATA.drops.length + (DATA.drops.length === 1 ? ' listing' : ' listings') +
+    ' got cheaper in the last 7 days and are still at the lower price.' + (drops.length > CONFIG.maxDrops ? ' Showing the ' + CONFIG.maxDrops + ' biggest drops.' : '');
+  $('drops').innerHTML = drops.length ? drops.slice(0, CONFIG.maxDrops).map(d => {
     const p = DATA.products[d.p];
     const pct = Math.round((1 - d.now / d.was) * 100);
     return '<li><div><div class="name">' + esc(p.name) + '</div><div class="sub">' + esc(p.brand) + ', dropped ' + fmtDate(d.date) + '</div></div>' +
       '<div class="where"><span class="price num">' + rupees(d.now) + '</span> <span class="sub">was ' + rupees(d.was) + ', ' + d.size + ' ml at ' + esc(DATA.sellers[d.s].name) + '</span>' +
       '<div class="sub"><span class="gap">' + pct + '% off</span></div></div>' +
       '<button class="btn add" data-add="' + p.i + '" data-size="' + d.size + '">Add ' + d.size + ' ml</button></li>';
-  }).join('');
+  }).join('') : '<li><div class="sub">No price drops match that filter.</div></li>';
 }
 
 function renderSellerTable() {
@@ -901,7 +907,7 @@ $('deal-sizes').addEventListener('click', e => {
   const c = e.target.closest('[data-deal-size]');
   if (c) { dealSize = c.dataset.dealSize; renderDealSizes(); renderDeals(); }
 });
-$('deal-filter').addEventListener('input', renderDeals);
+$('deal-filter').addEventListener('input', () => { renderDeals(); renderDrops(); });
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-add]');
   if (b) addItem(Number(b.dataset.add), Number(b.dataset.size));
