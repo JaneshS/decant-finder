@@ -86,7 +86,7 @@ function getFeedJson_() {
 function buildFeed_() {
   const ss = SpreadsheetApp.getActive();
   const settings = readAppSettings_(ss);
-  const rows = finaliseRows_(readSnapshot_(ss), readAliases_(ss))
+  const rows = finaliseRows_(readSnapshot_(ss), readAliasGroups_(ss))
     .filter(r => !r.oos && r.price > 0 && r.size > 0 && settings[r.seller] && settings[r.seller].show);
 
   // Sellers, in a fixed order (cheapest lookups in the app refer to them by position)
@@ -130,6 +130,52 @@ function buildFeed_() {
     products: list,
     drops: readDrops_(ss, rows, sellerIdx, productIdx, tz),
   };
+}
+
+// Like the tracker's readAliases_, but every spelling linked through any chain of Aliases rows
+// ends up as one perfume, even when rows point both ways ("Zenith Noir" → "Zeneth Noir" and back)
+// or in a chain ("Ahmed al maghribhi" → "Ahmad Al maghribhi" → "Ahmed al Maghribi").
+// The group's spelling is the one most rows point to; on a tie, the most recently added.
+function readAliasGroups_(ss) {
+  const out = { brand: {}, name: {} };
+  const sh = ss.getSheetByName(TABS.aliases);
+  if (!sh || sh.getLastRow() < 2) return out;
+  const groups = { brand: [], name: [] };
+  sh.getRange(2, 1, sh.getLastRow() - 1, 3).getValues().forEach((r, i) => {
+    const from = cellText_(r[1]).trim(), to = cellText_(r[2]).trim();
+    if (!from || !to) return;
+    groups[/brand/i.test(cellText_(r[0])) ? 'brand' : 'name'].push({ from: from, to: to, row: i });
+  });
+  ['brand', 'name'].forEach(type => {
+    const parent = {};
+    const find = k => { while (parent[k] !== k) { parent[k] = parent[parent[k]]; k = parent[k]; } return k; };
+    const join = (a, b) => {
+      [a, b].forEach(k => { if (parent[k] == null) parent[k] = k; });
+      const ra = find(a), rb = find(b);
+      if (ra !== rb) parent[ra] = rb;
+    };
+    groups[type].forEach(a => join(compact_(a.from), compact_(a.to)));
+    const votes = {};   // group root -> { compact target -> { n, row, text } }
+    groups[type].forEach(a => {
+      const g = votes[find(compact_(a.from))] = votes[find(compact_(a.from))] || {};
+      const t = compact_(a.to);
+      const v = g[t] = g[t] || { n: 0, row: -1, text: a.to };
+      v.n++;
+      if (a.row > v.row) { v.row = a.row; v.text = a.to; }
+    });
+    const canon = {};
+    Object.keys(votes).forEach(root => {
+      const best = Object.keys(votes[root]).map(k => votes[root][k]).sort((x, y) => y.n - x.n || y.row - x.row)[0];
+      canon[root] = best.text;
+    });
+    Object.keys(parent).forEach(k => {
+      const text = canon[find(k)];
+      if (!text) return;
+      if (type === 'brand') out.brand[k] = text;
+      else out.name[k] = { key: compact_(text), shown: text };
+    });
+  });
+  return out;
 }
 
 // Columns G–K of the Sources tab (the tracker itself only reads A–F).

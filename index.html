@@ -335,7 +335,7 @@ function prepare(raw) {
       i, id: p[0], brand: p[1], name: p[2], insp: p[3], offers, bySize,
       sizes: Object.keys(bySize).map(Number).sort((a, b) => a - b),
       sellerCount: new Set(offers.map(o => o.s)).size,
-      tokens: text.split(' '), compact: text.replace(/ /g, ''), inspNorm: norm(p[3] || ''),
+      tokens: text.split(' '), compact: text.replace(/ /g, ''), inspNorm: norm(p[3] || ''), brandTokens: norm(p[1]).split(' ').filter(Boolean),
     };
   });
   const byId = {};
@@ -405,9 +405,12 @@ function search(q) {
       score += s;
     }
     if (!score) continue;
-    if (p.tokens[0] && norm(p.name).startsWith(tokens[0])) score += 0.6;
+    // Naming the brand counts for a lot, so "ysl y edp" finds YSL's Y EDP, not a clone named after it
+    if (p.brandTokens.length && p.brandTokens.every(b => tokens.includes(b))) score += 1.5;
+    else if (p.brandTokens[0] && p.brandTokens[0].length >= 4 && tokens.some(t => t.length >= 4 && lev(t, p.brandTokens[0]) <= 1)) score += 1.0;
+    if (norm(p.name).split(' ')[0] === tokens[0]) score += 0.6;
     if (size && p.bySize[size]) score += 0.8;
-    score += Math.min(p.sellerCount, 8) * 0.05;
+    score += Math.min(p.sellerCount, 10) * 0.08;
     scored.push({ p, score });
   }
   scored.sort((a, b) => b.score - a.score || a.p.name.localeCompare(b.p.name));
