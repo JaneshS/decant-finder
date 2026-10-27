@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Decant Finder</title>
 <meta name="description" content="Add the perfume decants you want and see the cheapest way to buy them from Indian decant sellers, shipping included.">
+<script>try { var t = localStorage.getItem('decant-finder-theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -27,7 +28,7 @@
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --paper: #111714;
       --card: #19221e;
       --ink: #e6eee9;
@@ -44,6 +45,23 @@
       --shadow: none;
       color-scheme: dark;
     }
+  }
+  :root[data-theme="dark"] {
+    --paper: #111714;
+    --card: #19221e;
+    --ink: #e6eee9;
+    --muted: #98a69f;
+    --line: #2c3833;
+    --glass: #5cc2a3;
+    --glass-soft: #1c3a30;
+    --amber: #eaa84c;
+    --amber-soft: #3a2b13;
+    --amber-ink: #f0c47e;
+    --amber-line: #5a4317;
+    --check-bg: #261d10;
+    --focus: #5cc2a3;
+    --shadow: none;
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
@@ -64,7 +82,12 @@
 
   /* ---------- header ---------- */
   header.top { padding: 28px 0 8px; }
-  .masthead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .masthead { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .theme-btn { display: inline-flex; align-items: center; gap: 7px; flex: none; border: 1.5px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 999px; padding: 7px 14px 6px; font-weight: 600; font-size: 14px; min-height: 40px; }
+  .theme-btn:hover { border-color: var(--glass); }
+  .theme-btn svg { width: 17px; height: 17px; }
+  @media (max-width: 480px) { .theme-btn .theme-label { display: none; } .theme-btn { padding: 8px; min-width: 40px; justify-content: center; } }
   h1 { margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
   .vial { display: inline-block; width: 10px; height: 26px; margin-right: 8px; vertical-align: -3px;
     border: 2px solid var(--glass); border-radius: 3px 3px 6px 6px; position: relative; overflow: hidden; }
@@ -72,7 +95,15 @@
   .lede { margin: 10px 0 0; color: var(--muted); max-width: 62ch; }
   .lede b { color: var(--ink); font-weight: 600; }
 
-  nav.tabs { display: flex; gap: 4px; margin: 20px 0 0; border-bottom: 1.5px solid var(--line); }
+  nav.tabs { display: flex; gap: 4px; margin: 20px 0 0; border-bottom: 1.5px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; flex: none; }
+  @media (max-width: 480px) { .tab { padding: 10px 9px 9px !important; font-size: 17px !important; } }
+  .tab .count { display: inline-block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .bump { animation: bump .55s ease-out; }
+    @keyframes bump { 35% { transform: scale(1.45); color: var(--glass); } }
+  }
   .tab { background: none; border: 0; padding: 10px 14px 9px; font-size: 19px; font-weight: 600; color: var(--muted);
     border-bottom: 3px solid transparent; margin-bottom: -1.5px; }
   .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--glass); }
@@ -196,16 +227,14 @@
   footer td, footer th { text-align: left; padding: 3px 14px 3px 0; font-weight: 400; }
   footer th { color: var(--ink); font-weight: 600; }
 
-  .mbar { display: none; }
-  @media (max-width: 860px) {
-    .mbar:not([hidden]) { display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 30;
-      align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 16px;
-      background: var(--card); border: 1.5px solid var(--ink); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
-    .mbar .total { font-size: 26px; }
-    .mbar .hint { font-size: 14px; }
-    .mbar .btn { white-space: nowrap; }
-    body.has-bar main { padding-bottom: 90px; }
-  }
+  .mbar:not([hidden]) { display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 30; max-width: 560px; margin: 0 auto;
+    align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 16px;
+    background: var(--card); border: 1.5px solid var(--ink); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  .mbar .total { font-size: 26px; }
+  .mbar .hint { font-size: 14px; }
+  .mbar .btn { white-space: nowrap; }
+  body.has-bar main { padding-bottom: 90px; }
+  @media (min-width: 861px) { .mbar:not(.always) { display: none !important; } }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .notice { background: var(--amber-soft); border-bottom: 1px solid var(--amber-line); }
   .notice .wrap { display: flex; gap: 10px; align-items: flex-start; padding-top: 10px; padding-bottom: 10px; }
@@ -246,6 +275,54 @@
   .size-line .who b { color: var(--glass); font-weight: 600; }
   .size-line .size { margin-left: 0; flex: none; }
   .best-line { margin-bottom: 6px; }
+  /* browse */
+  .browse-bar { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; justify-content: space-between; margin: 12px 0 10px; }
+  .browse-tools { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 420px; justify-content: flex-end; }
+  .browse-tools input { flex: 1 1 200px; min-width: 0; max-width: 320px; padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); }
+  .browse-tools select { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); min-height: 42px; }
+  .legend { display: flex; gap: 6px 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); margin: 0 0 8px; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 6px; border: 1.5px solid; }
+  .legend .l-add { background: var(--glass); border-color: var(--glass); }
+  .legend .l-low { background: var(--amber-soft); border-color: var(--amber); }
+  .legend .l-plan { border-color: var(--glass); border-style: dashed; }
+  .browse-box { position: relative; overflow: auto; max-height: min(78vh, 920px); background: var(--card); border: 1.5px solid var(--line); border-radius: 10px;
+    width: min(1560px, calc(100vw - 32px)); margin-left: calc((100% - min(1560px, calc(100vw - 32px))) / 2); }
+  table.browse { border-collapse: separate; border-spacing: 0; font-size: 14px; min-width: 100%; }
+  table.browse thead th { position: sticky; top: 0; z-index: 2; background: var(--card); border-bottom: 1.5px solid var(--line);
+    padding: 10px 6px 8px; font-weight: 600; font-size: 13px; line-height: 1.2; min-width: 86px; max-width: 110px; vertical-align: bottom; text-align: center; }
+  table.browse .pcol { position: sticky; left: 0; z-index: 1; background: var(--card); text-align: left; min-width: 210px; max-width: 250px;
+    border-right: 1.5px solid var(--line); padding: 8px 12px; vertical-align: middle; }
+  table.browse thead .pcol { z-index: 3; font-size: 14px; }
+  table.browse tbody th, table.browse tbody td { border-top: 1px solid var(--line); }
+  table.browse tbody tr:first-child th, table.browse tbody tr:first-child td { border-top: 0; }
+  table.browse tbody th { font-weight: 400; line-height: 1.3; }
+  table.browse .pcol .name { font-weight: 600; }
+  table.browse .pcol .sub { color: var(--muted); }
+  table.browse .insp { display: block; font-size: 13px; color: var(--muted); }
+  table.browse td { padding: 4px; text-align: center; }
+  table.browse td.na { color: var(--muted); opacity: .55; }
+  .cell { width: 100%; min-width: 76px; min-height: 44px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px;
+    padding: 4px 6px 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
+  .cell .amt { font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 16px; display: inline-flex; align-items: center; gap: 3px; }
+  .cell small { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .cell:hover { border-color: var(--glass); background: var(--glass-soft); }
+  .cell.low { border-color: var(--amber); background: var(--amber-soft); color: var(--amber-ink); }
+  .cell.inplan { border-color: var(--glass); border-style: dashed; }
+  .cell.added { background: var(--glass); border-color: var(--glass); color: var(--card); }
+  .cell.added small { color: inherit; opacity: .85; }
+  .cell.added:hover { filter: brightness(1.08); }
+  .cell svg { width: 13px; height: 13px; }
+  .browse-foot { display: flex; justify-content: center; margin-top: 12px; }
+  @media (max-width: 640px) {
+    .browse-tools { justify-content: stretch; }
+    .browse-tools input { flex: 1 1 100%; max-width: none; }
+    .browse-tools select { flex: 1 1 140px; min-width: 0; }
+    table.browse .pcol { min-width: 132px; max-width: 150px; padding: 8px 8px; }
+    table.browse thead th { min-width: 74px; }
+    .cell { min-width: 66px; }
+  }
+  body.has-bar .toast { bottom: 96px; }
+  .browse-empty { padding: 18px; color: var(--muted); margin: 0; }
   .status { padding: 40px 0; color: var(--muted); }
   .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--card);
     padding: 9px 16px; border-radius: 8px; font-weight: 500; z-index: 50; }
@@ -259,10 +336,11 @@
 <div class="notice" role="note"><div class="wrap"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg><p><strong>Not affiliated with any seller.</strong> <span class="long">Prices are copied once a day from sellers' public sheets and websites. These are trusted community sellers, but you buy at your own risk, so confirm price and stock with the seller before you pay.</span><span class="short">Prices come from sellers' public sheets and websites. Trusted community sellers, but you buy at your own risk.</span></p></div></div>
 <div class="wrap">
   <header class="top">
-    <div class="masthead"><h1><span class="vial" aria-hidden="true"></span>Decant Finder</h1></div>
+    <div class="masthead"><h1><span class="vial" aria-hidden="true"></span>Decant Finder</h1><button class="theme-btn" id="theme" type="button"></button></div>
     <p class="lede" id="lede">Add the decants you want. It works out which sellers to buy from so the total, shipping included, is as low as possible.</p>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" id="tab-order" aria-selected="true" aria-controls="panel-order">Build an order<span class="count" id="list-count"></span></button>
+      <button class="tab" role="tab" id="tab-browse" aria-selected="false" aria-controls="panel-browse">Browse</button>
       <button class="tab" role="tab" id="tab-deals" aria-selected="false" aria-controls="panel-deals">Deals</button>
       <button class="tab" role="tab" id="tab-new" aria-selected="false" aria-controls="panel-new">New<span class="count" id="new-count"></span></button>
     </nav>
@@ -306,6 +384,32 @@
         </div>
         <div class="plan" id="plan" aria-live="polite"></div>
       </div>
+    </section>
+
+    <section id="panel-browse" role="tabpanel" aria-labelledby="tab-browse" hidden>
+      <h2>Browse every perfume</h2>
+      <p class="hint" id="browse-hint"></p>
+      <div class="browse-bar">
+        <div class="chips" id="browse-sizes" style="margin-top:0"></div>
+        <div class="browse-tools">
+          <input id="browse-filter" type="search" placeholder="Search brand, name or inspired by" aria-label="Search perfumes">
+          <select id="browse-field" aria-label="Search in">
+            <option value="all">In all fields</option>
+            <option value="brand">In brand</option>
+            <option value="name">In name</option>
+            <option value="insp">In inspired by</option>
+          </select>
+          <select id="browse-sort" aria-label="Sort by">
+            <option value="sellers">Most sellers first</option>
+            <option value="name">Name A–Z</option>
+            <option value="brand">Brand A–Z</option>
+            <option value="low">Cheapest per ml</option>
+          </select>
+        </div>
+      </div>
+      <p class="legend"><span><i class="l-add"></i>In your order (tap again to remove)</span><span><i class="l-low"></i>Lowest price per ml</span><span><i class="l-plan"></i>Where the plan buys it</span></p>
+      <div class="browse-box" id="browse-box"></div>
+      <div class="browse-foot"><button class="btn" id="browse-more" hidden></button></div>
     </section>
 
     <section id="panel-deals" role="tabpanel" aria-labelledby="tab-deals" hidden>
@@ -355,6 +459,7 @@ const CONFIG = {
   bigGap: 0.5,            // deals this much cheaper than the next seller get a "double-check" note
   pasteSizes: [2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30], // a bare number at the end of a pasted line counts as ml
   maxPasteLines: 60,
+  browsePage: 60,         // rows shown at a time on the Browse tab
   storageKey: 'decant-finder-list',
 };
 
@@ -368,6 +473,7 @@ let activeResult = -1;
 let results = [];
 let ITEMS = [], PLANS = null;  // the list as priced items, and the plans worked out for it
 let REVIEW = null;             // pasted lines waiting to be checked
+let browseSize = '5 ml', browseSort = 'sellers', browseField = 'all', browseShown = 0;
 
 const $ = id => document.getElementById(id);
 const rupees = n => '₹' + Math.round(n).toLocaleString('en-IN');
@@ -405,6 +511,8 @@ async function load() {
   renderDeals();
   renderDrops();
   renderNew();
+  renderBrowseSizes();
+  renderBrowse(true);
   renderSellerTable();
 }
 
@@ -586,13 +694,25 @@ function removeItem(idx) {
 }
 
 function saveList() {
-  try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(LIST.map(it => ({ id: DATA.products[it.p].id, size: it.size })))); } catch (e) {}
+  try {
+    localStorage.setItem(CONFIG.storageKey, JSON.stringify(LIST.map(it => ({ id: DATA.products[it.p].id, size: it.size,
+      seller: it.s != null ? DATA.sellers[it.s].name : undefined }))));
+  } catch (e) {}
 }
 
 function restoreList() {
   let saved = [];
   try { saved = JSON.parse(localStorage.getItem(CONFIG.storageKey) || '[]'); } catch (e) {}
-  LIST = (Array.isArray(saved) ? saved : []).map(it => DATA.byId[it.id] ? { p: DATA.byId[it.id].i, size: Number(it.size) } : null).filter(Boolean);
+  const sellerByName = {};
+  DATA.sellers.forEach(x => { sellerByName[x.name] = x.i; });
+  LIST = (Array.isArray(saved) ? saved : []).map(it => {
+    const p = DATA.byId[it.id];
+    if (!p) return null;
+    const item = { p: p.i, size: Number(it.size) };
+    const s = sellerByName[it.seller];
+    if (s != null && (p.bySize[item.size] || []).some(o => o.s === s)) item.s = s;
+    return item;
+  }).filter(Boolean);
 }
 
 function renderList() {
@@ -606,8 +726,14 @@ function renderList() {
     const offers = p.bySize[it.size] || [];
     let line;
     const pick = chosen[it.p + '|' + it.size];
+    const pinned = it.s != null && offers.find(o => o.s === it.s);
     if (!offers.length) line = '<span class="missing">No seller lists this size today.</span>';
-    else if (pick) {
+    else if (pinned) {
+      const low = offers[0];
+      line = 'You picked <span class="best">' + sellerLink(pinned.s) + ' ' + rupees(pinned.price) + '</span>. ' +
+        (low.price < pinned.price ? 'Cheapest is ' + sellerLink(low.s) + ' at ' + rupees(low.price) + '. ' : '') +
+        '<button class="link" data-unpin="' + idx + '">Let the plan choose</button>';
+    } else if (pick) {
       const low = offers[0];
       line = 'Buying from <span class="best">' + sellerLink(pick.s) + ' ' + rupees(pick.price) + '</span>. ' +
         (low.price < pick.price ? 'Cheapest is ' + sellerLink(low.s) + ' at ' + rupees(low.price) + '.'
@@ -832,7 +958,9 @@ function currentItems() {
   return LIST.map(it => {
     const p = DATA.products[it.p];
     const price = {};
-    (p.bySize[it.size] || []).forEach(o => { price[o.s] = o.price; });
+    const offers = p.bySize[it.size] || [];
+    const pinned = it.s != null && offers.find(o => o.s === it.s);
+    (pinned ? [pinned] : offers).forEach(o => { price[o.s] = o.price; });
     return { p, size: it.size, price };
   }).filter(it => Object.keys(it.price).length);
 }
@@ -1170,12 +1298,142 @@ function renderNew() {
   $('new-list').hidden = !all.length;
 }
 
+/* ======================= THEME ======================= */
+const SUN = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>';
+const MOON = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>';
+function currentTheme() {
+  return document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+}
+function paintThemeButton() {
+  const dark = currentTheme() === 'dark';
+  $('theme').setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  $('theme').innerHTML = (dark ? SUN : MOON) + '<span class="theme-label">' + (dark ? 'Light mode' : 'Dark mode') + '</span>';
+}
+
+/* ======================= BROWSE ======================= */
+const CHECK = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"></path></svg>';
+const bucketCache = {};
+
+// Sizes in a size group, the size most sellers use in it, and the sellers that have any listing in it
+function bucketOf(label) {
+  if (bucketCache[label]) return bucketCache[label];
+  const b = DATA.buckets.find(x => x.label === label);
+  const sizes = b ? b.sizes : [];
+  const count = {}, sellers = new Set();
+  DATA.products.forEach(p => p.offers.forEach(o => {
+    if (sizes.includes(o.size)) { count[o.size] = (count[o.size] || 0) + 1; sellers.add(o.s); }
+  }));
+  const main = Number(Object.keys(count).sort((a, b) => count[b] - count[a])[0]) || sizes[0];
+  const cols = [...sellers].sort((a, b) => DATA.sellers[a].name.localeCompare(DATA.sellers[b].name));
+  return (bucketCache[label] = { sizes, main, cols });
+}
+
+// One table row: each seller's listing in the size group (the group's usual size if they have it)
+function browseRow(p, bk) {
+  const inGroup = p.offers.filter(o => bk.sizes.includes(o.size)).sort((a, b) =>
+    (a.size !== bk.main) - (b.size !== bk.main) || Math.abs(a.size - bk.main) - Math.abs(b.size - bk.main) || a.price - b.price);
+  if (!inGroup.length) return null;
+  const cells = {};
+  inGroup.forEach(o => { if (!cells[o.s]) cells[o.s] = o; });
+  const perMl = Object.values(cells).map(o => o.price / o.size).sort((a, b) => a - b);
+  return { p, cells, n: perMl.length, low: perMl[0] };
+}
+
+function browseRows() {
+  const bk = bucketOf(browseSize);
+  const words = norm($('browse-filter').value).split(' ').filter(Boolean);
+  const rows = [];
+  for (const p of DATA.products) {
+    if (words.length) {
+      const hay = norm(browseField === 'brand' ? p.brand : browseField === 'name' ? p.name : browseField === 'insp' ? p.insp : p.brand + ' ' + p.name + ' ' + p.insp);
+      if (!words.every(w => hay.includes(w))) continue;
+    }
+    const r = browseRow(p, bk);
+    if (r) rows.push(r);
+  }
+  const byName = (a, b) => a.p.name.localeCompare(b.p.name) || a.p.brand.localeCompare(b.p.brand);
+  if (browseSort === 'name') rows.sort(byName);
+  else if (browseSort === 'brand') rows.sort((a, b) => a.p.brand.localeCompare(b.p.brand) || byName(a, b));
+  else if (browseSort === 'low') rows.sort((a, b) => a.low - b.low || byName(a, b));
+  else rows.sort((a, b) => b.n - a.n || byName(a, b));
+  return { bk, rows };
+}
+
+function renderBrowseSizes() {
+  const sizes = CONFIG.dealSizes.filter(l => DATA.buckets.some(b => b.label === l));
+  $('browse-sizes').innerHTML = sizes.map(l => '<button class="chip" data-browse-size="' + esc(l) + '" aria-pressed="' + (l === browseSize) + '"><span class="ml">' + esc(l) + '</span></button>').join('');
+}
+
+function browseCell(r, s, bk) {
+  const o = r.cells[s];
+  if (!o) return '<td class="na"><span aria-hidden="true">–</span><span class="sr">Not sold</span></td>';
+  const it = LIST.find(x => x.p === r.p.i && x.size === o.size);
+  const added = !!(it && it.s === s);
+  const pick = it && it.s == null && lastPlan && lastPlan.chosen[r.p.i + '|' + o.size];
+  const inPlan = !added && pick && pick.s === s;
+  const low = !added && !inPlan && r.n > 1 && o.price / o.size <= r.low + 1e-9;
+  const label = (added ? 'Remove ' : 'Add ') + r.p.name + ' ' + o.size + ' ml from ' + DATA.sellers[s].name + ', ' + rupees(o.price);
+  return '<td><button class="cell' + (added ? ' added' : inPlan ? ' inplan' : low ? ' low' : '') + '" data-cell="' + r.p.i + '|' + o.size + '|' + s + '"' +
+    ' aria-pressed="' + added + '" aria-label="' + esc(label) + '" title="' + esc(label) + '">' +
+    '<span class="amt">' + (added ? CHECK : '') + rupees(o.price) + '</span>' + (o.size !== bk.main ? '<small>' + o.size + ' ml</small>' : '') + '</button></td>';
+}
+
+function browseTr(r, bk) {
+  return '<tr id="br-' + r.p.i + '"><th scope="row" class="pcol"><span class="name">' + esc(r.p.name) + '</span> <span class="sub">' + esc(r.p.brand) + '</span>' +
+    (r.p.insp ? '<span class="insp">Inspired by ' + esc(r.p.insp) + '</span>' : '') + '</th>' + bk.cols.map(s => browseCell(r, s, bk)).join('') + '</tr>';
+}
+
+function renderBrowse(reset) {
+  if (reset || !browseShown) browseShown = CONFIG.browsePage;
+  const { bk, rows } = browseRows();
+  const box = $('browse-box');
+  const keep = [box.scrollLeft, box.scrollTop];
+  $('browse-hint').textContent = rows.length.toLocaleString('en-IN') + (rows.length === 1 ? ' perfume' : ' perfumes') + ' at ' + browseSize +
+    ', from ' + bk.cols.length + ' sellers. Tap a price to add that decant from that seller to your order.';
+  if (!rows.length) {
+    box.innerHTML = '<p class="browse-empty">Nothing matches that search at ' + esc(browseSize) + '. Try another size or fewer words.</p>';
+    $('browse-more').hidden = true;
+    return;
+  }
+  box.innerHTML = '<table class="browse"><thead><tr><th scope="col" class="pcol">Perfume</th>' +
+    bk.cols.map(s => '<th scope="col">' + sellerLink(s) + '</th>').join('') + '</tr></thead><tbody>' +
+    rows.slice(0, browseShown).map(r => browseTr(r, bk)).join('') + '</tbody></table>';
+  if (reset) { box.scrollTop = 0; } else { box.scrollLeft = keep[0]; box.scrollTop = keep[1]; }
+  const left = rows.length - browseShown;
+  $('browse-more').hidden = left <= 0;
+  $('browse-more').textContent = 'Show ' + Math.min(CONFIG.browsePage, left) + ' more (' + left.toLocaleString('en-IN') + ' left)';
+}
+
+// Tapping a price: add that decant from that seller, switch seller, or (tapped again) remove it
+function toggleCell(pi, size, s) {
+  const p = DATA.products[pi], who = DATA.sellers[s].name;
+  const idx = LIST.findIndex(it => it.p === pi && it.size === size);
+  let msg;
+  if (idx >= 0 && LIST[idx].s === s) { LIST.splice(idx, 1); msg = 'Removed ' + p.name + ' ' + size + ' ml'; }
+  else if (idx >= 0) { LIST[idx].s = s; msg = p.name + ' ' + size + ' ml will now come from ' + who; }
+  else { LIST.push({ p: pi, size, s }); msg = 'Added ' + p.name + ' ' + size + ' ml from ' + who; }
+  saveList();
+  renderAll();
+  const bk = bucketOf(browseSize), row = $('br-' + pi), r = browseRow(p, bk);
+  if (row && r) {
+    row.outerHTML = browseTr(r, bk);
+    const again = document.querySelector('[data-cell="' + pi + '|' + size + '|' + s + '"]');
+    if (again) again.focus({ preventScroll: true });
+  }
+  const count = $('list-count');
+  count.classList.remove('bump'); void count.offsetWidth; count.classList.add('bump');
+  refreshBar();
+  toast(msg + '. ' + LIST.length + (LIST.length === 1 ? ' decant' : ' decants') + ' in your order.');
+}
+
 /* ======================= MISC ======================= */
 let planVisible = false;
 function updateMobileBar(total, n, parcels) {
   const bar = $('mbar');
-  const show = n > 0 && !planVisible && !$('panel-order').hidden;
-  bar.hidden = !show;
+  const onOrder = !$('panel-order').hidden;
+  bar.classList.toggle('always', !onOrder);
+  bar.hidden = !(n > 0 && (!onOrder || !planVisible));
+  $('mbar-go').textContent = onOrder ? 'See the plan' : 'View order';
   document.body.classList.toggle('has-bar', n > 0);
   if (n) { $('mbar-total').textContent = rupees(total); $('mbar-sub').textContent = n + (n === 1 ? ' decant, ' : ' decants, ') + parcels + (parcels === 1 ? ' parcel' : ' parcels'); }
 }
@@ -1189,7 +1447,7 @@ function renderAll() {
 function renderView() { renderPlan(); renderList(); if (picked) renderPicker(); }
 
 function showTab(name) {
-  ['order', 'deals', 'new'].forEach(t => {
+  ['order', 'browse', 'deals', 'new'].forEach(t => {
     $('tab-' + t).setAttribute('aria-selected', String(t === name));
     $('panel-' + t).hidden = t !== name;
   });
@@ -1217,6 +1475,27 @@ function loadSample() {
 $('tab-order').onclick = () => { showTab('order'); refreshBar(); };
 $('tab-deals').onclick = () => { showTab('deals'); refreshBar(); };
 $('tab-new').onclick = () => { showTab('new'); refreshBar(); };
+$('tab-browse').onclick = () => { showTab('browse'); renderBrowse(false); refreshBar(); };
+$('browse-sizes').addEventListener('click', e => {
+  const c = e.target.closest('[data-browse-size]');
+  if (c) { browseSize = c.dataset.browseSize; renderBrowseSizes(); renderBrowse(true); }
+});
+$('browse-filter').addEventListener('input', () => renderBrowse(true));
+$('browse-field').addEventListener('change', e => { browseField = e.target.value; renderBrowse(true); });
+$('browse-sort').addEventListener('change', e => { browseSort = e.target.value; renderBrowse(true); });
+$('browse-more').onclick = () => { browseShown += CONFIG.browsePage; renderBrowse(false); };
+$('browse-box').addEventListener('click', e => {
+  const c = e.target.closest('[data-cell]');
+  if (c) { const [pi, size, si] = c.dataset.cell.split('|').map(Number); toggleCell(pi, size, si); }
+});
+$('theme').onclick = () => {
+  const next = currentTheme() === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('decant-finder-theme', next); } catch (e) {}
+  paintThemeButton();
+};
+try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paintThemeButton); } catch (e) {}
+paintThemeButton();
 $('new-filter').addEventListener('input', renderNew);
 document.querySelector('.modes').addEventListener('click', e => {
   const b = e.target.closest('[data-add-mode]');
@@ -1257,7 +1536,10 @@ $('review').addEventListener('click', e => {
   const look = e.target.closest('[data-search]');
   if (look) { setAddMode('search'); $('q').value = look.dataset.search; renderResults(); $('q').focus(); }
 });
-$('mbar-go').onclick = () => $('plan').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+$('mbar-go').onclick = () => {
+  if ($('panel-order').hidden) { showTab('order'); refreshBar(); }
+  $('plan').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+};
 if ('IntersectionObserver' in window) {
   new IntersectionObserver(entries => { planVisible = entries[0].isIntersecting; refreshBar(); }, { threshold: 0.15 }).observe($('plan'));
 }
@@ -1294,7 +1576,9 @@ $('picker').addEventListener('click', e => {
 });
 $('list').addEventListener('click', e => {
   const b = e.target.closest('.remove');
-  if (b) removeItem(Number(b.dataset.idx));
+  if (b) { removeItem(Number(b.dataset.idx)); return; }
+  const u = e.target.closest('[data-unpin]');
+  if (u) { delete LIST[Number(u.dataset.unpin)].s; saveList(); renderAll(); toast('The plan will pick the seller for this one'); }
 });
 $('clear').onclick = () => { LIST = []; saveList(); renderAll(); };
 $('sample').onclick = loadSample;
