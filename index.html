@@ -25,6 +25,8 @@
     --check-bg: #fff7ea;
     --focus: #1d6b58;
     --shadow: 0 1px 0 rgba(23, 33, 28, .06);
+    --bar-dec: #0b8462;
+    --bar-ship: #b5640c;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
@@ -43,6 +45,8 @@
       --check-bg: #261d10;
       --focus: #5cc2a3;
       --shadow: none;
+      --bar-dec: #2f9a7a;
+      --bar-ship: #c4842c;
       color-scheme: dark;
     }
   }
@@ -61,6 +65,8 @@
     --check-bg: #261d10;
     --focus: #5cc2a3;
     --shadow: none;
+    --bar-dec: #2f9a7a;
+    --bar-ship: #c4842c;
     color-scheme: dark;
   }
   * { box-sizing: border-box; }
@@ -202,6 +208,38 @@
   .parcel-foot .nudge { color: var(--amber-ink); margin-top: 4px; font-weight: 500; }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
   .note { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+  /* ---------- compare sellers ---------- */
+  .cmp { margin-top: 30px; }
+  .cmp .hint { max-width: 60ch; }
+  .cmp-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; color: var(--muted); margin: 8px 0 10px; }
+  .cmp-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .cmp-legend .k-dec { background: var(--bar-dec); }
+  .cmp-legend .k-ship { background: var(--bar-ship); }
+  .cmp-legend .k-gap { width: 26px; border-radius: 0; background: linear-gradient(to right, var(--bar-dec) 11px, transparent 11px 15px, var(--bar-dec) 15px); }
+  .cmp-rows { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .cmp-rows li { padding: 12px 14px 11px; border-top: 1px solid var(--line); }
+  .cmp-rows li:first-child { border-top: 0; }
+  .cmp-rows li.is-plan { box-shadow: inset 4px 0 0 var(--glass); }
+  .cmp-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .cmp-label b { font-weight: 600; }
+  .cmp-total { font-family: "Rajdhani", "Hind", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 21px; line-height: 1.1; white-space: nowrap; }
+  .cmp-bar { display: flex; gap: 2px; height: 14px; margin: 6px 0 7px; }
+  .cmp-bar .pc { display: flex; flex: 1 1 0; min-width: 4px; }
+  .cmp-bar i { display: block; flex: 1 1 0; min-width: 2px; }
+  .cmp-bar .dec { background: var(--bar-dec); }
+  .cmp-bar .ship { background: var(--bar-ship); }
+  .cmp-bar .pc:last-child i:last-child { border-radius: 0 4px 4px 0; }
+  .cmp-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; font-size: 14px; color: var(--muted); }
+  .cmp-side { display: inline-flex; align-items: center; gap: 12px; margin-left: auto; }
+  .cmp-diff { font-weight: 600; white-space: nowrap; }
+  .cmp-diff.less { color: var(--glass); }
+  .cmp-diff.more { color: var(--ink); }
+  .cmp .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--glass);
+    border: 1.5px solid var(--glass); border-radius: 4px; padding: 1px 5px 0; margin-left: 8px; vertical-align: 1px; }
+  .btn.small { padding: 4px 10px 3px; font-size: 14px; white-space: nowrap; }
+  .cmp-more { margin-top: 10px; }
+  @media (forced-colors: active) { .cmp-bar .ship { background: GrayText; } .cmp-bar .dec { background: CanvasText; } }
 
   /* ---------- deals ---------- */
   .deals-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
@@ -400,6 +438,13 @@
             <p>Search for a perfume and pick a size, or paste your whole list. Add everything you're planning to buy, even 20 or 30 decants.</p>
             <button class="btn" id="sample">Try a sample list</button>
           </div>
+          <section class="cmp" id="compare" aria-labelledby="compare-h" hidden>
+            <h2 id="compare-h">Compare sellers</h2>
+            <p class="hint" id="compare-hint"></p>
+            <p class="cmp-legend" aria-hidden="true"><span><i class="k-dec"></i>Decants</span><span><i class="k-ship"></i>Shipping</span><span><i class="k-gap"></i>A gap starts another parcel</span></p>
+            <ol class="cmp-rows" id="compare-rows"></ol>
+            <button class="link cmp-more" id="compare-more" hidden></button>
+          </section>
         </div>
         <div class="plan" id="plan" aria-live="polite"></div>
       </div>
@@ -482,6 +527,8 @@ const CONFIG = {
   pasteSizes: [2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30], // a bare number at the end of a pasted line counts as ml
   maxPasteLines: 60,
   browsePage: 60,         // rows shown at a time on the Browse tab
+  compareMs: 120,         // time limit per seller for the "Compare sellers" rows
+  compareRows: 4,         // comparison rows shown before "Show all"
   storageKey: 'decant-finder-list',
 };
 
@@ -907,8 +954,8 @@ function cheapestCover(cands, need) {
 // Finds the cheapest plan exactly with a branch-and-bound search over which sellers to order from.
 // `perParcel` is added for every seller used: about 0 gives the lowest total, CONFIG.minSavingPerParcel
 // gives "best value", and a huge number gives the fewest parcels. `start` is a known plan to beat.
-function searchPlans(items, perParcel, start, cache) {
-  const deadline = Date.now() + CONFIG.maxSearchMs;
+function searchPlans(items, perParcel, start, cache, ms) {
+  const deadline = Date.now() + (ms || CONFIG.maxSearchMs);
   const n = items.length;
   const cand = [...new Set(items.flatMap(it => Object.keys(it.price).map(Number)))];
   const cheapestFor = items.map(it => +Object.entries(it.price).sort((a, b) => a[1] - b[1])[0][0]);
@@ -1005,6 +1052,144 @@ function describe(plan, items) {
     }
     return Object.assign(g, { name: x.name, ship, known: x.fee != null || ship === 0, nudge });
   }).sort((a, b) => b.items.length - a.items.length || b.sub - a.sub);
+}
+
+/* ======================= COMPARE SELLERS ======================= */
+// Each decant on the list with every seller's price for it (ignoring any seller you picked)
+function freeItems() {
+  return LIST.map(it => {
+    const p = DATA.products[it.p], price = {};
+    (p.bySize[it.size] || []).forEach(o => { price[o.s] = o.price; });
+    return { p, size: it.size, price };
+  }).filter(it => Object.keys(it.price).length);
+}
+
+// A best-value plan with a short time limit, for the comparison rows
+function quickPlan(items, ms) {
+  const each = items.map(it => +Object.entries(it.price).sort((a, b) => a[1] - b[1])[0][0]);
+  const cache = new Map();
+  const t = settle(each.slice(), items, cache);
+  const start = { assign: t.assign, total: t.total, sellers: [...new Set(t.assign)].sort((a, b) => a - b) };
+  return searchPlans(items, CONFIG.minSavingPerParcel + 0.01, start, cache, ms);
+}
+
+// Parcels for an assignment, with seller `first` (if any) listed first
+function parcelsOf(assign, items, first) {
+  const g = {};
+  assign.forEach((s, i) => { const x = g[s] = g[s] || { s, n: 0, sub: 0 }; x.n++; x.sub += items[i].price[s]; });
+  return Object.values(g).map(x => Object.assign(x, { ship: shippingFor(x.s, x.sub, x.n) }))
+    .sort((a, b) => (b.s === first) - (a.s === first) || b.n - a.n || b.sub - a.sub);
+}
+
+// The options to compare: your plan, the recommended plan (if you've picked sellers yourself), and for
+// every seller "everything they have from them, the rest the cheapest way elsewhere". Duplicates merge.
+let COMPARE = null, compareAll = false, compareDirty = true, compareGen = 0;
+function compareOptions() {
+  const items = freeItems();
+  if (!items.length || !lastPlan) return null;
+  const n = items.length, seen = new Map(), memo = new Map();
+  const add = (kind, assign, extra) => {
+    const sig = assign.join(',');
+    if (seen.has(sig)) return seen.get(sig);
+    const o = Object.assign({ kind, assign, sig, total: costOf(assign, items) }, extra);
+    o.parcels = parcelsOf(assign, items, o.s);
+    seen.set(sig, o);
+    return o;
+  };
+  const planAssign = items.map(it => { const c = lastPlan.chosen[it.p.i + '|' + it.size]; return c ? c.s : -1; });
+  const plan = planAssign.includes(-1) ? null : add('plan', planAssign, {});
+  if (LIST.some(it => it.s != null)) {
+    const r = bestPlans(items);
+    add('recommended', (planMode === 'fewest' ? r.fewest : r.best).assign, {});
+  }
+  const sellers = [...new Set(items.flatMap(it => Object.keys(it.price).map(Number)))]
+    .map(s => ({ s, has: items.filter(it => it.price[s] != null).length })).sort((a, b) => b.has - a.has);
+  for (const { s, has } of sellers) {
+    const assign = items.map(it => it.price[s] != null ? s : -1);
+    const rest = assign.map((a, i) => a < 0 ? i : -1).filter(i => i >= 0);
+    if (rest.length) {
+      const key = rest.join(',');
+      if (!memo.has(key)) memo.set(key, quickPlan(rest.map(i => items[i]), CONFIG.compareMs).assign);
+      memo.get(key).forEach((t, k) => { assign[rest[k]] = t; });
+    }
+    const o = add('seller', assign, { s, has });
+    // Your plan is the same as this seller's option: show it under the seller's name
+    if (o.kind === 'plan' && o.s == null) Object.assign(o, { s, has, parcels: parcelsOf(assign, items, s) });
+  }
+  const list = [...seen.values()].sort((a, b) => a.total - b.total || a.parcels.length - b.parcels.length);
+  return { n, list, plan, max: Math.max(...list.map(o => o.total)) };
+}
+
+function scheduleCompare() {
+  compareDirty = true;
+  if ($('panel-order').hidden) return;
+  const gen = ++compareGen;
+  setTimeout(() => {
+    if (gen !== compareGen) return;
+    COMPARE = compareOptions();
+    compareDirty = false;
+    renderCompare();
+  }, 20);
+}
+
+function parcelText(x, named) {
+  return (named ? esc(DATA.sellers[x.s].name) + ': ' : '') + x.n + ' for ' + rupees(x.sub) + (x.ship ? ' + ' + rupees(x.ship) + ' shipping' : ', free shipping');
+}
+
+function renderCompare() {
+  const box = $('compare'), c = COMPARE;
+  if (!c || !LIST.length) { box.hidden = true; return; }
+  box.hidden = false;
+  const n = c.n, planTotal = c.plan ? c.plan.total : null;
+  $('compare-hint').textContent = n === 1
+    ? 'What this decant costs from each seller, shipping included.'
+    : 'What your list costs if you buy everything a seller has from them, and anything they don\'t have the cheapest way elsewhere. Shipping included.';
+  const rows = c.list.filter((o, k) => compareAll || k < CONFIG.compareRows || o.kind === 'plan');
+  $('compare-rows').innerHTML = rows.map(o => {
+    const isPlan = o.kind === 'plan';
+    let label;
+    if (o.kind === 'recommended') label = '<b>Recommended plan</b> <span class="hint">(' + (planMode === 'fewest' ? 'fewest parcels' : 'best value') + ')</span>';
+    else if (o.s == null) label = '<b>Your plan</b>';
+    else if (o.has === n) label = (n === 1 ? 'From ' : 'All ' + n + ' from ') + '<b>' + esc(DATA.sellers[o.s].name) + '</b>';
+    else label = o.has + ' of ' + n + ' from <b>' + esc(DATA.sellers[o.s].name) + '</b>';
+    if (isPlan && o.s != null) label += '<span class="tag">Your plan</span>';
+    const detail = o.parcels.length + (o.parcels.length === 1 ? ' parcel' : ' parcels') + ' · ' +
+      o.parcels.map((x, k) => parcelText(x, o.s == null || k > 0)).join(' · ');
+    const d = planTotal == null ? null : Math.round(o.total - planTotal);
+    const diff = isPlan || d == null ? '' : d > 0 ? '<span class="cmp-diff more">' + rupees(d) + ' more</span>'
+      : d < 0 ? '<span class="cmp-diff less">' + rupees(-d) + ' less</span>' : '<span class="cmp-diff">Same total</span>';
+    const action = isPlan ? '' : o.kind === 'recommended'
+      ? '<button class="btn small" data-use-recommended>Switch back</button>'
+      : '<button class="btn small" data-use-seller="' + o.s + '" aria-label="Switch to ' + esc(label.replace(/<[^>]+>/g, '')) + '">Switch to this</button>';
+    const segs = o.parcels.map(x => {
+      const who = DATA.sellers[x.s].name;
+      // One block per parcel (the gap between blocks marks a new parcel), shipping joined to its decants
+      return '<span class="pc" style="flex-grow:' + (x.sub + x.ship) + '"><i class="dec" style="flex-grow:' + x.sub + '" title="' + esc(who + ': ' + x.n + (x.n === 1 ? ' decant, ' : ' decants, ') + rupees(x.sub)) + '"></i>' +
+        (x.ship ? '<i class="ship" style="flex-grow:' + x.ship + '" title="' + esc(who + ' shipping: ' + rupees(x.ship)) + '"></i>' : '') + '</span>';
+    }).join('');
+    return '<li' + (isPlan ? ' class="is-plan"' : '') + '><div class="cmp-top"><span class="cmp-label">' + label + '</span><span class="cmp-total">' + rupees(o.total) + '</span></div>' +
+      '<div class="cmp-bar" aria-hidden="true" style="width:' + (100 * o.total / c.max).toFixed(2) + '%">' + segs + '</div>' +
+      '<div class="cmp-foot"><span>' + detail + '</span><span class="cmp-side">' + diff + action + '</span></div></li>';
+  }).join('');
+  $('compare-more').hidden = c.list.length <= CONFIG.compareRows;
+  $('compare-more').textContent = compareAll ? 'Show fewer' : 'Show all ' + c.list.length + ' options';
+}
+
+// "Switch to this": everything that seller has comes from them; the plan picks sellers for the rest
+function useSeller(s) {
+  let moved = 0;
+  LIST.forEach(it => {
+    if ((DATA.products[it.p].bySize[it.size] || []).some(o => o.s === s)) { it.s = s; moved++; } else delete it.s;
+  });
+  saveList();
+  renderAll();
+  toast('Now buying ' + moved + (moved === 1 ? ' decant' : ' decants') + ' from ' + DATA.sellers[s].name + '. "Switch back" returns to the recommended plan.');
+}
+function useRecommended() {
+  LIST.forEach(it => { delete it.s; });
+  saveList();
+  renderAll();
+  toast('Back to the recommended plan.');
 }
 
 /* ======================= PLAN VIEW ======================= */
@@ -1574,13 +1759,14 @@ function renderAll() {
   PLANS = ITEMS.length ? bestPlans(ITEMS) : null;
   renderView();
 }
-function renderView() { renderPlan(); renderList(); if (picked) renderPicker(); }
+function renderView() { renderPlan(); renderList(); if (picked) renderPicker(); scheduleCompare(); }
 
 function showTab(name) {
   ['order', 'browse', 'deals', 'new'].forEach(t => {
     $('tab-' + t).setAttribute('aria-selected', String(t === name));
     $('panel-' + t).hidden = t !== name;
   });
+  if (name === 'order' && compareDirty) scheduleCompare();
 }
 
 let toastTimer;
@@ -1625,6 +1811,12 @@ $('seller-banner').addEventListener('click', e => {
   if (e.target.closest('[data-go-order]')) $('mbar-go').click();
 });
 $('browse-more').onclick = () => { browseShown += CONFIG.browsePage; renderBrowse(false); };
+$('compare-more').onclick = () => { compareAll = !compareAll; renderCompare(); };
+$('compare-rows').addEventListener('click', e => {
+  const u = e.target.closest('[data-use-seller]');
+  if (u) { useSeller(Number(u.dataset.useSeller)); return; }
+  if (e.target.closest('[data-use-recommended]')) useRecommended();
+});
 $('browse-box').addEventListener('click', e => {
   const c = e.target.closest('[data-cell]');
   if (c) { const [pi, size, si] = c.dataset.cell.split('|').map(Number); toggleCell(pi, size, si); }
