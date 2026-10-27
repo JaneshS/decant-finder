@@ -3,6 +3,7 @@
 Add the perfume decants you want, one at a time or by pasting a whole WhatsApp/Reddit list, and see the cheapest way to buy them from Indian decant sellers, with shipping included. There's also:
 
 - **Browse:** every perfume in a size group against every seller's price; tap a price to add that decant from that seller (tap again to remove).
+  Pick a seller (or tap a seller's name in your order) to see only what they sell, how each price compares with the cheapest other seller, and how far your order with them is from free shipping.
 - **Deals:** the biggest price gaps between sellers, and this week's price drops.
 - **New:** perfumes that showed up in the tracker for the first time in the last 7 days, with the best value and every price.
 
