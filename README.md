@@ -5,7 +5,6 @@ Add the perfume decants you want, one at a time or by pasting a whole WhatsApp/R
 - **Compare sellers** (under your list): what the same list costs if you buy everything one seller has from them, with the rest bought the cheapest way elsewhere, as bars split into parcels and shipping. "Switch to this" makes that the plan; "Switch back" returns to the recommended one.
 - **Browse:** every perfume in a size group against every seller's price; tap a price to add that decant from that seller (tap again to remove).
   Pick a seller (or tap a seller's name in your order) to see only what they sell, how each price compares with the cheapest other seller, and how far your order with them is from free shipping.
-- **Deals:** the biggest price gaps between sellers, and this week's price drops.
 - **New:** perfumes that showed up in the tracker for the first time in the last 7 days, with the best value and every price.
 
 Seller names link to each seller's own price list. There's a light/dark switch at the top right.
