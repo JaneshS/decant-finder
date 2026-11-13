@@ -1817,9 +1817,12 @@ function matrixSellers(p) {
   return { list, total: stock.length, filtered: !!browseSel && !openAll && list.length < stock.length };
 }
 
+// With one seller chosen, the every-size view compares them with everyone who stocks it
+function soloSeller() { return !!browseSel && browseSel.length === 1; }
+
 function scopeLinks(m) {
   if (m.filtered) return '<button class="link" type="button" data-open-all>Include all ' + m.total + ' sellers that stock it</button>';
-  if (browseSel && openAll) return '<button class="link" type="button" data-open-all>Only the sellers you chose</button>';
+  if (browseSel && openAll) return '<button class="link" type="button" data-open-all>' + (browseSel.length === 1 ? 'Only ' + esc(DATA.sellers[browseSel[0]].name) : 'Only the sellers you chose') + '</button>';
   return '';
 }
 
@@ -2230,7 +2233,7 @@ $('browse-box').addEventListener('click', e => {
     const [pi, size, si] = c.dataset.cell.split('|').map(Number);
     const inPanel = !!c.closest('.sizes-inner, .own-grid, .cmp-head ~ .offer-row') || (openP === pi && !!c.closest('.card.open'));
     toggleCell(pi, size, si);
-    if (openP !== pi) { openCmp = ''; openMore = false; openAll = false; }
+    if (openP !== pi) { openCmp = ''; openMore = false; openAll = soloSeller(); }
     if (!inPanel || openP !== pi) { openSeller = si; openSize = size; }
     openP = pi;
     rerenderBrowseKeepFocus('[data-cell="' + c.dataset.cell + '"]');
@@ -2240,7 +2243,7 @@ $('browse-box').addEventListener('click', e => {
   if (o) {
     const pi = Number(o.dataset.open);
     if (openP === pi) openP = -1;
-    else { openP = pi; openSeller = -1; openSize = 0; openCmp = ''; openMore = false; openAll = false; }
+    else { openP = pi; openSeller = -1; openSize = 0; openCmp = ''; openMore = false; openAll = soloSeller(); }
     rerenderBrowseKeepFocus('[data-open="' + pi + '"], #br-' + pi + ' [data-close]');
     return;
   }
