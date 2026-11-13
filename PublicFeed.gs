@@ -1,22 +1,27 @@
 /**
- * PUBLIC FEED for the Decant Finder app
+ * PUBLIC FEED for the Decant Saver app (janeshs.github.io/decant-finder)
  *
  * Add this as a NEW file next to DecantTracker.gs (same Apps Script project). It reuses the
  * tracker's own matching (Aliases, brand clean-up), so the app and your Best Prices tab always
  * agree on which listings are the same perfume. Nothing in DecantTracker.gs needs to change.
  *
  * What it publishes (and nothing else):
- *   seller names and links, brand, perfume, "inspired by", size and price of IN-STOCK listings,
- *   each seller's shipping rules, price drops and perfumes that are new this week.
- * What it never publishes: your email, the Changes log itself, hidden sellers.
+ *   seller names, links and WhatsApp numbers (only if you add them), brand, perfume, "inspired by",
+ *   size and price of IN-STOCK listings, each seller's shipping rules and perfumes new this week.
+ * What it never publishes: your email, the Changes log itself, hidden sellers, the Reports tab.
  *
- * App settings live in the Sources tab, columns G–L:
+ * It also receives "Report a problem" messages from the app and adds each one as a row in a
+ * Reports tab (created the first time someone reports something). Nothing else can be written.
+ *
+ * App settings live in the Sources tab, columns G–M:
  *   G  Show in app (Y/N)            N keeps that seller out of the app (blank = shown)
  *   H  Name in app (optional)       e.g. show "Scent Squad" instead of "Shivansh (Scent Squad)"
  *   I  Free shipping from ₹         e.g. 1500
  *   J  Free shipping from # decants e.g. 4  (if both I and J are set, either one counts)
  *   K  Shipping fee below that ₹    blank = app assumes ₹100; 0 = always free shipping
  *   L  Link in app (optional)       seller's website; blank = the sheet link in column C
+ *   M  WhatsApp number (optional)   with country code, e.g. 919876543210 (a 10-digit number gets 91 added).
+ *                                   It is shown publicly, so only add numbers sellers are happy to share.
  *
  * Setup (once): Deploy → New deployment → type "Web app" → Execute as: Me →
  *   Who has access: Anyone → Deploy. Copy the Web app URL into the app's index.html.
@@ -25,7 +30,6 @@
 
 const FEED = {
   defaultShippingFee: 100,   // used when a seller's shipping fee is blank
-  priceDropDays: 7,          // how far back the "Price drops" list looks
   freshDays: 7,              // how far back the "New" tab looks
   cacheHours: 6,             // the feed is rebuilt at least this often (and every hour by the trigger)
 };
@@ -39,6 +43,50 @@ function doGet() {
     json = JSON.stringify({ error: 'Prices are being updated. Please try again in a minute.' });
   }
   return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+}
+
+// The app's "Report a problem" form posts here. Each report becomes a row in the Reports tab.
+const REPORTS = { tab: 'Reports', maxPerHour: 120, maxText: 500 };
+
+function doPost(e) {
+  let ok = false;
+  try {
+    const data = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    if (data.website) return json_({ ok: true });      // filled in only by spam bots
+    const clip = (v, n) => {
+      const t = String(v == null ? '' : v).replace(/[\u0000-\u001f]+/g, ' ').trim().slice(0, n || 120);
+      return /^[=+\-@]/.test(t) ? "'" + t : t;          // never let a report become a formula
+    };
+    const kind = clip(data.kind, 60);
+    if (!kind) throw new Error('empty');
+    const cache = CacheService.getScriptCache();
+    const hourKey = 'reports_' + Utilities.formatDate(new Date(), 'UTC', 'yyyyMMddHH');
+    const count = Number(cache.get(hourKey) || 0);
+    if (count >= REPORTS.maxPerHour) return json_({ ok: false, error: 'busy' });
+    cache.put(hourKey, String(count + 1), 3700);
+    const lock = LockService.getScriptLock();
+    lock.waitLock(10000);
+    try {
+      const ss = SpreadsheetApp.getActive();
+      let sh = ss.getSheetByName(REPORTS.tab);
+      if (!sh) {
+        sh = ss.insertSheet(REPORTS.tab);
+        sh.appendRow(['Received', 'What', 'Perfume', 'Brand', 'Size (ml)', 'Seller', 'Price', 'Details', 'Status (yours)']);
+        sh.setFrozenRows(1);
+        sh.getRange(1, 1, 1, 9).setFontWeight('bold');
+      }
+      sh.appendRow([new Date(), kind, clip(data.perfume), clip(data.brand), clip(data.size, 10), clip(data.seller), clip(data.price, 12),
+        clip(data.details, REPORTS.maxText), '']);
+    } finally {
+      lock.releaseLock();
+    }
+    ok = true;
+  } catch (err) { /* bad or empty report: ignore */ }
+  return json_({ ok: ok });
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
 // Rebuilds the feed and stores it in the cache. Runs every hour once turnOnFeedRefresh is set up.
@@ -68,8 +116,8 @@ function testFeed() {
   const feed = buildFeed_();
   Logger.log('Sellers in app: ' + feed.sellers.map(s => s.n).join(', '));
   Logger.log('Perfumes: ' + feed.products.length + ', listings: ' +
-    feed.products.reduce((n, p) => n + p[4].length, 0) + ', price drops: ' + feed.drops.length +
-    ', new this week: ' + feed.fresh.length);
+    feed.products.reduce((n, p) => n + p[4].length, 0) + ', new this week: ' + feed.fresh.length +
+    ', with WhatsApp: ' + feed.sellers.filter(s => s.w).map(s => s.n).join(', '));
   Logger.log('New this week: ' + feed.fresh.slice(0, 15).map(f => feed.products[f[0]][1] + ' ' + feed.products[f[0]][2] + ' (' + f[1] + ')').join('; '));
   Logger.log('Feed size: ' + Math.round(JSON.stringify(feed).length / 1024) + ' KB');
 }
@@ -100,7 +148,9 @@ function buildFeed_() {
   const sellers = sellerNames.map((name, i) => {
     sellerIdx[name] = i;
     const s = settings[name];
-    return { n: s.name || name, ff: s.freeFrom, fc: s.freeCount, fee: s.fee, u: s.link };
+    const out = { n: s.name || name, ff: s.freeFrom, fc: s.freeCount, fee: s.fee, u: s.link };
+    if (s.phone) out.w = s.phone;
+    return out;
   });
 
   // One entry per perfume (same matching key as Best Prices)
@@ -130,11 +180,9 @@ function buildFeed_() {
     checked: Utilities.formatDate(checked, tz, 'yyyy-MM-dd'),
     built: Utilities.formatDate(new Date(), tz, "yyyy-MM-dd'T'HH:mm"),
     defaultFee: FEED.defaultShippingFee,
-    dealThreshold: SETTINGS.dealThreshold,
     buckets: SIZE_BUCKETS.map(b => [b.label, b.sizes]),
     sellers: sellers,
     products: list,
-    drops: readDrops_(changes, rows, aliases, sellerIdx, productIdx, tz),
     fresh: readFresh_(changes, allRows, aliases, productIdx, tz),
   };
 }
@@ -185,13 +233,14 @@ function readAliasGroups_(ss) {
   return out;
 }
 
-// Columns G–L of the Sources tab (the tracker itself only reads A–F).
+// Columns G–M of the Sources tab (the tracker itself only reads A–F).
 function readAppSettings_(ss) {
   const out = {};
   const sh = ss.getSheetByName(TABS.sources);
   if (!sh || sh.getLastRow() < 2) return out;
   const num = v => { const n = Number(String(v).replace(/[^\d.]/g, '')); return n > 0 ? n : 0; };
-  sh.getRange(2, 1, sh.getLastRow() - 1, 12).getDisplayValues().forEach(r => {
+  const width = Math.min(13, sh.getLastColumn());
+  sh.getRange(2, 1, sh.getLastRow() - 1, width).getDisplayValues().forEach(r => {
     const seller = String(r[0]).trim();
     if (!seller || /^n/i.test(String(r[5]).trim())) return;
     const fee = String(r[10]).trim();
@@ -201,10 +250,19 @@ function readAppSettings_(ss) {
       freeFrom: num(r[8]),
       freeCount: num(r[9]),
       fee: fee === '' ? null : num(fee),
-      link: sellerLink_(String(r[11]).trim(), String(r[2]).trim(), String(r[1]).trim()),
+      link: sellerLink_(String(r[11] || '').trim(), String(r[2]).trim(), String(r[1]).trim()),
+      phone: phone_(r[12]),
     };
   });
   return out;
+}
+
+// Column M: digits only, with India's 91 added to a 10-digit number. Anything odd is left out.
+function phone_(v) {
+  let d = String(v == null ? '' : v).replace(/\D/g, '');
+  if (d.length === 11 && d.charAt(0) === '0') d = d.slice(1);
+  if (d.length === 10) d = '91' + d;
+  return /^\d{11,15}$/.test(d) ? d : '';
 }
 
 // Column L if filled in, else the sheet link from column C (a JSON price list links to its site).
@@ -218,7 +276,7 @@ function sellerLink_(own, source, type) {
   return ok(source);
 }
 
-// The Changes tab (most recent rows), read once and shared by price drops and new perfumes.
+// The Changes tab (most recent rows), used to find perfumes that are new this week.
 function readChanges_(ss) {
   const sh = ss.getSheetByName(TABS.changes);
   if (!sh || sh.getLastRow() < 2) return [];
@@ -235,27 +293,6 @@ function keyOf_(cache, aliases, seller, brand, name) {
   const id = seller + '\u0001' + brand + '\u0001' + name;
   if (!(id in cache)) cache[id] = finaliseRows_([makeRow_(seller, brand, name, 1, 1, false, '', '')], aliases)[0].key;
   return cache[id];
-}
-
-// Price drops from the Changes tab that are still the current, in-stock price.
-function readDrops_(changes, rows, aliases, sellerIdx, productIdx, tz) {
-  const since = Date.now() - FEED.priceDropDays * 86400000;
-  const current = {}, keys = {};
-  rows.forEach(r => { current[[r.seller, r.key, r.size].join('|')] = r; });
-  const out = [], seen = {};
-  for (let i = changes.length - 1; i >= 0; i--) {          // newest first
-    const c = changes[i];
-    if (c.change !== 'Price' || c.t < since) continue;
-    const was = Number(c.was), now = Number(String(c.now).replace(/[^\d.]/g, ''));
-    if (!(was > 0 && now > 0 && now < was)) continue;
-    const r = current[[c.seller, keyOf_(keys, aliases, c.seller, c.brand, c.name), c.size].join('|')];
-    if (!r || r.price !== now || productIdx[r.key] == null) continue;
-    const id = r.seller + '|' + r.key + '|' + r.size;
-    if (seen[id]) continue;
-    seen[id] = true;
-    out.push([productIdx[r.key], sellerIdx[r.seller], r.size, was, now, Utilities.formatDate(c.when, tz, 'yyyy-MM-dd')]);
-  }
-  return out;
 }
 
 // Perfumes that are new to the tracker this week: every seller that lists one today added it in the
