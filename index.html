@@ -3,411 +3,558 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Decant Finder</title>
+<title>Decant Saver · the cheapest way to buy your decants</title>
 <meta name="description" content="Add the perfume decants you want and see the cheapest way to buy them from Indian decant sellers, shipping included.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 3c-5 6.5-9 11.5-9 16.5a9 9 0 0 0 18 0C25 14.5 21 9.5 16 3z' stroke='%23161616' fill='%23ffffff'/%3E%3Cpath d='M16 13v9M12.5 18.5L16 22l3.5-3.5' stroke='%230a7a52'/%3E%3C/svg%3E">
 <script>try { var t = localStorage.getItem('decant-finder-theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #eef2ef;
-    --card: #ffffff;
-    --ink: #17211c;
-    --muted: #5b6862;
-    --line: #d3dbd6;
-    --glass: #1d6b58;
-    --glass-soft: #e0eee8;
-    --amber: #a8620a;
-    --amber-soft: #fbecd2;
-    --amber-ink: #6b3d05;
-    --amber-line: #ecd3a4;
-    --check-bg: #fff7ea;
-    --focus: #1d6b58;
-    --shadow: 0 1px 0 rgba(23, 33, 28, .06);
-    --bar-dec: #0b8462;
-    --bar-ship: #b5640c;
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --surface-2: #fafaf8;
+    --tint: #f1f1ec;
+    --ink: #161616;
+    --ink-2: #4d4d4d;
+    --muted: #6b6b6b;
+    --line: #e3e2de;
+    --line-2: #efeee9;
+    --line-strong: #cbc9c3;
+    --accent: #0a7a52;
+    --accent-ink: #0a5c3e;
+    --accent-soft: #e9f5ef;
+    --accent-line: #b9dfcc;
+    --warn: #9a3d00;
+    --btn: #161616;
+    --btn-ink: #ffffff;
+    --shadow: 0 10px 30px rgba(22, 22, 22, .12);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #111714;
-      --card: #19221e;
-      --ink: #e6eee9;
-      --muted: #98a69f;
-      --line: #2c3833;
-      --glass: #5cc2a3;
-      --glass-soft: #1c3a30;
-      --amber: #eaa84c;
-      --amber-soft: #3a2b13;
-      --amber-ink: #f0c47e;
-      --amber-line: #5a4317;
-      --check-bg: #261d10;
-      --focus: #5cc2a3;
-      --shadow: none;
-      --bar-dec: #2f9a7a;
-      --bar-ship: #c4842c;
+      --bg: #121313;
+      --surface: #1b1c1d;
+      --surface-2: #202122;
+      --tint: #26272a;
+      --ink: #ededea;
+      --ink-2: #c4c3be;
+      --muted: #9d9c97;
+      --line: #2e2f31;
+      --line-2: #27282a;
+      --line-strong: #47484c;
+      --accent: #4cc38a;
+      --accent-ink: #8adbb2;
+      --accent-soft: #15301f;
+      --accent-line: #2b5a40;
+      --warn: #f0a35a;
+      --btn: #ededea;
+      --btn-ink: #121313;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .5);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #111714;
-    --card: #19221e;
-    --ink: #e6eee9;
-    --muted: #98a69f;
-    --line: #2c3833;
-    --glass: #5cc2a3;
-    --glass-soft: #1c3a30;
-    --amber: #eaa84c;
-    --amber-soft: #3a2b13;
-    --amber-ink: #f0c47e;
-    --amber-line: #5a4317;
-    --check-bg: #261d10;
-    --focus: #5cc2a3;
-    --shadow: none;
-    --bar-dec: #2f9a7a;
-    --bar-ship: #c4842c;
+    --bg: #121313;
+    --surface: #1b1c1d;
+    --surface-2: #202122;
+    --tint: #26272a;
+    --ink: #ededea;
+    --ink-2: #c4c3be;
+    --muted: #9d9c97;
+    --line: #2e2f31;
+    --line-2: #27282a;
+    --line-strong: #47484c;
+    --accent: #4cc38a;
+    --accent-ink: #8adbb2;
+    --accent-soft: #15301f;
+    --accent-line: #2b5a40;
+    --warn: #f0a35a;
+    --btn: #ededea;
+    --btn-ink: #121313;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .5);
     color-scheme: dark;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font: 400 16px/1.55 "Hind", system-ui, sans-serif;
-  }
-  button, input { font: inherit; color: inherit; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.5 "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  button, input, select, textarea { font: inherit; color: inherit; }
   button { cursor: pointer; }
-  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
-  .num, h1, h2, h3, .tab, .chip, .price, .total, .stamp {
-    font-family: "Rajdhani", "Hind", sans-serif;
-    font-variant-numeric: tabular-nums;
-  }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 3px; }
+  [hidden] { display: none !important; }
+  a { color: inherit; text-underline-offset: 3px; }
+  .mono, .price { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+  @media (max-width: 640px) { .wrap { padding-left: 16px; padding-right: 16px; } }
+  a.seller { font-weight: 600; text-decoration: underline; text-decoration-color: var(--line-strong); text-decoration-thickness: 1px; }
+  a.seller:hover { text-decoration-color: currentColor; }
+  .ext { display: inline-block; width: .72em; height: .72em; margin-left: 3px; vertical-align: 0; color: var(--muted); }
 
   /* ---------- header ---------- */
-  header.top { padding: 28px 0 8px; }
-  .masthead { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .theme-btn { display: inline-flex; align-items: center; gap: 7px; flex: none; border: 1.5px solid var(--line); background: var(--card); color: var(--ink);
-    border-radius: 999px; padding: 7px 14px 6px; font-weight: 600; font-size: 14px; min-height: 40px; }
-  .theme-btn:hover { border-color: var(--glass); }
-  .theme-btn svg { width: 17px; height: 17px; }
-  @media (max-width: 480px) { .theme-btn .theme-label { display: none; } .theme-btn { padding: 8px; min-width: 40px; justify-content: center; } }
-  h1 { margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
-  .vial { display: inline-block; width: 10px; height: 26px; margin-right: 8px; vertical-align: -3px;
-    border: 2px solid var(--glass); border-radius: 3px 3px 6px 6px; position: relative; overflow: hidden; }
-  .vial::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: var(--glass); }
-  .lede { margin: 10px 0 0; color: var(--muted); max-width: 62ch; }
-  .lede b { color: var(--ink); font-weight: 600; }
-
-  nav.tabs { display: flex; gap: 4px; margin: 20px 0 0; border-bottom: 1.5px solid var(--line); overflow-x: auto; scrollbar-width: none; }
-  nav.tabs::-webkit-scrollbar { display: none; }
-  .tab { white-space: nowrap; flex: none; }
-  @media (max-width: 480px) { .tab { padding: 10px 9px 9px !important; font-size: 17px !important; } }
-  .tab .count { display: inline-block; }
-  @media (prefers-reduced-motion: no-preference) {
-    .bump { animation: bump .55s ease-out; }
-    @keyframes bump { 35% { transform: scale(1.45); color: var(--glass); } }
+  .site { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .site .bar { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0 28px; min-height: 64px; }
+  .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); }
+  .logo svg { width: 28px; height: 28px; flex: none; }
+  .wordmark { font-size: 23px; letter-spacing: -.03em; line-height: 1; font-weight: 500; white-space: nowrap; }
+  .wordmark b { font-weight: 800; }
+  .tabs { display: flex; gap: 24px; }
+  .tab { background: none; border: 0; border-bottom: 2px solid transparent; padding: 2px 0 0; font-size: 16px; font-weight: 500; color: var(--ink-2);
+    white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+  .tab .count { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); }
+  .tab .count.on { color: var(--btn-ink); background: var(--btn); border-radius: 4px; padding: 0 5px; }
+  .tools { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+  .textlink { background: none; border: 0; padding: 6px 6px; color: var(--ink-2); font-size: 15px; text-decoration: underline;
+    text-decoration-color: var(--line-strong); text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px; }
+  .textlink:hover { color: var(--ink); text-decoration-color: currentColor; }
+  .textlink svg { width: 15px; height: 15px; }
+  .icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: none; border-radius: 6px; color: var(--ink); flex: none; }
+  .icon-btn:hover { background: var(--bg); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  @media (max-width: 760px) {
+    .site .bar { gap: 0 12px; min-height: 0; }
+    .logo { min-height: 52px; }
+    .wordmark { font-size: 21px; }
+    .tabs { order: 3; width: 100%; gap: 20px; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { padding: 8px 0 7px; font-size: 15px; }
+    .tools .label { display: none; }
+    .tab .wide { display: none; }
   }
-  .tab { background: none; border: 0; padding: 10px 14px 9px; font-size: 19px; font-weight: 600; color: var(--muted);
-    border-bottom: 3px solid transparent; margin-bottom: -1.5px; }
-  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--glass); }
-  .tab .count { font-size: 15px; color: var(--muted); font-weight: 500; margin-left: 4px; }
 
-  main { padding: 22px 0 40px; }
-  [hidden] { display: none !important; }
+  /* ---------- disclaimer ---------- */
+  .disclaimer { background: var(--surface); border-bottom: 1px solid var(--line); font-size: 13.5px; color: var(--ink-2); }
+  .d-row { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 26px; padding-top: 7px; padding-bottom: 7px; }
+  .d-item { display: inline-flex; align-items: center; gap: 7px; }
+  .d-item svg { width: 14px; height: 14px; flex: none; }
+  .d-item .warn { color: var(--warn); }
+  .disclaimer .textlink { font-size: 13.5px; padding: 3px 0; color: var(--ink); }
+  .disclaimer .textlink svg { width: 12px; height: 12px; transition: transform .15s; }
+  .disclaimer .textlink[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .disc-full { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px 32px; padding-top: 4px; padding-bottom: 16px; font-size: 14px; }
+  .disc-full p { margin: 0; }
+  .disc-full strong { color: var(--ink); font-weight: 600; }
+  @media (max-width: 640px) { .disclaimer, .disclaimer .textlink { font-size: 12.5px; } .d-row { gap: 0 16px; padding-top: 5px; padding-bottom: 6px; } .d-item svg { width: 12px; height: 12px; } }
+
+  /* ---------- page ---------- */
+  main { padding-top: 24px; padding-bottom: 48px; }
+  .page-title { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+  .lead { margin: 4px 0 0; color: var(--ink-2); max-width: 75ch; }
+  h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; }
+  .hint { color: var(--muted); font-size: 14.5px; margin: 0; }
+  .status { padding: 48px 0; color: var(--muted); }
+  @media (max-width: 640px) { main { padding-top: 16px; } .page-title { font-size: 25px; } }
+
+  /* ---------- the step guide ---------- */
+  .guide { padding-bottom: 18px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
+  .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .step { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 500; color: var(--muted); }
+  .step .num { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 5px; border: 1px solid var(--line-strong);
+    font: 600 14px/1 "IBM Plex Mono", monospace; color: var(--muted); }
+  .step .num svg { width: 15px; height: 15px; }
+  .step.now { color: var(--ink); font-weight: 700; }
+  .step.now .num { background: var(--btn); border-color: var(--btn); color: var(--btn-ink); }
+  .step.done .num { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--accent); }
+  .step-sep { width: 40px; height: 1px; background: var(--line-strong); }
+  .step .short { display: none; }
+  .step-note { margin: 8px 0 0; color: var(--ink-2); }
+  @media (max-width: 640px) {
+    .guide { padding-bottom: 14px; margin-bottom: 16px; }
+    .step { font-size: 14.5px; gap: 6px; } .step .num { width: 22px; height: 22px; font-size: 12px; }
+    .step-sep { width: 14px; } .step .long { display: none; } .step .short { display: inline; }
+    .step-note { font-size: 14px; margin-top: 6px; }
+  }
 
   /* ---------- order screen ---------- */
-  .order { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
-  @media (max-width: 860px) { .order { grid-template-columns: minmax(0, 1fr); } }
-  h2 { font-size: 22px; font-weight: 700; margin: 0 0 10px; }
-  .hint { color: var(--muted); font-size: 15px; margin: 0; }
-
+  .order { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+  @media (max-width: 900px) { .order { grid-template-columns: minmax(0, 1fr); } }
+  .col { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; }
+  @media (max-width: 640px) { .panel { padding: 16px; } .col { gap: 16px; } .order { gap: 16px; } }
+  .panel-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 12px; margin-bottom: 12px; }
+  .panel-head .count-mono { font: 500 14px "IBM Plex Mono", monospace; color: var(--muted); margin-left: 6px; }
+  .seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; background: var(--surface); max-width: 100%; }
+  .seg button { border: 0; border-right: 1px solid var(--line); background: none; color: var(--ink-2); padding: 7px 12px; min-height: 38px; font-size: 15px; white-space: nowrap; }
+  .seg button:last-child { border-right: 0; }
+  .seg button[aria-pressed="true"] { background: var(--btn); color: var(--btn-ink); font-weight: 600; }
+  .seg button:not([aria-pressed="true"]):hover { background: var(--bg); color: var(--ink); }
+  .modes { margin-bottom: 12px; }
+  .field { width: 100%; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .field::placeholder { color: var(--muted); }
+  .sel { padding: 6px 8px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); color: var(--ink); min-height: 38px; font-size: 15px; }
   .search { position: relative; }
-  .search input {
-    width: 100%; padding: 14px 16px; font-size: 18px; border-radius: 10px;
-    border: 2px solid var(--line); background: var(--card); box-shadow: var(--shadow);
-  }
-  .search input:focus { border-color: var(--glass); outline: none; }
-  .results { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: 6px;
-    list-style: none; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px;
-    box-shadow: 0 12px 28px rgba(0,0,0,.14); max-height: 60vh; overflow: auto; }
-  .results li { padding: 9px 10px; border-radius: 7px; display: flex; justify-content: space-between; gap: 12px; cursor: pointer; }
-  .results li[aria-selected="true"], .results li:hover { background: var(--glass-soft); }
+  .search .lens { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; color: var(--muted); pointer-events: none; }
+  .search input { padding-left: 38px; }
+  .results { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: 6px; list-style: none;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; box-shadow: var(--shadow); max-height: 60vh; overflow: auto; }
+  .results li { padding: 9px 10px; border-radius: 6px; display: flex; justify-content: space-between; gap: 12px; cursor: pointer; }
+  .results li[aria-selected="true"], .results li:hover { background: var(--bg); }
   .results .r-name { font-weight: 600; }
   .results .r-sub { color: var(--muted); font-size: 14px; }
-  .results .r-side { text-align: right; color: var(--muted); font-size: 14px; white-space: nowrap; }
+  .results .r-side { text-align: right; color: var(--muted); font: 500 13px/1.45 "IBM Plex Mono", monospace; white-space: nowrap; }
   .results .empty { color: var(--muted); cursor: default; }
   .results .empty:hover { background: none; }
-
-  .picker { margin-top: 12px; padding: 14px; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; }
+  .picker { margin-top: 12px; padding: 14px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; }
   .picker-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
   .picker-head .name { font-weight: 600; font-size: 17px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-  .chip { border: 1.5px solid var(--line); background: var(--card); border-radius: 8px; padding: 6px 12px 5px;
-    text-align: left; line-height: 1.15; }
-  .chip:hover { border-color: var(--glass); }
-  .chip .ml { font-size: 19px; font-weight: 700; display: block; }
-  .chip .from { font-size: 14px; color: var(--muted); font-weight: 500; }
-  .chip[aria-pressed="true"] { border-color: var(--glass); background: var(--glass-soft); }
-  .link { background: none; border: 0; padding: 0; color: var(--glass); text-decoration: underline; text-underline-offset: 3px; }
-
-  .list { margin: 18px 0 0; padding: 0; list-style: none; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; }
-  .list li { padding: 12px 14px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; }
-  .list li:first-child { border-top: 0; }
-  .list .name { font-weight: 600; }
-  .list .brand { color: var(--muted); font-weight: 400; }
-  .size { font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 16px; border: 1.5px solid var(--ink);
-    border-radius: 4px; padding: 0 5px; margin-left: 6px; white-space: nowrap; }
-  .offers { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
-  .offers .best { color: var(--glass); font-weight: 600; }
-  .remove { background: none; border: 0; color: var(--muted); font-size: 22px; line-height: 1; padding: 0 4px; align-self: start; }
-  .remove:hover { color: var(--ink); }
-  .list-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 15px; color: var(--muted); }
-  .missing { color: var(--amber); }
-
-  .empty-state { margin-top: 18px; padding: 18px; border: 1.5px dashed var(--line); border-radius: 10px; color: var(--muted); }
-  .empty-state p { margin: 0 0 10px; }
-  .btn { border: 1.5px solid var(--ink); background: var(--card); border-radius: 8px; padding: 7px 14px 6px; font-weight: 600; }
-  .btn:hover { background: var(--glass-soft); }
-  .btn.primary { background: var(--glass); border-color: var(--glass); color: var(--card); }
-  .btn.primary:hover { filter: brightness(1.08); background: var(--glass); }
+  .chip { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 6px; padding: 6px 12px; text-align: left; line-height: 1.25; }
+  .chip:hover { border-color: var(--ink); }
+  .chip .ml { font: 600 15px "IBM Plex Mono", monospace; display: block; }
+  .chip .from { font-size: 13px; color: var(--muted); }
+  .chip[aria-pressed="true"] { border-color: var(--accent-line); background: var(--accent-soft); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink);
+    border-radius: 6px; padding: 8px 14px; min-height: 42px; font-weight: 600; font-size: 15px; text-decoration: none; white-space: nowrap; }
+  .btn:hover { border-color: var(--ink); }
+  .btn.primary { background: var(--btn); border-color: var(--btn); color: var(--btn-ink); }
+  .btn.primary:hover { opacity: .88; }
+  .btn.done { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-ink); }
+  .btn.small { min-height: 34px; padding: 5px 10px; font-size: 14px; }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
-
-  /* ---------- plan: parcels ---------- */
-  .plan { position: sticky; top: 12px; }
-  @media (max-width: 860px) { .plan { position: static; } }
-  .switch { display: inline-flex; border: 1.5px solid var(--line); border-radius: 9px; padding: 3px; gap: 3px; background: var(--card); margin-bottom: 12px; }
-  .switch button { border: 0; background: none; border-radius: 6px; padding: 5px 12px 4px; font-weight: 600; color: var(--muted); }
-  .switch button[aria-pressed="true"] { background: var(--ink); color: var(--card); }
-  .summary { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-  .total { font-size: 40px; font-weight: 700; line-height: 1; }
-  .total small { font-size: 16px; font-weight: 600; color: var(--muted); margin-left: 6px; }
-  .compare { color: var(--muted); font-size: 15px; margin: 0 0 14px; }
-  .compare b { color: var(--glass); font-weight: 600; }
-
-  .parcel { position: relative; background: var(--card); border: 1.5px solid var(--ink); border-radius: 8px; margin-bottom: 14px; }
-  .parcel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px;
-    border-bottom: 2px dashed var(--line); position: relative; }
-  .parcel-head::before, .parcel-head::after { content: ""; position: absolute; bottom: -9px; width: 16px; height: 16px;
-    border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); }
-  .parcel-head::before { left: -9px; clip-path: inset(0 0 0 50%); }
-  .parcel-head::after { right: -9px; clip-path: inset(0 50% 0 0); }
-  .parcel h3 { margin: 0; font-size: 21px; font-weight: 700; line-height: 1.1; }
-  .parcel .count { color: var(--muted); font-size: 14px; }
-  .stamp { font-size: 15px; font-weight: 700; padding: 2px 8px 1px; border: 2px solid currentColor; border-radius: 4px;
-    transform: rotate(-4deg); white-space: nowrap; }
-  .stamp.free { color: var(--glass); }
-  .stamp.paid { color: var(--muted); }
-  .parcel ul { list-style: none; margin: 0; padding: 8px 16px; }
-  .parcel li { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }
-  .parcel li .price { font-weight: 600; font-size: 17px; }
-  .parcel-foot { padding: 8px 16px 12px; border-top: 1px solid var(--line); font-size: 15px; }
-  .parcel-foot .row { display: flex; justify-content: space-between; }
-  .parcel-foot .nudge { color: var(--amber-ink); margin-top: 4px; font-weight: 500; }
-  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-  .note { color: var(--muted); font-size: 14px; margin-top: 12px; }
-
-  /* ---------- compare sellers ---------- */
-  .cmp { margin-top: 30px; }
-  .cmp .hint { max-width: 60ch; }
-  .cmp-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; color: var(--muted); margin: 8px 0 10px; }
-  .cmp-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-  .cmp-legend .k-dec { background: var(--bar-dec); }
-  .cmp-legend .k-ship { background: var(--bar-ship); }
-  .cmp-legend .k-gap { width: 26px; border-radius: 0; background: linear-gradient(to right, var(--bar-dec) 11px, transparent 11px 15px, var(--bar-dec) 15px); }
-  .cmp-rows { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; overflow: hidden; }
-  .cmp-rows li { padding: 12px 14px 11px; border-top: 1px solid var(--line); }
-  .cmp-rows li:first-child { border-top: 0; }
-  .cmp-rows li.is-plan { box-shadow: inset 4px 0 0 var(--glass); }
-  .cmp-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .cmp-label b { font-weight: 600; }
-  .cmp-total { font-family: "Rajdhani", "Hind", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 21px; line-height: 1.1; white-space: nowrap; }
-  .cmp-bar { display: flex; gap: 2px; height: 14px; margin: 6px 0 7px; }
-  .cmp-bar .pc { display: flex; flex: 1 1 0; min-width: 4px; }
-  .cmp-bar i { display: block; flex: 1 1 0; min-width: 2px; }
-  .cmp-bar .dec { background: var(--bar-dec); }
-  .cmp-bar .ship { background: var(--bar-ship); }
-  .cmp-bar .pc:last-child i:last-child { border-radius: 0 4px 4px 0; }
-  .cmp-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; font-size: 14px; color: var(--muted); }
-  .cmp-side { display: inline-flex; align-items: center; gap: 12px; margin-left: auto; }
-  .cmp-diff { font-weight: 600; white-space: nowrap; }
-  .cmp-diff.less { color: var(--glass); }
-  .cmp-diff.more { color: var(--ink); }
-  .cmp .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--glass);
-    border: 1.5px solid var(--glass); border-radius: 4px; padding: 1px 5px 0; margin-left: 8px; vertical-align: 1px; }
-  .btn.small { padding: 4px 10px 3px; font-size: 14px; white-space: nowrap; }
-  .cmp-more { margin-top: 10px; }
-  @media (forced-colors: active) { .cmp-bar .ship { background: GrayText; } .cmp-bar .dec { background: CanvasText; } }
-
-  /* ---------- list pages ---------- */
-  .tool-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .tool-bar input { padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); min-width: 0; flex: 1 1 220px; max-width: 340px; }
-  .rows { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; }
-  .rows li { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr) auto; gap: 4px 16px; align-items: center;
-    padding: 12px 14px; border-top: 1px solid var(--line); }
-  .rows li:first-child { border-top: 0; }
-  @media (max-width: 640px) { .rows li { grid-template-columns: minmax(0, 1fr) auto; } }
-  .rows .name { font-weight: 600; }
-  .rows .sub { color: var(--muted); font-size: 14px; }
-
-  footer { border-top: 1.5px solid var(--line); padding: 18px 0 40px; color: var(--muted); font-size: 14px; }
-  footer p { margin: 0 0 8px; max-width: 75ch; }
-  footer details summary { cursor: pointer; color: var(--ink); }
-  footer table { border-collapse: collapse; margin-top: 8px; }
-  footer td, footer th { text-align: left; padding: 3px 14px 3px 0; font-weight: 400; }
-  footer th { color: var(--ink); font-weight: 600; }
-
-  .mbar:not([hidden]) { display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 30; max-width: 560px; margin: 0 auto;
-    align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 16px;
-    background: var(--card); border: 1.5px solid var(--ink); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
-  .mbar .total { font-size: 26px; }
-  .mbar .hint { font-size: 14px; }
-  .mbar .btn { white-space: nowrap; }
-  body.has-bar main { padding-bottom: 90px; }
-  @media (min-width: 861px) { .mbar:not(.always) { display: none !important; } }
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .notice { background: var(--amber-soft); border-bottom: 1px solid var(--amber-line); }
-  .notice .wrap { display: flex; gap: 10px; align-items: flex-start; padding-top: 10px; padding-bottom: 10px; }
-  .notice p { margin: 0; font-size: 14px; color: var(--amber-ink); }
-  .notice svg { flex: none; margin-top: 3px; }
-  .notice svg { color: var(--amber); }
-  .notice .short { display: none; }
-  @media (max-width: 640px) { .notice .long { display: none; } .notice .short { display: inline; } .notice p { font-size: 13px; } }
-  .review li.quiet { color: var(--muted); font-size: 14px; }
-  a.seller { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
-  a.seller:hover { text-decoration-color: currentColor; }
-  .ext { display: inline-block; width: .75em; height: .75em; margin-left: 3px; vertical-align: -1px; }
-  .modes { margin-bottom: 12px; }
-  textarea.paste { width: 100%; box-sizing: border-box; font: inherit; font-size: 15px; line-height: 1.6; padding: 12px 14px; border-radius: 10px;
-    border: 2px solid var(--line); background: var(--card); resize: vertical; min-height: 190px; }
-  textarea.paste:focus { border-color: var(--glass); outline: none; }
-  .paste-hint { display: block; color: var(--muted); font-size: 15px; margin-bottom: 8px; }
-  .review { margin-top: 14px; background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .link { background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+  .link:hover { text-decoration-color: currentColor; }
+  .link.good { color: var(--accent); font-weight: 600; text-decoration-color: currentColor; }
+  .empty { padding: 16px 0 4px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .empty .title { font-size: 17px; font-weight: 600; margin: 0; }
+  .empty p { margin: 0; color: var(--ink-2); max-width: 54ch; }
+  .list { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .list li { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line-2); }
+  .list .info { flex: 1 1 auto; min-width: 0; }
+  .list .name { font-weight: 600; }
+  .list .brand { color: var(--muted); }
+  .seller-name { font-weight: 600; }
+  .list .sub { font-size: 13.5px; color: var(--muted); }
+  .list .pin { font-size: 13.5px; color: var(--ink-2); }
+  .list .missing { font-size: 13.5px; color: var(--warn); }
+  .remove { width: 38px; height: 38px; display: grid; place-items: center; border: 0; background: none; color: var(--muted); border-radius: 6px; flex: none; }
+  .remove:hover { color: var(--ink); background: var(--bg); }
+  .remove svg { width: 16px; height: 16px; }
+  .list-foot { display: flex; justify-content: flex-end; margin-top: 8px; }
+  textarea.paste { width: 100%; font-size: 15px; line-height: 1.6; padding: 12px 14px; border-radius: 6px; border: 1px solid var(--line-strong);
+    background: var(--surface); resize: vertical; min-height: 180px; }
+  .paste-hint { display: block; color: var(--ink-2); font-size: 15px; margin-bottom: 8px; }
+  .review { margin-top: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
   .review-head { padding: 12px 14px; display: flex; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; align-items: baseline; }
   .review-head b { font-weight: 600; }
   .review ol { list-style: none; margin: 0; padding: 0; }
-  .review li { padding: 10px 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
-  .review li.attn { background: var(--check-bg); }
+  .review li { padding: 10px 14px; border-top: 1px solid var(--line-2); display: flex; flex-direction: column; gap: 6px; }
+  .review li.attn { background: var(--tint); }
+  .review li.quiet { color: var(--muted); font-size: 14px; }
   .review .wrote { font-size: 14px; color: var(--muted); }
-  .review .why { font-size: 14px; color: var(--amber-ink); font-weight: 600; }
+  .review .why { font-size: 14px; color: var(--warn); font-weight: 600; }
   .review .pick { display: flex; gap: 8px; flex-wrap: wrap; }
-  .review select { font: inherit; font-size: 15px; padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); max-width: 100%; min-height: 44px; }
+  .review select { font-size: 15px; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); max-width: 100%; min-height: 44px; }
   .review select.p-sel { flex: 1 1 220px; min-width: 0; }
-  .review-foot { padding: 12px 14px; border-top: 1px solid var(--line); display: flex; gap: 8px 14px; flex-wrap: wrap; align-items: center; }
-  .new-rows li { grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); align-items: start; }
-  @media (max-width: 640px) { .new-rows li { grid-template-columns: minmax(0, 1fr); } }
-  .size-line { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; border-top: 1px solid var(--line); font-size: 14px; }
-  .size-line:first-child { border-top: 0; }
-  .size-line .who { flex: 1; min-width: 0; color: var(--muted); }
-  .size-line .who b { color: var(--glass); font-weight: 600; }
-  .size-line .size { margin-left: 0; flex: none; }
-  .best-line { margin-bottom: 6px; }
-  /* browse */
-  .browse-bar { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; justify-content: space-between; margin: 12px 0 10px; }
-  .browse-tools { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 420px; justify-content: flex-end; }
-  .browse-tools input { flex: 1 1 200px; min-width: 0; max-width: 320px; padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); }
-  .browse-tools select { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); min-height: 42px; }
-  .legend { display: flex; gap: 6px 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); margin: 0 0 8px; }
-  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 6px; border: 1.5px solid; }
-  .legend .l-add { background: var(--glass); border-color: var(--glass); }
-  .legend .l-low { background: var(--amber-soft); border-color: var(--amber); }
-  .legend .l-plan { border-color: var(--glass); border-style: dashed; }
-  .browse-box { position: relative; overflow: auto; max-height: min(78vh, 920px); background: var(--card); border: 1.5px solid var(--line); border-radius: 10px;
-    width: min(1560px, calc(100vw - 32px)); margin-left: calc((100% - min(1560px, calc(100vw - 32px))) / 2); }
+  .review-foot { padding: 12px 14px; border-top: 1px solid var(--line-2); display: flex; gap: 8px 14px; flex-wrap: wrap; align-items: center; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* compare sellers */
+  .scroll-x { overflow-x: auto; }
+  .ctable { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .ctable th, .ctable td { padding: 10px 8px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: middle; }
+  .ctable thead th { font-size: 13px; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line-strong); padding-top: 6px; padding-bottom: 6px; }
+  .ctable tr > :first-child { padding-left: 0; }
+  .ctable tr > :last-child { padding-right: 0; text-align: right; }
+  .ctable tbody th { font-weight: 400; line-height: 1.4; }
+  .ctable .num { text-align: right; white-space: nowrap; }
+  .ctable .tot { font: 600 15px "IBM Plex Mono", monospace; display: block; }
+  .ctable .diff { display: block; font: 500 12.5px "IBM Plex Mono", monospace; color: var(--muted); }
+  .ctable .diff.less { color: var(--accent); }
+  .ctable .yours { font-size: 13px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .ctable .parcels-col { font-family: "IBM Plex Mono", monospace; font-size: 14px; }
+  @media (max-width: 640px) { .ctable { font-size: 14px; } .ctable .parcels-col { display: none; } }
+  .more-row { margin-top: 10px; }
+
+  /* plan */
+  .plan-empty { border: 1px dashed var(--line-strong); border-radius: 8px; padding: 26px 22px; color: var(--ink-2); }
+  .plan-empty h2 { color: var(--ink); margin-bottom: 6px; }
+  .plan-empty p { margin: 0; max-width: 46ch; }
+  .opt { font-size: 14px; color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
+  .total { font-size: 44px; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .plan-sub { color: var(--ink-2); margin-top: 2px; }
+  .plan-notes { margin: 10px 0 0; font-size: 14px; color: var(--muted); }
+  .plan-notes b { color: var(--accent); font-weight: 600; }
+  .send-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 10px; margin: 0 0 12px; }
+  .parcel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; margin-bottom: 14px; }
+  .parcel-top { padding: 16px 20px 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .parcel h3 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .parcel .meta { font-size: 14px; color: var(--muted); }
+  .parcel .sum { font: 600 17px "IBM Plex Mono", monospace; white-space: nowrap; }
+  .parcel ul { list-style: none; margin: 0; padding: 0 20px; }
+  .parcel li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--line-2); font-size: 15px; }
+  .parcel li .price { font-size: 14.5px; white-space: nowrap; }
+  .parcel .sz { color: var(--muted); }
+  .parcel .free { color: var(--accent); font-weight: 600; }
+  .parcel .nudge { margin: 0; padding: 4px 20px 0; font-size: 14px; color: var(--ink-2); }
+  .parcel .acts { padding: 14px 20px 6px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .parcel .pnote { margin: 0; padding: 0 20px 16px; font-size: 13.5px; color: var(--muted); }
+  @media (max-width: 640px) {
+    .parcel-top, .parcel ul, .parcel .nudge, .parcel .acts, .parcel .pnote { padding-left: 14px; padding-right: 14px; }
+    .parcel .acts .btn { flex: 1 1 140px; }
+    .total { font-size: 38px; }
+  }
+  .fineprint { font-size: 13.5px; color: var(--muted); margin: 2px 0 0; }
+
+  /* ---------- browse ---------- */
+  .browse-head { margin-bottom: 16px; }
+  .browse-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .browse-bar .field { flex: 1 1 200px; min-width: 0; width: auto; }
+  .pop-wrap { position: relative; }
+  .pop-btn svg { width: 12px; height: 12px; transition: transform .15s; }
+  .pop-btn[aria-expanded="true"] { border-color: var(--ink); }
+  .pop-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .popover { position: absolute; left: 0; top: calc(100% + 8px); z-index: 40; width: 320px; max-width: calc(100vw - 32px);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; box-shadow: var(--shadow); }
+  .pop-head { padding: 12px 14px 8px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .pop-head b { font-weight: 700; }
+  .pop-head .acts { display: flex; gap: 14px; font-size: 14px; }
+  .pop-search { padding: 0 14px 8px; }
+  .pop-search .field { padding: 7px 10px; font-size: 14.5px; }
+  .pop-list { list-style: none; margin: 0; padding: 4px 6px; max-height: 320px; overflow-y: auto; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
+  .pop-list label { display: flex; align-items: center; gap: 10px; padding: 7px 8px; font-size: 15px; border-radius: 4px; cursor: pointer; }
+  .pop-list label:hover { background: var(--bg); }
+  .pop-list input { width: 17px; height: 17px; accent-color: var(--btn); flex: none; }
+  .pop-list .n { margin-left: auto; font: 500 12.5px "IBM Plex Mono", monospace; color: var(--muted); }
+  .pop-foot { padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--ink-2); }
+  .seller-banner:not([hidden]) { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 12px 16px; margin: 0 0 12px; }
+  .seller-banner p { margin: 0; }
+  .seller-banner .hint { margin-top: 2px; }
+  .seller-banner .nudge { color: var(--ink); font-weight: 600; }
+  .seller-banner .free { color: var(--accent); font-weight: 600; }
+  .banner-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .browse-box { position: relative; overflow: auto; max-height: min(80vh, 980px); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  .browse-box.as-cards { overflow: visible; max-height: none; background: none; border: 0; border-radius: 0; }
+  .browse-empty { padding: 18px; color: var(--muted); margin: 0; }
   table.browse { border-collapse: separate; border-spacing: 0; font-size: 14px; min-width: 100%; }
-  table.browse thead th { position: sticky; top: 0; z-index: 2; background: var(--card); border-bottom: 1.5px solid var(--line);
-    padding: 10px 6px 8px; font-weight: 600; font-size: 13px; line-height: 1.2; min-width: 86px; max-width: 110px; vertical-align: bottom; text-align: center; }
-  table.browse .pcol { position: sticky; left: 0; z-index: 1; background: var(--card); text-align: left; min-width: 210px; max-width: 250px;
-    border-right: 1.5px solid var(--line); padding: 8px 12px; vertical-align: middle; }
-  table.browse thead .pcol { z-index: 3; font-size: 14px; }
-  table.browse tbody th, table.browse tbody td { border-top: 1px solid var(--line); }
-  table.browse tbody tr:first-child th, table.browse tbody tr:first-child td { border-top: 0; }
+  table.browse thead th { position: sticky; top: 0; z-index: 2; background: var(--surface); border-bottom: 1px solid var(--line-strong);
+    padding: 10px 6px 8px; font-weight: 600; font-size: 13px; line-height: 1.25; min-width: 86px; max-width: 120px; vertical-align: bottom; text-align: center; }
+  table.browse .pcol { position: sticky; left: 0; z-index: 1; background: var(--surface); text-align: left; min-width: 220px; max-width: 260px;
+    border-right: 1px solid var(--line); padding: 8px 10px 6px 14px; vertical-align: middle; }
+  table.browse thead .pcol { z-index: 3; font-weight: 500; color: var(--muted); }
+  table.browse tbody th, table.browse tbody td { border-top: 1px solid var(--line-2); }
+  table.browse tbody tr:first-child > * { border-top: 0; }
   table.browse tbody th { font-weight: 400; line-height: 1.3; }
   table.browse .pcol .name { font-weight: 600; }
-  table.browse .pcol .sub { color: var(--muted); }
+  table.browse .pcol .brand { color: var(--muted); }
   table.browse .insp { display: block; font-size: 13px; color: var(--muted); }
   table.browse td { padding: 4px; text-align: center; }
-  table.browse td.na { color: var(--muted); opacity: .55; }
-  .cell { width: 100%; min-width: 76px; min-height: 44px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px;
-    padding: 4px 6px 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
-  .cell .amt { font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 16px; display: inline-flex; align-items: center; gap: 3px; }
-  .cell small { font-size: 11px; color: var(--muted); font-weight: 500; }
-  .cell:hover { border-color: var(--glass); background: var(--glass-soft); }
-  .cell.low { border-color: var(--amber); background: var(--amber-soft); color: var(--amber-ink); }
-  .cell.inplan { border-color: var(--glass); border-style: dashed; }
-  .cell.added { background: var(--glass); border-color: var(--glass); color: var(--card); }
-  .cell.added small { color: inherit; opacity: .85; }
-  .cell.added:hover { filter: brightness(1.08); }
-  .cell svg { width: 13px; height: 13px; }
+  table.browse th.mine, table.browse td.mine { background: var(--tint); }
+  table.browse th.cmp-h { min-width: 130px; max-width: 160px; text-align: left; font-weight: 500; color: var(--muted); }
+  table.browse td.cmp { text-align: left; font-size: 13px; line-height: 1.3; color: var(--muted); padding: 4px 10px; min-width: 130px; max-width: 170px; border-right: 1px solid var(--line); }
+  table.browse td.cmp.good { color: var(--accent); font-weight: 600; }
+  .na { color: var(--line-strong); }
+  .row-tools { display: flex; align-items: center; gap: 4px; margin-top: 1px; }
+  .open-btn { background: none; border: 0; padding: 3px 0; font-size: 13.5px; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; gap: 4px;
+    text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+  .open-btn svg { width: 12px; height: 12px; transition: transform .15s; }
+  .open-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .flag-btn { margin-left: auto; width: 32px; height: 32px; display: grid; place-items: center; border: 0; background: none; color: var(--muted); border-radius: 6px; flex: none; }
+  .flag-btn:hover { color: var(--ink); background: var(--bg); }
+  .flag-btn svg { width: 15px; height: 15px; }
+  .cell { width: 100%; min-width: 74px; min-height: 40px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px;
+    padding: 5px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2;
+    font: 600 14.5px "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .cell .amt { display: inline-flex; align-items: center; gap: 3px; }
+  .cell small { font: 500 11px "IBM Plex Mono", monospace; color: var(--muted); }
+  .cell:hover { border-color: var(--ink); }
+  .cell.low { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-ink); }
+  .cell.low small { color: var(--accent-ink); }
+  .cell.inplan { border-style: dashed; border-color: var(--ink-2); }
+  .cell.added { background: var(--btn); border-color: var(--btn); color: var(--btn-ink); }
+  .cell.added small { color: inherit; opacity: .8; }
+  .cell svg { width: 12px; height: 12px; }
+  tr.sizes-row > td { padding: 0 !important; background: var(--surface-2); border-bottom: 1px solid var(--line-strong); text-align: left !important; }
+  .sizes-inner { position: sticky; left: 0; max-width: calc(100vw - 72px); padding: 4px 16px 18px; }
+  @media (min-width: 1250px) { .sizes-inner { max-width: 1150px; } }
+  .sizes-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 20px; padding: 12px 0 10px; }
+  .sizes-head h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  .matrix-box { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table.matrix { border-collapse: collapse; width: 100%; }
+  table.matrix th, table.matrix td { padding: 4px 3px; border-bottom: 1px solid var(--line-2); text-align: center; }
+  table.matrix thead th { font: 600 13px "IBM Plex Mono", monospace; padding: 8px 6px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+  table.matrix thead th:first-child { font: 500 13px "Schibsted Grotesk", sans-serif; color: var(--muted); text-align: left; padding-left: 12px; }
+  table.matrix tbody th { text-align: left; padding: 6px 12px; font-weight: 400; white-space: nowrap; font-size: 14.5px; }
+  table.matrix tr.pickrow { background: var(--tint); }
+  table.matrix .cell { min-width: 70px; }
+  .sizes-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 20px; padding-top: 10px; font-size: 14px; color: var(--ink-2); }
+  .sizes-foot strong { color: var(--accent); font-weight: 600; }
+  .sizes-foot .acts { display: flex; gap: 16px; flex-wrap: wrap; }
+  .cards { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px 10px; }
+  .card.open { border-color: var(--line-strong); }
+  .card-head { display: flex; gap: 6px; align-items: flex-start; margin-bottom: 4px; }
+  .card-head .grow { flex: 1 1 auto; min-width: 0; }
+  .card h3 { margin: 0; font-size: 16.5px; font-weight: 700; line-height: 1.3; }
+  .card h3 .brand { font-weight: 400; color: var(--muted); font-size: 15px; }
+  .card .sub { font-size: 13px; color: var(--muted); }
+  .card h4 { margin: 10px 0 6px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
+  .offer-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line-2); }
+  .offer-row .who { flex: 1 1 auto; min-width: 0; font-size: 14.5px; }
+  .offer-row .who .ml { display: block; font: 500 12.5px "IBM Plex Mono", monospace; color: var(--ink-2); }
+  .offer-row .cell { width: auto; min-width: 82px; flex: none; }
+  .offer-row.mine { background: var(--tint); margin: 0 -8px; padding: 6px 8px; border-radius: 4px; }
+  .tag-low { font-size: 12px; font-weight: 600; color: var(--accent); margin-left: 4px; }
+  .tag-mine { font-size: 12px; color: var(--ink-2); margin-left: 4px; }
+  .own-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .own-grid .cell { min-width: 0; padding: 5px 2px 4px; }
+  .own-grid .cell .z { font: 500 11.5px "IBM Plex Mono", monospace; color: var(--muted); }
+  .own-grid .cell.added .z { color: inherit; opacity: .8; }
+  .cmp-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 12px 0 6px; flex-wrap: wrap; }
+  .cmp-head h4 { margin: 0; }
+  .seg.small button { font: 500 12.5px "IBM Plex Mono", monospace; padding: 5px 7px; min-height: 34px; }
+  .card-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 8px; margin-top: 4px; border-top: 1px solid var(--line-2); font-size: 14px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13.5px; color: var(--ink-2); margin: 10px 0 0; }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1px solid; }
+  .legend .l-low { background: var(--accent-soft); border-color: var(--accent-line); }
+  .legend .l-add { background: var(--btn); border-color: var(--btn); }
+  .legend .l-plan { border-style: dashed; border-color: var(--ink-2); }
   .browse-foot { display: flex; justify-content: center; margin-top: 12px; }
-  .seller-banner:not([hidden]) { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between;
-    background: var(--card); border: 2px solid var(--glass); border-radius: 10px; padding: 12px 16px; margin: 0 0 12px; }
-  .seller-banner p { margin: 0; }
-  .seller-banner .nudge { color: var(--amber-ink); font-weight: 600; }
-  .seller-banner .free { color: var(--glass); font-weight: 600; }
-  .banner-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .banner-actions .btn { text-decoration: none; color: var(--ink); display: inline-flex; align-items: center; }
-  .banner-actions .btn.primary { color: var(--card); }
-  table.browse th.mine, table.browse td.mine { background: var(--glass-soft); }
-  table.browse th.mine { color: var(--ink); }
-  table.browse th.cmp-h { min-width: 120px; max-width: 150px; text-align: left; }
-  table.browse td.cmp { text-align: left; font-size: 13px; line-height: 1.3; color: var(--muted); padding: 4px 10px; min-width: 120px; max-width: 160px; border-right: 1.5px solid var(--line); }
-  table.browse td.cmp.good { color: var(--glass); font-weight: 600; }
-  .seller-btn { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer;
-    text-decoration: underline; text-decoration-color: var(--glass); text-decoration-thickness: 2px; text-underline-offset: 4px; }
-  .seller-btn:hover { color: var(--glass); }
-  .ext-link { color: var(--muted); display: inline-flex; padding: 4px; vertical-align: middle; }
-  .ext-link .ext { width: 15px; height: 15px; margin: 0; }
-  .more-from { display: inline-block; margin-top: 6px; font-size: 15px; }
   @media (max-width: 640px) {
-    .browse-tools { justify-content: stretch; }
-    .browse-tools input { flex: 1 1 100%; max-width: none; }
-    .browse-tools select { flex: 1 1 140px; min-width: 0; }
-    table.browse .pcol { min-width: 132px; max-width: 150px; padding: 8px 8px; }
-    table.browse thead th { min-width: 74px; }
-    .cell { min-width: 66px; }
+    .browse-bar .field { flex: 1 1 100%; }
+    .browse-bar .seg { overflow-x: auto; }
+    .browse-bar .seg button { padding: 7px 9px; font-size: 14px; }
+    .browse-bar .sel { flex: 1 1 auto; }
   }
+
+  /* ---------- new this week ---------- */
+  .tool-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 14px 0 12px; }
+  .tool-bar .field { max-width: 360px; }
+  .rows { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  .rows li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 4px 20px; align-items: start; padding: 14px 16px; border-top: 1px solid var(--line-2); }
+  .rows li:first-child { border-top: 0; }
+  @media (max-width: 640px) { .rows li { grid-template-columns: minmax(0, 1fr); } }
+  .rows .name { font-weight: 600; }
+  .rows .sub { color: var(--muted); font-size: 14px; }
+  .size-line { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; border-top: 1px solid var(--line-2); font-size: 14px; }
+  .size-line:first-child { border-top: 0; }
+  .size-line .z { font: 600 13.5px "IBM Plex Mono", monospace; flex: none; min-width: 48px; }
+  .size-line .who { flex: 1; min-width: 0; color: var(--ink-2); }
+  .size-line .who b { color: var(--accent); font-weight: 600; }
+  .best-line { margin-bottom: 6px; font-size: 14.5px; }
+  .best-line .price { font-weight: 600; }
+
+  /* ---------- footer ---------- */
+  .site-foot { border-top: 1px solid var(--line); padding-top: 20px; padding-bottom: 40px; color: var(--muted); font-size: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .site-foot p { margin: 0; max-width: 90ch; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+  .foot-links a, .foot-links button { color: var(--ink-2); font-size: 14px; }
+  .site-foot details summary { cursor: pointer; color: var(--ink-2); }
+  .site-foot table { border-collapse: collapse; margin-top: 8px; }
+  .site-foot td, .site-foot th { text-align: left; padding: 4px 16px 4px 0; font-weight: 400; border-bottom: 1px solid var(--line-2); }
+  .site-foot th { color: var(--ink); font-weight: 600; }
+
+  /* ---------- dialogs ---------- */
+  dialog { border: 0; padding: 0; border-radius: 12px; background: var(--surface); color: var(--ink); width: min(540px, calc(100vw - 24px));
+    max-height: calc(100vh - 32px); box-shadow: 0 20px 60px rgba(0, 0, 0, .3); }
+  dialog::backdrop { background: rgba(22, 22, 22, .5); }
+  .dlg { padding: 22px 22px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .dlg-head { display: flex; align-items: center; gap: 8px; }
+  .dlg-head svg.mark { width: 24px; height: 24px; flex: none; }
+  .dlg h2 { font-size: 23px; letter-spacing: -.02em; flex: 1 1 auto; }
+  .points { list-style: none; margin: 0; padding: 0; font-size: 15px; }
+  .points li { display: flex; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); }
+  .points li:last-child { border-bottom: 1px solid var(--line); }
+  .points .k { font: 500 13px "IBM Plex Mono", monospace; color: var(--muted); padding-top: 2px; }
+  .points strong { font-weight: 600; }
+  .ctx { background: var(--bg); border-radius: 8px; padding: 10px 12px; font-size: 15px; }
+  .ctx .name { font-weight: 600; }
+  .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .form-row label { flex: 1 1 160px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; font-weight: 600; }
+  .form-row .sel { width: 100%; font-weight: 400; }
+  fieldset.reasons { border: 0; margin: 0; padding: 0; }
+  fieldset.reasons legend { font-weight: 600; font-size: 15px; padding: 0 0 4px; }
+  .radio { display: flex; align-items: center; gap: 10px; min-height: 38px; font-size: 15px; cursor: pointer; }
+  .radio input { width: 18px; height: 18px; accent-color: var(--btn); flex: none; }
+  .label-col { display: flex; flex-direction: column; gap: 4px; font-size: 15px; font-weight: 600; }
+  .label-col .hint { font-weight: 400; }
+  textarea.field { resize: vertical; min-height: 64px; font-weight: 400; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  @media (max-width: 640px) {
+    dialog { width: 100vw; max-width: 100vw; margin: auto 0 0; border-radius: 14px 14px 0 0; max-height: 92vh; }
+    .dlg { padding: 20px 18px 18px; }
+  }
+
+  .mbar:not([hidden]) { display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 30; max-width: 560px; margin: 0 auto;
+    align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 16px;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 10px; box-shadow: var(--shadow); }
+  .mbar .t { font-size: 24px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .mbar .hint { font-size: 13.5px; }
+  body.has-bar main { padding-bottom: 96px; }
+  @media (min-width: 901px) { .mbar:not(.always) { display: none !important; } }
+  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--btn); color: var(--btn-ink);
+    padding: 9px 16px; border-radius: 8px; font-weight: 500; z-index: 60; max-width: calc(100vw - 32px); }
   body.has-bar .toast { bottom: 96px; }
-  .browse-empty { padding: 18px; color: var(--muted); margin: 0; }
-  .status { padding: 40px 0; color: var(--muted); }
-  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--card);
-    padding: 9px 16px; border-radius: 8px; font-weight: 500; z-index: 50; }
   @media (prefers-reduced-motion: no-preference) {
     .toast { animation: rise .18s ease-out; }
     @keyframes rise { from { opacity: 0; transform: translate(-50%, 8px); } }
+    .bump { animation: bump .5s ease-out; }
+    @keyframes bump { 35% { transform: scale(1.35); } }
   }
+  @media (forced-colors: active) { .cell.added, .cell.low, .step.now .num { forced-color-adjust: none; } }
 </style>
 </head>
 <body>
-<div class="notice" role="note"><div class="wrap"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg><p><strong>Not affiliated with any seller.</strong> <span class="long">Prices are copied once a day from sellers' public sheets and websites. These are trusted community sellers, but you buy at your own risk, so confirm price and stock with the seller before you pay.</span><span class="short">Prices come from sellers' public sheets and websites. Trusted community sellers, but you buy at your own risk.</span></p></div></div>
-<div class="wrap">
-  <header class="top">
-    <div class="masthead"><h1><span class="vial" aria-hidden="true"></span>Decant Finder</h1><button class="theme-btn" id="theme" type="button"></button></div>
-    <p class="lede" id="lede">Add the decants you want. It works out which sellers to buy from so the total, shipping included, is as low as possible.</p>
-    <nav class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tab-order" aria-selected="true" aria-controls="panel-order">Build an order<span class="count" id="list-count"></span></button>
-      <button class="tab" role="tab" id="tab-browse" aria-selected="false" aria-controls="panel-browse">Browse</button>
-      <button class="tab" role="tab" id="tab-new" aria-selected="false" aria-controls="panel-new">New<span class="count" id="new-count"></span></button>
+<header class="site">
+  <div class="wrap bar">
+    <a class="logo" href="./">
+      <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c-5 6.5-9 11.5-9 16.5a9 9 0 0 0 18 0C25 14.5 21 9.5 16 3z" stroke="currentColor"></path><path d="M16 13v9M12.5 18.5L16 22l3.5-3.5" stroke="var(--accent)"></path></svg>
+      <span class="wordmark" id="wordmark"><b>Decant</b> Saver</span>
+    </a>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="tab-order" aria-selected="true" aria-controls="panel-order">Plan an order<span class="count" id="list-count"></span></button>
+      <button class="tab" role="tab" id="tab-browse" aria-selected="false" aria-controls="panel-browse">Browse prices</button>
+      <button class="tab" role="tab" id="tab-new" aria-selected="false" aria-controls="panel-new">New<span class="wide"> this week</span><span class="count" id="new-count"></span></button>
     </nav>
-  </header>
+    <div class="tools">
+      <button class="textlink" id="report-open" type="button" aria-label="Report a problem"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4h12l-2 4 2 4H5"></path></svg><span class="label">Report a problem</span></button>
+      <button class="icon-btn" id="theme" type="button"></button>
+    </div>
+  </div>
+</header>
 
-  <main>
-    <div class="status" id="status">Loading today's prices…</div>
+<div class="disclaimer" role="note" aria-label="Disclaimer">
+  <div class="wrap d-row">
+    <span class="d-item"><svg class="warn" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9.5 17h-19z"></path><path d="M12 10v4M12 17h.01"></path></svg>Collected by AI. May be wrong. Check with the seller.</span>
+    <span class="d-item"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>Not a shop. You buy at your own risk.</span>
+    <button class="textlink" id="disc-toggle" type="button" aria-expanded="false" aria-controls="disc-full">Full disclaimer<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+  </div>
+  <div class="wrap disc-full" id="disc-full" hidden>
+    <p><strong>A listing, not a shop.</strong> <span data-name>Decant Saver</span> doesn't sell anything, take payments or handle orders, and isn't affiliated with any seller.</p>
+    <p><strong>The data can be wrong.</strong> Prices, sizes, stock and "inspired by" notes are copied from sellers' public sheets and websites once a day and organised with AI. Sheets vary in format, so mistakes slip through.</p>
+    <p><strong>Do your own checks.</strong> Open the seller's own sheet and confirm price and stock with them before you pay. You buy directly from the seller, at your own risk.</p>
+    <p><strong>Order problems are between you and the seller.</strong> We can't help with payments, delivery or refunds. Spot a wrong price? Use Report a problem.</p>
+  </div>
+</div>
 
-    <section id="panel-order" role="tabpanel" aria-labelledby="tab-order" hidden>
-      <div class="order">
-        <div>
-          <h2>Your list</h2>
-          <div class="switch modes" role="group" aria-label="How to add decants">
-            <button data-add-mode="search" aria-pressed="true">Search</button>
-            <button data-add-mode="paste" aria-pressed="false">Paste a list</button>
+<main class="wrap">
+  <div class="status" id="status">Loading today's prices…</div>
+
+  <section id="panel-order" role="tabpanel" aria-labelledby="tab-order" hidden>
+    <h1 class="sr">Plan an order</h1>
+    <section class="guide" aria-label="How it works">
+      <ol class="steps" id="steps"></ol>
+      <p class="step-note" id="step-note"></p>
+    </section>
+    <div class="order">
+      <div class="col">
+        <section class="panel" aria-labelledby="list-h">
+          <div class="panel-head">
+            <h2 id="list-h">Your list<span class="count-mono" id="list-n"></span></h2>
+            <div class="seg modes" role="group" aria-label="How to add decants">
+              <button type="button" data-add-mode="search" aria-pressed="true">Search</button>
+              <button type="button" data-add-mode="paste" aria-pressed="false">Paste a list</button>
+            </div>
           </div>
           <div id="search-mode">
             <div class="search">
-              <input id="q" type="search" autocomplete="off" spellcheck="false"
-                placeholder="Search, e.g. zenith santal 5ml"
+              <svg class="lens" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+              <input id="q" class="field" type="search" autocomplete="off" spellcheck="false"
+                placeholder="Add a perfume: name, brand or inspiration"
                 role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list" aria-label="Search perfumes">
               <ul class="results" id="results" role="listbox" hidden></ul>
             </div>
@@ -416,81 +563,138 @@
           <div id="paste-mode" hidden>
             <label for="paste" class="paste-hint">Paste straight from WhatsApp or Reddit. One decant per line, with the size.</label>
             <textarea id="paste" class="paste" spellcheck="false" placeholder="Zenith Santal 5ml&#10;9pm nightout 10 ml&#10;Khamrah Qahwa 20ml"></textarea>
-            <div class="actions" style="margin-top:10px"><button class="btn primary" id="paste-go">Check my list</button></div>
+            <div class="actions" style="margin-top:10px"><button class="btn primary" id="paste-go" type="button">Check my list</button></div>
             <div class="review" id="review" hidden></div>
           </div>
+          <div class="empty" id="empty">
+            <p class="title">Nothing on your list yet</p>
+            <p id="empty-text">Add the decants you want, one at a time or as a pasted list. We compare every seller and work out the cheapest way to buy them, shipping included.</p>
+            <button class="btn primary" id="sample" type="button">Try a sample list</button>
+          </div>
           <ul class="list" id="list" hidden></ul>
-          <div class="list-foot" id="list-foot" hidden>
-            <span id="list-summary"></span>
-            <button class="link" id="clear">Clear list</button>
-          </div>
-          <div class="empty-state" id="empty">
-            <p>Search for a perfume and pick a size, or paste your whole list. Add everything you're planning to buy, even 20 or 30 decants.</p>
-            <button class="btn" id="sample">Try a sample list</button>
-          </div>
-          <section class="cmp" id="compare" aria-labelledby="compare-h" hidden>
+          <div class="list-foot" id="list-foot" hidden><button class="link" id="clear" type="button">Clear list</button></div>
+        </section>
+
+        <section class="panel" id="compare" aria-labelledby="compare-h" hidden>
+          <div class="panel-head" style="margin-bottom:6px">
             <h2 id="compare-h">Compare sellers</h2>
-            <p class="hint" id="compare-hint"></p>
-            <p class="cmp-legend" aria-hidden="true"><span><i class="k-dec"></i>Decants</span><span><i class="k-ship"></i>Shipping</span><span><i class="k-gap"></i>A gap starts another parcel</span></p>
-            <ol class="cmp-rows" id="compare-rows"></ol>
-            <button class="link cmp-more" id="compare-more" hidden></button>
-          </section>
-        </div>
-        <div class="plan" id="plan" aria-live="polite"></div>
+          </div>
+          <p class="hint" id="compare-hint" style="margin-bottom:8px"></p>
+          <div class="scroll-x">
+            <table class="ctable">
+              <thead><tr><th scope="col">Option</th><th scope="col" class="parcels-col">Parcels</th><th scope="col" class="num">Total</th><th scope="col"><span class="sr">Action</span></th></tr></thead>
+              <tbody id="compare-rows"></tbody>
+            </table>
+          </div>
+          <button class="link more-row" id="compare-more" type="button" hidden></button>
+        </section>
       </div>
-    </section>
+      <div class="col" id="plan" aria-live="polite"></div>
+    </div>
+  </section>
 
-    <section id="panel-browse" role="tabpanel" aria-labelledby="tab-browse" hidden>
-      <h2>Browse every perfume</h2>
-      <p class="hint" id="browse-hint"></p>
-      <div class="browse-bar">
-        <div class="chips" id="browse-sizes" style="margin-top:0"></div>
-        <div class="browse-tools">
-          <input id="browse-filter" type="search" placeholder="Search brand, name or inspired by" aria-label="Search perfumes">
-          <select id="browse-seller" aria-label="Seller"><option value="-1">All sellers</option></select>
-          <select id="browse-field" aria-label="Search in">
-            <option value="all">In all fields</option>
-            <option value="brand">In brand</option>
-            <option value="name">In name</option>
-            <option value="insp">In inspired by</option>
-          </select>
-          <select id="browse-sort" aria-label="Sort by">
-            <option value="sellers">Most sellers first</option>
-            <option value="name">Name A–Z</option>
-            <option value="brand">Brand A–Z</option>
-            <option value="low">Cheapest per ml</option>
-            <option value="saving">Biggest saving at this seller</option>
-          </select>
+  <section id="panel-browse" role="tabpanel" aria-labelledby="tab-browse" hidden>
+    <div class="browse-head">
+      <h1 class="page-title">Browse prices</h1>
+      <p class="lead">Choose the sellers you want to compare. Tap any price to add it to your order and see every size of that perfume.</p>
+    </div>
+    <div class="browse-bar">
+      <div class="pop-wrap">
+        <button class="btn pop-btn" id="sellers-btn" type="button" aria-expanded="false" aria-haspopup="dialog" aria-controls="sellers-pop"></button>
+        <div class="popover" id="sellers-pop" role="dialog" aria-label="Choose sellers" hidden>
+          <div class="pop-head"><b>Show prices from</b><span class="acts"><button class="link" type="button" data-sel-all>All</button><button class="link" type="button" data-sel-none>None</button></span></div>
+          <div class="pop-search"><input class="field" id="sellers-q" type="search" placeholder="Find a seller" aria-label="Find a seller"></div>
+          <ul class="pop-list" id="sellers-list"></ul>
+          <div class="pop-foot"><span id="sellers-count"></span><button class="btn primary small" type="button" id="sellers-done">Done</button></div>
         </div>
       </div>
-      <div class="seller-banner" id="seller-banner" role="status" hidden></div>
-      <p class="legend"><span><i class="l-add"></i>In your order (tap again to remove)</span><span><i class="l-low"></i>Lowest price per ml</span><span><i class="l-plan"></i>Where the plan buys it</span></p>
-      <div class="browse-box" id="browse-box"></div>
-      <div class="browse-foot"><button class="btn" id="browse-more" hidden></button></div>
-    </section>
-
-    <section id="panel-new" role="tabpanel" aria-labelledby="tab-new" hidden>
-      <h2>New this week</h2>
-      <p class="hint" id="new-hint"></p>
-      <div class="tool-bar" style="margin-top:12px">
-        <input id="new-filter" type="search" placeholder="Filter by name, brand or seller" aria-label="Filter new perfumes">
+      <div class="seg" id="browse-sizes" role="group" aria-label="Size"></div>
+      <div class="seg" id="browse-unit" role="group" aria-label="Show">
+        <button type="button" data-unit="price" aria-pressed="true">Price</button>
+        <button type="button" data-unit="ml" aria-pressed="false">₹ per ml</button>
       </div>
-      <ul class="rows new-rows" id="new-list"></ul>
-    </section>
-  </main>
+      <input class="field" id="browse-filter" type="search" placeholder="Search name, brand or inspiration" aria-label="Search perfumes">
+      <select class="sel" id="browse-sort" aria-label="Sort by">
+        <option value="sellers">Most sellers first</option>
+        <option value="name">Name A–Z</option>
+        <option value="brand">Brand A–Z</option>
+        <option value="low">Cheapest per ml</option>
+        <option value="saving">Biggest saving at this seller</option>
+      </select>
+    </div>
+    <p class="hint" id="browse-hint" style="margin-bottom:10px"></p>
+    <div class="seller-banner" id="seller-banner" role="status" hidden></div>
+    <div class="browse-box" id="browse-box"></div>
+    <p class="legend" aria-hidden="true"><span><i class="l-low"></i>Cheapest per ml</span><span><i class="l-add"></i>In your order (tap again to remove)</span><span><i class="l-plan"></i>Where your plan buys it</span><span>Seller names open their own price sheet</span></p>
+    <div class="browse-foot"><button class="btn" id="browse-more" type="button" hidden></button></div>
+  </section>
 
-  <footer>
-    <p>Prices are copied once a day from sellers' public price lists, so a decant may have sold out or changed price since. Seller names link to their own price list, so you can check before you pay. Shipping marked "estimate" is a guess of ₹<span id="fee-default">100</span> where the seller's rules aren't known yet.</p>
-    <details id="seller-info"><summary>Sellers and shipping rules</summary><div id="seller-table"></div></details>
-  </footer>
-</div>
-<div class="mbar" id="mbar" hidden><div><div class="total" id="mbar-total"></div><div class="hint" id="mbar-sub"></div></div><button class="btn primary" id="mbar-go">See the plan</button></div>
+  <section id="panel-new" role="tabpanel" aria-labelledby="tab-new" hidden>
+    <h1 class="page-title">New this week</h1>
+    <p class="lead" id="new-hint"></p>
+    <div class="tool-bar"><input class="field" id="new-filter" type="search" placeholder="Filter by name, brand or seller" aria-label="Filter new perfumes"></div>
+    <ul class="rows" id="new-list"></ul>
+  </section>
+</main>
+
+<footer class="wrap site-foot">
+  <p><span data-name>Decant Saver</span> is an independent listing. It isn't a shop and isn't affiliated with any seller. Every seller name links to their own public sheet or website. <span id="foot-stats"></span></p>
+  <div class="foot-links">
+    <button class="link" type="button" id="foot-disc">Full disclaimer</button>
+    <button class="link" type="button" id="foot-report">Report a problem</button>
+    <button class="link" type="button" id="foot-suggest">Suggest a seller</button>
+  </div>
+  <details id="seller-info"><summary>Sellers, sheets and shipping rules</summary><div id="seller-table"></div><p style="margin-top:8px">Shipping marked "estimate" is a guess of ₹<span id="fee-default">100</span> where the seller's rules aren't known yet.</p></details>
+</footer>
+
+<div class="mbar" id="mbar" hidden><div><div class="t" id="mbar-total"></div><div class="hint" id="mbar-sub"></div></div><button class="btn primary" id="mbar-go" type="button">See the plan</button></div>
 <div class="toast" id="toast" role="status" hidden></div>
 
+<dialog id="welcome" aria-labelledby="welcome-h">
+  <div class="dlg">
+    <div class="dlg-head">
+      <svg class="mark" aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c-5 6.5-9 11.5-9 16.5a9 9 0 0 0 18 0C25 14.5 21 9.5 16 3z" stroke="currentColor"></path><path d="M16 13v9M12.5 18.5L16 22l3.5-3.5" stroke="var(--accent)"></path></svg>
+      <h2 id="welcome-h">Before you use <span data-name>Decant Saver</span></h2>
+    </div>
+    <ol class="points">
+      <li><span class="k" aria-hidden="true">01</span><span><strong>It's a listing, not a shop.</strong> We don't sell anything, take payments or handle orders, and aren't affiliated with any seller.</span></li>
+      <li><span class="k" aria-hidden="true">02</span><span><strong>The data can be wrong.</strong> Prices, sizes, stock and "inspired by" notes are pulled from sellers' sheets and organised with AI. Sheets vary, so mistakes slip through.</span></li>
+      <li><span class="k" aria-hidden="true">03</span><span><strong>Do your own checks.</strong> Open the seller's sheet and confirm price and stock with them before you pay. You buy at your own risk.</span></li>
+      <li><span class="k" aria-hidden="true">04</span><span><strong>Order problems are between you and the seller.</strong> We can't help with payments, delivery or refunds. Spot a wrong price? Use Report a problem.</span></li>
+    </ol>
+    <button class="btn primary" id="welcome-ok" type="button" style="min-height:48px;font-size:16px">I understand</button>
+  </div>
+</dialog>
+
+<dialog id="report" aria-labelledby="report-h">
+  <form class="dlg" id="report-form">
+    <div class="dlg-head">
+      <h2 id="report-h">Report a problem</h2>
+      <button class="icon-btn" type="button" data-close-dialog aria-label="Close"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    </div>
+    <div class="ctx" id="report-ctx" hidden></div>
+    <div class="form-row" id="report-pick" hidden>
+      <label>Seller <span class="hint">(optional)</span><select class="sel" id="report-seller"></select></label>
+      <label>Size <span class="hint">(optional)</span><select class="sel" id="report-size"></select></label>
+    </div>
+    <label class="label-col" id="report-what-wrap" hidden>Which perfume or seller? <span class="hint">(optional)</span><input class="field" id="report-what" maxlength="120" autocomplete="off"></label>
+    <fieldset class="reasons" id="report-reasons"><legend>What's wrong?</legend></fieldset>
+    <label class="label-col">Details <span class="hint">(optional)</span><textarea class="field" id="report-details" maxlength="500" rows="3" placeholder="e.g. Their sheet says ₹199 for 5 ml"></textarea></label>
+    <input class="hp" id="report-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button class="btn primary" id="report-send" type="submit" style="min-height:48px;font-size:16px">Send report</button>
+    <p class="hint">Reports go to a review list, not to anyone's phone, and are checked before the next daily update. For problems with an order, contact the seller directly: we can't help with orders.</p>
+  </form>
+  <div class="dlg" id="report-done" hidden>
+    <div class="dlg-head"><h2>Thanks, that's sent</h2></div>
+    <p style="margin:0">It'll be checked before the next daily update. If a price was wrong, it'll be fixed for everyone.</p>
+    <button class="btn primary" type="button" data-close-dialog>Close</button>
+  </div>
+</dialog>
 <script>
 /* ======================= SETTINGS ======================= */
 const CONFIG = {
-  // Paste the Web app URL from Apps Script (Deploy → Manage deployments) between the quotes.
+  name: 'Decant Saver',   // the site's name: the first word shows in bold
+  // The Web app URL from Apps Script (Deploy → Manage deployments). Prices come from it and reports go to it.
   feedUrl: 'https://script.google.com/macros/s/AKfycbzq3mw_hSAaD11Y8K4MnAhAmsix9dlszTqZQpgNh1RqYWyCx-IEF-AD-gMNlQdGQJj9/exec',
   maxSearchSteps: 300000, // safety limits for the cheapest-plan search (it normally needs far less)
   maxSearchMs: 1500,
@@ -501,38 +705,63 @@ const CONFIG = {
   browsePage: 60,         // rows shown at a time on the Browse tab
   compareMs: 120,         // time limit per seller for the "Compare sellers" rows
   compareRows: 4,         // comparison rows shown before "Show all"
+  sizeListRows: 5,        // sellers shown per size on a phone before "more"
   storageKey: 'decant-finder-list',
+  ackKey: 'decant-saver-ack',
+  reportsKey: 'decant-saver-reports',
 };
 
 /* ======================= STATE ======================= */
 let DATA = null;
-let LIST = [];                 // [{ p: product index, size }]
+let LIST = [];                 // [{ p: product index, size, s?: seller you picked }]
 let planMode = 'best';
 let picked = null;             // product shown in the size picker
 let activeResult = -1;
 let results = [];
 let ITEMS = [], PLANS = null;  // the list as priced items, and the plans worked out for it
 let REVIEW = null;             // pasted lines waiting to be checked
-let browseSize = '5 ml', browseSort = 'sellers', browseField = 'all', browseShown = 0, browseSeller = -1;
+let SENT = {};                 // seller index -> 'wa' | 'copy', once you've messaged or copied that order
+let browseSize = '5 ml', browseSort = 'sellers', browseShown = 0, browseUnit = 'price';
+let browseSel = null;          // null = every seller, else the seller indexes you chose
+let browseSeller = -1;         // the one seller chosen, when exactly one is
+let openP = -1, openSeller = -1, openSize = 0, openAll = false, openCmp = '', openMore = false; // the "every size" panel
+let reportCtx = null;
 
 const $ = id => document.getElementById(id);
 const rupees = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const perMl = o => '₹' + (o.price / o.size).toFixed(1);
+const plural = (n, word) => n + ' ' + word + (n === 1 ? '' : 's');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const fmtDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+const phoneMQ = matchMedia('(max-width: 640px)');
+const isPhone = () => phoneMQ.matches;
+const motion = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+const svg = (d, extra) => '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"' + (extra || '') + '>' + d + '</svg>';
 const EXT = '<svg class="ext" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>';
-// A seller's name, linked to their own price list when we know it
-function sellerLink(si) {
+const CHECK = svg('<path d="M5 12.5l4.5 4.5L19 7"></path>', ' stroke-width="3"');
+const XICON = svg('<path d="M6 6l12 12M18 6L6 18"></path>');
+const CHEV = svg('<path d="M6 9l6 6 6-6"></path>', ' stroke-width="2.5"');
+const FLAG = svg('<path d="M5 21V4h12l-2 4 2 4H5"></path>');
+const CHAT = svg('<path d="M4 20l1.4-4.2A8.5 8.5 0 1 1 8.4 19L4 20z"></path>');
+const COPY = svg('<rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"></path>');
+
+// A seller's name, linked to their own price sheet when we know it
+function sellerLink(si, icon) {
   const x = DATA.sellers[si];
-  if (!x.url) return esc(x.name);
-  return '<a class="seller" href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.name) + EXT + '<span class="sr"> (opens their price list)</span></a>';
+  if (!x.url) return '<span class="seller-name">' + esc(x.name) + '</span>';
+  return '<a class="seller" href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.name) + (icon === false ? '' : EXT) +
+    '<span class="sr"> (opens their price list)</span></a>';
+}
+
+function applyName() {
+  const [first, ...rest] = CONFIG.name.split(' ');
+  $('wordmark').innerHTML = '<b>' + esc(first) + '</b> ' + esc(rest.join(' '));
+  document.querySelectorAll('[data-name]').forEach(el => { el.textContent = CONFIG.name; });
+  document.title = CONFIG.name + ' · the cheapest way to buy your decants';
 }
 
 /* ======================= LOADING ======================= */
 async function load() {
-  if (CONFIG.feedUrl.indexOf('PASTE_') === 0) {
-    $('status').textContent = 'One setup step left: paste your Apps Script Web app URL into feedUrl near the top of the script in index.html.';
-    return;
-  }
   try {
     const res = await fetch(CONFIG.feedUrl, { cache: 'no-store' });
     const raw = await res.json();
@@ -549,14 +778,15 @@ async function load() {
   renderAll();
   renderNew();
   renderBrowseSizes();
-  renderBrowseSellers();
   renderBrowse(true);
   renderSellerTable();
+  maybeWelcome();
 }
 
 function prepare(raw) {
   const sellers = raw.sellers.map((s, i) => ({ i, name: s.n, ff: s.ff || 0, fc: s.fc || 0, fee: s.fee,
-    url: /^https:\/\/[^\s"<>]+$/.test(s.u || '') ? s.u : '' }));
+    url: /^https:\/\/[^\s"<>]+$/.test(s.u || '') ? s.u : '',
+    wa: /^\d{10,15}$/.test(String(s.w || '')) ? String(s.w) : '' }));
   const products = raw.products.map((p, i) => {
     const offers = p[4].map(o => ({ s: o[0], size: o[1], price: o[2] }));
     const bySize = {};
@@ -581,8 +811,9 @@ function prepare(raw) {
 }
 
 function renderHeader() {
-  $('lede').innerHTML = 'Add the decants you want. It works out which sellers to buy from so the total, shipping included, is as low as possible. ' +
-    '<b>' + DATA.products.length.toLocaleString('en-IN') + ' perfumes from ' + DATA.sellers.length + ' sellers</b>, prices checked ' + fmtDate(DATA.checked) + '.';
+  $('foot-stats').textContent = DATA.products.length.toLocaleString('en-IN') + ' perfumes from ' + DATA.sellers.length + ' sellers, prices checked ' + fmtDate(DATA.checked) + '.';
+  $('empty-text').textContent = 'Add the decants you want, one at a time or as a pasted list. We compare ' + DATA.sellers.length +
+    ' sellers and work out the cheapest way to buy them, shipping included.';
   $('fee-default').textContent = DATA.defaultFee;
 }
 
@@ -754,38 +985,59 @@ function restoreList() {
 
 function renderList() {
   const ul = $('list');
-  const chosen = lastPlan ? lastPlan.chosen : {};
   $('empty').hidden = LIST.length > 0 || !$('paste-mode').hidden;
   ul.hidden = $('list-foot').hidden = LIST.length === 0;
-  $('list-count').textContent = LIST.length ? '(' + LIST.length + ')' : '';
+  $('list-n').textContent = LIST.length ? LIST.length : '';
+  const lc = $('list-count');
+  lc.textContent = LIST.length || '';
+  lc.classList.toggle('on', LIST.length > 0);
   ul.innerHTML = LIST.map((it, idx) => {
     const p = DATA.products[it.p];
     const offers = p.bySize[it.size] || [];
-    let line;
-    const pick = chosen[it.p + '|' + it.size];
     const pinned = it.s != null && offers.find(o => o.s === it.s);
-    if (!offers.length) line = '<span class="missing">No seller lists this size today.</span>';
-    else if (pinned) {
-      const low = offers[0];
-      line = 'You picked <span class="best">' + sellerLink(pinned.s) + ' ' + rupees(pinned.price) + '</span>. ' +
-        (low.price < pinned.price ? 'Cheapest is ' + sellerLink(low.s) + ' at ' + rupees(low.price) + '. ' : '') +
-        '<button class="link" data-unpin="' + idx + '">Let the plan choose</button>';
-    } else if (pick) {
-      const low = offers[0];
-      line = 'Buying from <span class="best">' + sellerLink(pick.s) + ' ' + rupees(pick.price) + '</span>. ' +
-        (low.price < pick.price ? 'Cheapest is ' + sellerLink(low.s) + ' at ' + rupees(low.price) + '.'
-          : offers.length > 1 ? 'The cheapest of ' + offers.length + ' sellers.' : 'The only seller with this size.');
-    } else {
-      const shown = offers.slice(0, 4).map((o, k) => '<span class="' + (k === 0 ? 'best' : '') + '">' +
-        sellerLink(o.s) + ' ' + rupees(o.price) + '</span>').join(', ');
-      line = shown + (offers.length > 4 ? ', and ' + (offers.length - 4) + ' more' : '');
-    }
-    return '<li><div><span class="name">' + esc(p.name) + '</span> <span class="brand">' + esc(p.brand) + '</span>' +
-      '<span class="size">' + it.size + ' ml</span></div>' +
-      '<button class="remove" data-idx="' + idx + '" aria-label="Remove ' + esc(p.name) + ' ' + it.size + ' ml">×</button>' +
-      '<div class="offers">' + line + '</div></li>';
+    let extra = '';
+    if (!offers.length) extra = '<div class="missing">No seller lists ' + it.size + ' ml today. Pick another size.</div>';
+    else if (pinned) extra = '<div class="pin">You picked ' + sellerLink(pinned.s, false) + ' at <span class="mono">' + rupees(pinned.price) + '</span> · ' +
+      '<button class="link" type="button" data-unpin="' + idx + '">Let the plan choose</button></div>';
+    const sizes = p.sizes.includes(it.size) ? p.sizes : p.sizes.concat(it.size).sort((a, b) => a - b);
+    return '<li><div class="info"><div><span class="name">' + esc(p.name) + '</span> <span class="brand">' + esc(p.brand) + '</span></div>' +
+      (p.insp ? '<div class="sub">Inspired by ' + esc(p.insp) + '</div>' : '') + extra + '</div>' +
+      '<select class="sel" data-size-for="' + idx + '" aria-label="Size for ' + esc(p.name) + '">' +
+        sizes.map(z => '<option value="' + z + '"' + (z === it.size ? ' selected' : '') + '>' + z + ' ml</option>').join('') + '</select>' +
+      '<button class="remove" type="button" data-idx="' + idx + '" aria-label="Remove ' + esc(p.name) + ' ' + it.size + ' ml">' + XICON + '</button></li>';
   }).join('');
-  $('list-summary').textContent = LIST.length + (LIST.length === 1 ? ' decant' : ' decants');
+}
+
+function changeSize(idx, size) {
+  const it = LIST[idx];
+  if (!it || it.size === size) return;
+  const p = DATA.products[it.p];
+  if (LIST.some((x, k) => k !== idx && x.p === it.p && x.size === size)) {
+    LIST.splice(idx, 1);
+    toast(p.name + ' ' + size + ' ml was already on your list');
+  } else {
+    it.size = size;
+    if (it.s != null && !(p.bySize[size] || []).some(o => o.s === it.s)) delete it.s;
+  }
+  saveList();
+  renderAll();
+}
+
+/* ======================= THE STEP GUIDE ======================= */
+function renderGuide() {
+  const stage = !LIST.length ? 1 : Object.keys(SENT).length ? 3 : 2;
+  const steps = [['Add decants', 'Add'], ['Check the plan', 'Plan'], ['Message each seller', 'Message sellers']];
+  $('steps').innerHTML = steps.map((s, i) => {
+    const n = i + 1, st = n < stage ? 'done' : n === stage ? 'now' : 'next';
+    return '<li class="step ' + st + '"' + (st === 'now' ? ' aria-current="step"' : '') + '><span class="num" aria-hidden="true">' + (st === 'done' ? CHECK : n) + '</span>' +
+      '<span class="long">' + s[0] + '</span><span class="short" aria-hidden="true">' + s[1] + '</span>' + (st === 'done' ? '<span class="sr"> (done)</span>' : '') + '</li>' +
+      (n < 3 ? '<li class="step-sep" aria-hidden="true"></li>' : '');
+  }).join('');
+  $('step-note').textContent = [
+    "Search for a perfume or paste your list from WhatsApp. You check every match before it's added.",
+    'This is the cheapest way to split your list, shipping included. Change a size or a seller and the plan updates.',
+    'Send each seller their part, then ask them to confirm price and stock before you pay.',
+  ][stage - 1];
 }
 
 /* ======================= OPTIMISER ======================= */
@@ -1099,44 +1351,36 @@ function scheduleCompare() {
   }, 20);
 }
 
-function parcelText(x, named) {
-  return (named ? esc(DATA.sellers[x.s].name) + ': ' : '') + x.n + ' for ' + rupees(x.sub) + (x.ship ? ' + ' + rupees(x.ship) + ' shipping' : ', free shipping');
-}
-
 function renderCompare() {
   const box = $('compare'), c = COMPARE;
   if (!c || !LIST.length) { box.hidden = true; return; }
   box.hidden = false;
   const n = c.n, planTotal = c.plan ? c.plan.total : null;
   $('compare-hint').textContent = n === 1
-    ? 'What this decant costs from each seller, shipping included.'
-    : 'What your list costs if you buy everything a seller has from them, and anything they don\'t have the cheapest way elsewhere. Shipping included.';
+    ? 'This decant from each seller, shipping included.'
+    : 'The same list bought other ways: everything a seller has from them, the rest the cheapest way elsewhere. Shipping included.';
   const rows = c.list.filter((o, k) => compareAll || k < CONFIG.compareRows || o.kind === 'plan');
+  const part = x => x.n + ' from ' + sellerLink(x.s, false);
   $('compare-rows').innerHTML = rows.map(o => {
     const isPlan = o.kind === 'plan';
     let label;
-    if (o.kind === 'recommended') label = '<b>Recommended plan</b> <span class="hint">(' + (planMode === 'fewest' ? 'fewest parcels' : 'best value') + ')</span>';
-    else if (o.s == null) label = '<b>Your plan</b>';
-    else if (o.has === n) label = (n === 1 ? 'From ' : 'All ' + n + ' from ') + '<b>' + esc(DATA.sellers[o.s].name) + '</b>';
-    else label = o.has + ' of ' + n + ' from <b>' + esc(DATA.sellers[o.s].name) + '</b>';
-    if (isPlan && o.s != null) label += '<span class="tag">Your plan</span>';
-    const detail = o.parcels.length + (o.parcels.length === 1 ? ' parcel' : ' parcels') + ' · ' +
-      o.parcels.map((x, k) => parcelText(x, o.s == null || k > 0)).join(' · ');
+    if (o.kind === 'recommended') label = 'Recommended: ' + o.parcels.map(part).join(', ');
+    else if (o.s == null) label = o.parcels.map(part).join(', ');
+    else {
+      const rest = o.parcels.filter(x => x.s !== o.s);
+      label = (o.has === n ? (n === 1 ? 'From ' : 'All ' + n + ' from ') : o.has + ' of ' + n + ' from ') + sellerLink(o.s, false) +
+        (rest.length ? ', ' + rest.map(part).join(', ') : '');
+    }
+    const ship = o.parcels.reduce((t, x) => t + x.ship, 0);
     const d = planTotal == null ? null : Math.round(o.total - planTotal);
-    const diff = isPlan || d == null ? '' : d > 0 ? '<span class="cmp-diff more">' + rupees(d) + ' more</span>'
-      : d < 0 ? '<span class="cmp-diff less">' + rupees(-d) + ' less</span>' : '<span class="cmp-diff">Same total</span>';
-    const action = isPlan ? '' : o.kind === 'recommended'
-      ? '<button class="btn small" data-use-recommended>Switch back</button>'
-      : '<button class="btn small" data-use-seller="' + o.s + '" aria-label="Switch to ' + esc(label.replace(/<[^>]+>/g, '')) + '">Switch to this</button>';
-    const segs = o.parcels.map(x => {
-      const who = DATA.sellers[x.s].name;
-      // One block per parcel (the gap between blocks marks a new parcel), shipping joined to its decants
-      return '<span class="pc" style="flex-grow:' + (x.sub + x.ship) + '"><i class="dec" style="flex-grow:' + x.sub + '" title="' + esc(who + ': ' + x.n + (x.n === 1 ? ' decant, ' : ' decants, ') + rupees(x.sub)) + '"></i>' +
-        (x.ship ? '<i class="ship" style="flex-grow:' + x.ship + '" title="' + esc(who + ' shipping: ' + rupees(x.ship)) + '"></i>' : '') + '</span>';
-    }).join('');
-    return '<li' + (isPlan ? ' class="is-plan"' : '') + '><div class="cmp-top"><span class="cmp-label">' + label + '</span><span class="cmp-total">' + rupees(o.total) + '</span></div>' +
-      '<div class="cmp-bar" aria-hidden="true" style="width:' + (100 * o.total / c.max).toFixed(2) + '%">' + segs + '</div>' +
-      '<div class="cmp-foot"><span>' + detail + '</span><span class="cmp-side">' + diff + action + '</span></div></li>';
+    const diff = isPlan || d == null ? '' : d > 0 ? '+' + rupees(d) : d < 0 ? '−' + rupees(-d) : 'same';
+    const plain = label.replace(/<[^>]+>/g, '').replace(/ \(opens their price list\)/g, '');
+    const action = isPlan ? '<span class="yours">Your plan</span>' : o.kind === 'recommended'
+      ? '<button class="btn small" type="button" data-use-recommended>Switch back</button>'
+      : '<button class="btn small" type="button" data-use-seller="' + o.s + '" aria-label="Use this: ' + esc(plain) + '">Use this</button>';
+    return '<tr><th scope="row">' + label + '</th><td class="parcels-col">' + o.parcels.length + '</td>' +
+      '<td class="num"><span class="tot">' + rupees(o.total) + '</span><span class="diff' + (d < 0 && !isPlan ? ' less' : '') + '">' + diff + '</span>' +
+      '<span class="sr">' + (ship ? ', including ' + rupees(ship) + ' shipping' : ', free shipping') + '</span></td><td>' + action + '</td></tr>';
   }).join('');
   $('compare-more').hidden = c.list.length <= CONFIG.compareRows;
   $('compare-more').textContent = compareAll ? 'Show fewer' : 'Show all ' + c.list.length + ' options';
@@ -1162,11 +1406,19 @@ function useRecommended() {
 /* ======================= PLAN VIEW ======================= */
 let lastPlan = null;
 
+function shortRule(x) {
+  if (x.fee === 0) return 'always free shipping';
+  if (x.ff && x.fc) return 'free shipping from ' + rupees(x.ff) + ' or ' + x.fc + ' decants';
+  if (x.ff) return 'free shipping from ' + rupees(x.ff);
+  if (x.fc) return 'free shipping from ' + x.fc + ' decants';
+  return x.fee == null ? 'shipping about ' + rupees(DATA.defaultFee) : 'shipping ' + rupees(x.fee);
+}
+
 function renderPlan() {
   const box = $('plan');
   const items = ITEMS;
   if (!items.length || !PLANS) {
-    box.innerHTML = '<h2>Best way to buy</h2><p class="hint">Your cheapest combination of sellers shows up here as soon as you add a decant.</p>';
+    box.innerHTML = '<section class="plan-empty" aria-label="Your plan"><h2>Your plan</h2><p>Appears here once you add a decant: who to buy each one from, what it costs, and the shipping.</p></section>';
     lastPlan = null;
     updateMobileBar(0, 0, 0);
     return;
@@ -1181,7 +1433,6 @@ function renderPlan() {
   lastPlan = { parcels, total: plan.total, chosen };
   const shipTotal = parcels.reduce((n, g) => n + g.ship, 0);
 
-  const plural = (n, word) => n + ' ' + word + (n === 1 ? '' : 's');
   const notes = [];
   if (!same) {
     const diff = plans.fewest.total - plans.best.total;
@@ -1196,63 +1447,66 @@ function renderPlan() {
   if (planMode === 'best' && plans.lowest.total < plans.best.total) {
     const extra = plans.lowest.sellers.length - plans.best.sellers.length;
     notes.push('Adding ' + (extra === 1 ? 'another seller' : extra + ' more sellers') + ' would save only ' + rupees(plans.best.total - plans.lowest.total) +
-      ', which isn\'t worth the extra ' + (extra === 1 ? 'parcel' : 'parcels') + '.');
+      ", which isn't worth the extra " + (extra === 1 ? 'parcel' : 'parcels') + '.');
   }
   const eachExtra = plans.each.total - plans.best.total;
   if (planMode === 'best' && plans.each.sellers.length > plans.best.sellers.length && eachExtra > 0) {
     notes.push('Buying each decant from its own cheapest seller would mean ' + plans.each.sellers.length +
       ' parcels and cost ' + rupees(eachExtra) + ' more once shipping is added.');
   }
-  const compare = notes.join(' ');
   updateMobileBar(plan.total, items.length, parcels.length);
 
   box.innerHTML =
-    '<h2>Best way to buy</h2>' +
-    (same ? '' : '<div class="switch" role="group" aria-label="Plan">' +
-      '<button data-mode="best" aria-pressed="' + (planMode === 'best') + '">Best value</button>' +
-      '<button data-mode="fewest" aria-pressed="' + (planMode === 'fewest') + '">Fewest parcels</button></div>') +
-    '<div class="summary"><div class="total">' + rupees(plan.total) + ' <small>incl. ' + (shipTotal ? rupees(shipTotal) + ' shipping' : 'free shipping') + '</small></div>' +
-    '<div class="hint">' + items.length + ' decants, ' + parcels.length + (parcels.length === 1 ? ' parcel' : ' parcels') + '</div></div>' +
-    (compare ? '<p class="compare">' + compare + '</p>' : '') +
-    parcels.map(g =>
-      '<article class="parcel"><div class="parcel-head"><div><h3><button class="seller-btn" data-browse-seller="' + g.s + '" title="See everything ' + esc(g.name) + ' has">' + esc(g.name) + '</button>' +
-        (DATA.sellers[g.s].url ? '<a class="ext-link" href="' + esc(DATA.sellers[g.s].url) + '" target="_blank" rel="noopener" aria-label="Open ' + esc(g.name) + '\'s price list">' + EXT + '</a>' : '') + '</h3><span class="count">' +
-        g.items.length + (g.items.length === 1 ? ' decant' : ' decants') + (g.ship && !g.known ? ', shipping is an estimate' : '') + '</span></div>' +
-        (g.ship === 0 ? '<span class="stamp free">Free shipping</span>' : '<span class="stamp paid">+' + rupees(g.ship) + ' shipping</span>') +
-      '</div><ul>' + g.items.map(x => '<li><span>' + esc(x.p.name) + ' <span class="brand hint">' + esc(x.p.brand) + '</span><span class="size">' + x.size + ' ml</span></span><span class="price">' + rupees(x.price) + '</span></li>').join('') +
-      '</ul><div class="parcel-foot"><div class="row"><span>Subtotal' + (g.ship ? ' + shipping' : '') + '</span><span class="price">' + rupees(g.sub + g.ship) + '</span></div>' +
-        (g.nudge ? '<div class="nudge">' + g.nudge + '</div>' : '') +
-        '<button class="link more-from" data-browse-seller="' + g.s + '">' + (g.nudge ? 'See what else ' + esc(g.name) + ' has' : 'More from ' + esc(g.name)) + '</button></div></article>').join('') +
-    '<div class="actions"><button class="btn primary" id="copy-wa">Copy for WhatsApp</button><button class="btn" id="copy-reddit">Copy as Reddit table</button></div>' +
-    '<p class="note">Prices checked ' + fmtDate(DATA.checked) + '. Confirm stock and shipping with each seller before paying.</p>';
+    '<section class="panel" aria-labelledby="plan-h"><div class="panel-head" style="margin-bottom:4px"><h2 id="plan-h">Your plan</h2>' +
+      (same ? '' : '<label class="opt">Optimise for <select class="sel" id="plan-mode"><option value="best"' + (planMode === 'best' ? ' selected' : '') + '>Best value</option>' +
+        '<option value="fewest"' + (planMode === 'fewest' ? ' selected' : '') + '>Fewest parcels</option></select></label>') + '</div>' +
+      '<div class="total">' + rupees(plan.total) + '</div>' +
+      '<div class="plan-sub">' + plural(items.length, 'decant') + ' from ' + plural(parcels.length, 'seller') + ' · ' + (shipTotal ? rupees(shipTotal) + ' shipping' : 'free shipping') + '</div>' +
+      (notes.length ? '<p class="plan-notes">' + notes.join(' ') + '</p>' : '') + '</section>' +
+    '<section aria-labelledby="send-h"><div class="send-head"><h2 id="send-h">Message each seller</h2><span class="hint">Each gets only their part</span></div>' +
+      parcels.map((g, k) => parcelCard(g, k, parcels.length)).join('') +
+      '<p class="fineprint">Prices checked ' + fmtDate(DATA.checked) + '. Confirm price and stock with each seller before you pay.</p></section>';
 }
 
-function whatsappText() {
-  const { parcels, total } = lastPlan;
-  const lines = ['Cheapest split for my decant list (prices checked ' + fmtDate(DATA.checked) + '):', ''];
-  parcels.forEach(g => {
-    lines.push('*' + g.name + ' – ' + g.items.length + (g.items.length === 1 ? ' decant' : ' decants') + ' – ' + rupees(g.sub) +
-      (g.ship ? ' + ' + rupees(g.ship) + ' shipping' + (g.known ? '' : ' (est.)') : ', free shipping') + '*');
-    if (DATA.sellers[g.s].url) lines.push('Price list: ' + DATA.sellers[g.s].url);
-    g.items.forEach(x => lines.push('• ' + x.p.brand + ' ' + x.p.name + ' ' + x.size + 'ml – ' + rupees(x.price)));
-    lines.push('');
-  });
-  lines.push('*Total: ' + rupees(total) + ' incl. shipping*');
-  lines.push('Please confirm stock with each seller before paying.');
-  return lines.join('\n');
+function parcelCard(g, k, n) {
+  const x = DATA.sellers[g.s], sent = SENT[g.s];
+  const wa = x.wa ? 'https://wa.me/' + x.wa + '?text=' + encodeURIComponent(sellerMessage(g)) : '';
+  let acts, note;
+  if (wa) {
+    acts = '<a class="btn ' + (sent === 'wa' ? 'done' : 'primary') + '" href="' + esc(wa) + '" target="_blank" rel="noopener" data-sent="' + g.s + '">' + CHAT +
+        (sent === 'wa' ? 'Opened in WhatsApp' : 'Message on WhatsApp') + '</a>' +
+      '<button class="btn' + (sent === 'copy' ? ' done' : '') + '" type="button" data-copy-order="' + g.s + '">' + COPY + (sent === 'copy' ? 'Copied' : 'Copy order') + '</button>';
+    note = sent === 'copy' ? 'Copied. Paste it into your chat with ' + esc(x.name) + '.'
+      : sent === 'wa' ? 'WhatsApp opened with this order typed in. Nothing sends until you press send.'
+      : 'Opens WhatsApp with this order typed in. Nothing sends until you press send.';
+  } else {
+    acts = '<button class="btn ' + (sent === 'copy' ? 'done' : 'primary') + '" type="button" data-copy-order="' + g.s + '">' + COPY + (sent === 'copy' ? 'Copied' : 'Copy order') + '</button>' +
+      (x.url ? '<a class="btn" href="' + esc(x.url) + '" target="_blank" rel="noopener">Open their sheet' + EXT + '</a>' : '');
+    note = sent === 'copy' ? 'Copied. Paste it into a chat with ' + esc(x.name) + ', using the contact on their sheet.'
+      : 'No WhatsApp number shared yet. Copy the order and use the contact on their sheet.';
+  }
+  const ship = g.ship ? '<span class="price">' + rupees(g.ship) + (g.known ? '' : ' (estimate)') + '</span>' : '<span class="free">Free</span>';
+  return '<article class="parcel"><div class="parcel-top"><div><h3>' + sellerLink(g.s) + '</h3><div class="meta">' + (n > 1 ? 'Parcel ' + (k + 1) + ' of ' + n + ' · ' : '') + shortRule(x) + '</div></div>' +
+      '<span class="sum">' + rupees(g.sub + g.ship) + '</span></div>' +
+    '<ul>' + g.items.map(it => '<li><span>' + esc(it.p.name) + ' <span class="sz">' + it.size + ' ml</span></span><span class="price">' + rupees(it.price) + '</span></li>').join('') +
+      '<li><span class="sz">Shipping</span>' + ship + '</li></ul>' +
+    '<p class="nudge">' + (g.nudge ? esc(g.nudge) + ' <button class="link good" type="button" data-browse-seller="' + g.s + '">See what else ' + esc(x.name) + ' has</button>'
+      : '<button class="link" type="button" data-browse-seller="' + g.s + '">More from ' + esc(x.name) + '</button>') + '</p>' +
+    '<div class="acts">' + acts + '</div><p class="pnote">' + note + '</p></article>';
 }
 
-function redditText() {
-  const { parcels, total } = lastPlan;
-  const md = g => DATA.sellers[g.s].url ? '[' + g.name + '](' + DATA.sellers[g.s].url + ')' : g.name;
-  const rows = ['**Cheapest split for my list** (prices checked ' + fmtDate(DATA.checked) + ')', '',
-    '| Scent | Size | Buy from | Price |', '|:--|:-:|:--|--:|'];
-  parcels.forEach(g => g.items.forEach(x => rows.push('| ' + x.p.brand + ' ' + x.p.name + ' | ' + x.size + ' ml | ' + md(g) + ' | ' + rupees(x.price) + ' |')));
-  rows.push('', '| Seller | Decants | Subtotal | Shipping |', '|:--|:-:|--:|--:|');
-  parcels.forEach(g => rows.push('| ' + md(g) + ' | ' + g.items.length + ' | ' + rupees(g.sub) + ' | ' + (g.ship ? rupees(g.ship) + (g.known ? '' : ' (est.)') : 'Free') + ' |'));
-  rows.push('| **Total** | **' + parcels.reduce((n, g) => n + g.items.length, 0) + '** | | **' + rupees(total) + '** |');
-  rows.push('', '*Please confirm stock and shipping with each seller before paying.*');
-  return rows.join('\n');
+// The order message for one seller: only their decants
+function sellerMessage(g) {
+  const x = DATA.sellers[g.s];
+  return ["Hi " + x.name + "! I'd like to order these decants from your price list:"]
+    .concat(g.items.map(it => '• ' + it.p.name + ' (' + it.p.brand + ') ' + it.size + ' ml – ' + rupees(it.price)))
+    .concat(['Subtotal ' + rupees(g.sub) + '. Could you confirm price, stock and shipping? Thanks!']).join('\n');
+}
+
+function markSent(s, how) {
+  SENT[s] = how;
+  renderPlan();
+  renderGuide();
 }
 
 async function copy(text, label) {
@@ -1381,46 +1635,45 @@ function renderReview() {
 /* ======================= NEW THIS WEEK ======================= */
 function renderNew() {
   const all = DATA.fresh;
-  $('new-count').textContent = all.length ? '(' + all.length + ')' : '';
+  $('new-count').textContent = all.length ? all.length : '';
   const filter = $('new-filter').value;
   const list = all.filter(f => {
     const p = DATA.products[f.p];
     return !filter || matchesFilter(p.brand + ' ' + p.name + ' ' + p.insp + ' ' + p.offers.map(o => DATA.sellers[o.s].name).join(' '), filter);
   });
   $('new-hint').textContent = all.length
-    ? all.length + (all.length === 1 ? ' perfume' : ' perfumes') + ' showed up in the tracker for the first time in the last 7 days, newest first. Each shows the best value per ml and every price.'
+    ? plural(all.length, 'perfume') + ' showed up for the first time in the last 7 days, newest first, with the best value per ml and every price.'
     : 'Nothing new has shown up in the last 7 days. Check back after the next daily update.';
   $('new-list').innerHTML = list.map(f => {
     const p = DATA.products[f.p];
     const best = p.offers.slice().sort((a, b) => a.price / a.size - b.price / b.size)[0];
     const lines = p.sizes.map(sz => {
       const offers = p.bySize[sz];
-      const who = offers.map((o, k) => (k === 0 ? '<b>' : '') + sellerLink(o.s) + ' ' + rupees(o.price) + (k === 0 ? '</b>' : '')).join(', ');
-      return '<div class="size-line"><span class="size">' + sz + ' ml</span><span class="who">' + who + '</span>' +
-        '<button class="link" data-add="' + p.i + '" data-size="' + sz + '" aria-label="Add ' + esc(p.name) + ' ' + sz + ' ml">Add</button></div>';
+      const who = offers.map((o, k) => (k === 0 ? '<b>' : '') + sellerLink(o.s, false) + ' <span class="mono">' + rupees(o.price) + '</span>' + (k === 0 ? '</b>' : '')).join(', ');
+      return '<div class="size-line"><span class="z">' + sz + ' ml</span><span class="who">' + who + '</span>' +
+        '<button class="link" type="button" data-add="' + p.i + '" data-size="' + sz + '" aria-label="Add ' + esc(p.name) + ' ' + sz + ' ml">Add</button></div>';
     }).join('');
     return '<li><div><div class="name">' + esc(p.name) + '</div><div class="sub">' + esc(p.brand) + (p.insp ? ', inspired by ' + esc(p.insp) : '') + '</div>' +
-      '<div class="sub">First seen ' + fmtDate(f.date) + ', ' + p.sellerCount + (p.sellerCount === 1 ? ' seller' : ' sellers') + '</div></div>' +
-      '<div><div class="best-line"><span class="sub">Best value: </span><span class="price num">' + rupees(best.price) + '</span> <span class="sub">for ' + best.size + ' ml at ' + sellerLink(best.s) +
-        ' (₹' + (best.price / best.size).toFixed(1) + ' per ml)</span></div>' + lines + '</div></li>';
+      '<div class="sub">First seen ' + fmtDate(f.date) + ', ' + plural(p.sellerCount, 'seller') + '</div></div>' +
+      '<div><div class="best-line">Best value: <span class="price">' + rupees(best.price) + '</span> for ' + best.size + ' ml at ' + sellerLink(best.s) +
+        ' <span class="sub">(' + perMl(best) + ' per ml)</span></div>' + lines + '</div></li>';
   }).join('') || (all.length ? '<li><div class="sub">Nothing new matches that filter.</div></li>' : '');
   $('new-list').hidden = !all.length;
 }
 
 /* ======================= THEME ======================= */
-const SUN = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>';
-const MOON = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>';
+const SUN = svg('<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>');
+const MOON = svg('<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path>');
 function currentTheme() {
   return document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 }
 function paintThemeButton() {
   const dark = currentTheme() === 'dark';
   $('theme').setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  $('theme').innerHTML = (dark ? SUN : MOON) + '<span class="theme-label">' + (dark ? 'Light mode' : 'Dark mode') + '</span>';
+  $('theme').innerHTML = dark ? SUN : MOON;
 }
 
 /* ======================= BROWSE ======================= */
-const CHECK = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"></path></svg>';
 const bucketCache = {};
 
 // Sizes in a size group, the size most sellers use in it, and the sellers that have any listing in it
@@ -1437,41 +1690,46 @@ function bucketOf(label) {
   return (bucketCache[label] = { sizes, main, cols });
 }
 
-// One table row: each seller's listing in the size group (the group's usual size if they have it).
-// With a seller chosen, also how that seller compares with everyone else (per ml, at their size).
-function browseRow(p, bk) {
+// The sellers whose prices are shown, in the size group's column order
+function shownSellers(bk) { return browseSel ? bk.cols.filter(s => browseSel.includes(s)) : bk.cols; }
+function setSel(list) {
+  browseSel = list && list.length >= DATA.sellers.length ? null : list;
+  browseSeller = browseSel && browseSel.length === 1 ? browseSel[0] : -1;
+  if (browseSeller < 0 && browseSort === 'saving') browseSort = 'sellers';
+}
+
+// One row: each seller's listing in the size group (the group's usual size if they have it).
+// `cells` holds the sellers you chose; with one seller chosen, also how they compare with everyone else.
+function browseRow(p, bk, shown) {
   const inGroup = p.offers.filter(o => bk.sizes.includes(o.size)).sort((a, b) =>
     (a.size !== bk.main) - (b.size !== bk.main) || Math.abs(a.size - bk.main) - Math.abs(b.size - bk.main) || a.price - b.price);
   if (!inGroup.length) return null;
+  const all = {};
+  inGroup.forEach(o => { if (!all[o.s]) all[o.s] = o; });
   const cells = {};
-  inGroup.forEach(o => { if (!cells[o.s]) cells[o.s] = o; });
-  const perMl = Object.values(cells).map(o => o.price / o.size).sort((a, b) => a - b);
-  const row = { p, cells, n: perMl.length, low: perMl[0], diff: null, vs: -1 };
-  const mine = browseSeller >= 0 && cells[browseSeller];
+  shown.forEach(s => { if (all[s]) cells[s] = all[s]; });
+  const per = Object.values(cells).map(o => o.price / o.size).sort((a, b) => a - b);
+  if (!per.length) return null;
+  const row = { p, cells, all, n: per.length, total: Object.keys(all).length, low: per[0], diff: null, vs: -1 };
+  const mine = browseSeller >= 0 && all[browseSeller];
   if (mine) {
-    const others = Object.keys(cells).map(Number).filter(x => x !== browseSeller)
-      .map(x => ({ s: x, per: cells[x].price / cells[x].size })).sort((a, b) => a.per - b.per);
+    const others = Object.keys(all).map(Number).filter(x => x !== browseSeller)
+      .map(x => ({ s: x, per: all[x].price / all[x].size })).sort((a, b) => a.per - b.per);
     if (others.length) { row.diff = Math.round(mine.price - others[0].per * mine.size); row.vs = others[0].s; }
   }
   return row;
 }
 
-// Seller columns: the chosen seller first, then everyone else A–Z
-function browseCols(bk) {
-  return browseSeller >= 0 ? [browseSeller].concat(bk.cols.filter(x => x !== browseSeller)) : bk.cols;
-}
-
 function browseRows() {
-  const bk = bucketOf(browseSize);
+  const bk = bucketOf(browseSize), shown = shownSellers(bk);
   const words = norm($('browse-filter').value).split(' ').filter(Boolean);
   const rows = [];
   for (const p of DATA.products) {
-    if (browseSeller >= 0 && !p.offers.some(o => o.s === browseSeller && bk.sizes.includes(o.size))) continue;
     if (words.length) {
-      const hay = norm(browseField === 'brand' ? p.brand : browseField === 'name' ? p.name : browseField === 'insp' ? p.insp : p.brand + ' ' + p.name + ' ' + p.insp);
+      const hay = norm(p.brand + ' ' + p.name + ' ' + p.insp);
       if (!words.every(w => hay.includes(w))) continue;
     }
-    const r = browseRow(p, bk);
+    const r = browseRow(p, bk, shown);
     if (r) rows.push(r);
   }
   const byName = (a, b) => a.p.name.localeCompare(b.p.name) || a.p.brand.localeCompare(b.p.brand);
@@ -1479,65 +1737,174 @@ function browseRows() {
   if (sort === 'name') rows.sort(byName);
   else if (sort === 'brand') rows.sort((a, b) => a.p.brand.localeCompare(b.p.brand) || byName(a, b));
   else if (sort === 'low') rows.sort((a, b) => a.low - b.low || byName(a, b));
-  else if (sort === 'saving') rows.sort((a, b) => (a.diff == null ? 0.5 : a.diff) - (b.diff == null ? 0.5 : b.diff) || b.n - a.n || byName(a, b));
-  else rows.sort((a, b) => b.n - a.n || byName(a, b));
-  return { bk, rows };
+  else if (sort === 'saving') rows.sort((a, b) => (a.diff == null ? 0.5 : a.diff) - (b.diff == null ? 0.5 : b.diff) || b.total - a.total || byName(a, b));
+  else rows.sort((a, b) => b.total - a.total || byName(a, b));
+  return { bk, shown, rows };
 }
 
 function renderBrowseSizes() {
   const sizes = CONFIG.sizeGroups.filter(l => DATA.buckets.some(b => b.label === l));
-  // With a seller chosen, each size shows how many perfumes they have in it
-  const count = l => {
-    const b = DATA.buckets.find(x => x.label === l);
-    return DATA.products.filter(p => p.offers.some(o => o.s === browseSeller && b.sizes.includes(o.size))).length;
-  };
-  $('browse-sizes').innerHTML = sizes.map(l => '<button class="chip" data-browse-size="' + esc(l) + '" aria-pressed="' + (l === browseSize) + '"><span class="ml">' + esc(l) + '</span>' +
-    (browseSeller >= 0 ? '<span class="from">' + count(l) + ' here</span>' : '') + '</button>').join('');
+  $('browse-sizes').innerHTML = sizes.map(l => '<button type="button" data-browse-size="' + esc(l) + '" aria-pressed="' + (l === browseSize) + '">' + esc(l) + '</button>').join('');
 }
 
-function renderBrowseSellers() {
-  $('browse-seller').innerHTML = '<option value="-1">All sellers</option>' + DATA.sellers.slice()
-    .sort((a, b) => a.name.localeCompare(b.name)).map(x => '<option value="' + x.i + '">' + esc(x.name) + '</option>').join('');
-}
-
-// Keeps the Browse controls in step with the current choices
 function syncBrowseControls() {
-  $('browse-seller').value = String(browseSeller);
-  $('browse-field').value = browseField;
   const saving = $('browse-sort').querySelector('[value="saving"]');
   saving.disabled = browseSeller < 0;
   if (browseSeller < 0 && browseSort === 'saving') browseSort = 'sellers';
   $('browse-sort').value = browseSort;
+  document.querySelectorAll('[data-unit]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.unit === browseUnit)));
+  const total = DATA.sellers.length;
+  $('sellers-btn').innerHTML = (browseSel == null ? 'Sellers: all ' + total
+    : browseSel.length === 1 ? 'Seller: ' + esc(DATA.sellers[browseSel[0]].name)
+    : 'Sellers: ' + browseSel.length + ' of ' + total) + CHEV;
+}
+
+// How a listing shows in a price button: added to your order, where your plan buys it, or the cheapest
+function cellState(pi, o, isLow) {
+  const it = LIST.find(x => x.p === pi && x.size === o.size);
+  const added = !!(it && it.s === o.s);
+  const pick = it && it.s == null && lastPlan && lastPlan.chosen[pi + '|' + o.size];
+  const inPlan = !added && pick && pick.s === o.s;
+  return { added, cls: added ? ' added' : inPlan ? ' inplan' : isLow ? ' low' : '' };
+}
+
+function priceButton(p, o, opts) {
+  const st = cellState(p.i, o, opts.low);
+  const label = (st.added ? 'Remove ' : 'Add ') + p.name + ' ' + o.size + ' ml from ' + DATA.sellers[o.s].name + ', ' + rupees(o.price) + ', ' + perMl(o) + ' per ml';
+  const main = opts.unit === 'ml' ? perMl(o) : rupees(o.price);
+  const small = opts.sub != null ? opts.sub : '';
+  return '<button class="cell' + st.cls + '" type="button" data-cell="' + p.i + '|' + o.size + '|' + o.s + '" aria-pressed="' + st.added + '" aria-label="' + esc(label) + '" title="' + esc(label) + '">' +
+    (opts.top ? '<span class="z">' + opts.top + '</span>' : '') +
+    '<span class="amt">' + (st.added ? CHECK : '') + main + '</span>' + (small ? '<small>' + small + '</small>' : '') + '</button>';
 }
 
 function browseCell(r, s, bk) {
   const o = r.cells[s];
-  const focus = s === browseSeller ? ' class="mine"' : '';
-  if (!o) return '<td class="na"><span aria-hidden="true">–</span><span class="sr">Not sold</span></td>';
-  const it = LIST.find(x => x.p === r.p.i && x.size === o.size);
-  const added = !!(it && it.s === s);
-  const pick = it && it.s == null && lastPlan && lastPlan.chosen[r.p.i + '|' + o.size];
-  const inPlan = !added && pick && pick.s === s;
-  const low = !added && !inPlan && r.n > 1 && o.price / o.size <= r.low + 1e-9;
-  const label = (added ? 'Remove ' : 'Add ') + r.p.name + ' ' + o.size + ' ml from ' + DATA.sellers[s].name + ', ' + rupees(o.price);
-  return '<td' + focus + '><button class="cell' + (added ? ' added' : inPlan ? ' inplan' : low ? ' low' : '') + '" data-cell="' + r.p.i + '|' + o.size + '|' + s + '"' +
-    ' aria-pressed="' + added + '" aria-label="' + esc(label) + '" title="' + esc(label) + '">' +
-    '<span class="amt">' + (added ? CHECK : '') + rupees(o.price) + '</span>' + (o.size !== bk.main ? '<small>' + o.size + ' ml</small>' : '') + '</button></td>';
+  const mine = s === browseSeller ? ' class="mine"' : '';
+  if (!o) return '<td' + mine + '><span class="na" aria-hidden="true">–</span><span class="sr">Not sold</span></td>';
+  const low = r.n > 1 && o.price / o.size <= r.low + 1e-9;
+  const sub = [o.size !== bk.main ? o.size + ' ml' : '', browseUnit === 'ml' ? 'per ml' : ''].filter(Boolean).join(' · ');
+  return '<td' + mine + '>' + priceButton(r.p, o, { low, unit: browseUnit, sub }) + '</td>';
 }
 
-// "₹35 less than anyone else" / "₹20 more than IRAM Perfume" for the chosen seller
+// "₹35 less than anyone else" / "₹20 more than IRAM Perfume" for the one chosen seller
 function compareCell(r) {
   if (r.vs < 0) return '<td class="cmp">Only seller</td>';
   if (r.diff < 0) return '<td class="cmp good">' + rupees(-r.diff) + ' less than anyone else</td>';
   if (r.diff === 0) return '<td class="cmp">Same as the cheapest</td>';
-  return '<td class="cmp more">' + rupees(r.diff) + ' more than ' + esc(DATA.sellers[r.vs].name) + '</td>';
+  return '<td class="cmp">' + rupees(r.diff) + ' more than ' + esc(DATA.sellers[r.vs].name) + '</td>';
 }
 
-function browseTr(r, bk) {
-  const cols = browseCols(bk);
-  return '<tr id="br-' + r.p.i + '"><th scope="row" class="pcol"><span class="name">' + esc(r.p.name) + '</span> <span class="sub">' + esc(r.p.brand) + '</span>' +
-    (r.p.insp ? '<span class="insp">Inspired by ' + esc(r.p.insp) + '</span>' : '') + '</th>' +
-    cols.map((s, k) => browseCell(r, s, bk) + (k === 0 && browseSeller >= 0 ? compareCell(r) : '')).join('') + '</tr>';
+function rowTools(p) {
+  const open = openP === p.i;
+  return '<div class="row-tools"><button class="open-btn" type="button" data-open="' + p.i + '" aria-expanded="' + open + '">' + (open ? 'Hide sizes' : 'Every size') + CHEV + '</button>' +
+    '<button class="flag-btn" type="button" data-report="' + p.i + '" aria-label="Report a problem with ' + esc(p.name) + '" title="Report a problem">' + FLAG + '</button></div>';
+}
+
+function browseTr(r, bk, cols) {
+  const p = r.p;
+  return '<tr id="br-' + p.i + '"><th scope="row" class="pcol"><span class="name">' + esc(p.name) + '</span> <span class="brand">' + esc(p.brand) + '</span>' +
+    (p.insp ? '<span class="insp">Inspired by ' + esc(p.insp) + '</span>' : '') + rowTools(p) + '</th>' +
+    cols.map((s, k) => browseCell(r, s, bk) + (k === 0 && browseSeller >= 0 ? compareCell(r) : '')).join('') + '</tr>' +
+    (openP === p.i ? '<tr class="sizes-row"><td colspan="' + (cols.length + 1 + (browseSeller >= 0 ? 1 : 0)) + '">' + sizesPanel(p) + '</td></tr>' : '');
+}
+
+// The sellers in the "every size" view: the ones you chose (or all that stock it), the one you tapped first
+function matrixSellers(p) {
+  const stock = [...new Set(p.offers.map(o => o.s))];
+  const list = browseSel && !openAll ? stock.filter(s => browseSel.includes(s)) : stock.slice();
+  list.sort((a, b) => (b === openSeller) - (a === openSeller) || DATA.sellers[a].name.localeCompare(DATA.sellers[b].name));
+  return { list, total: stock.length, filtered: !!browseSel && !openAll && list.length < stock.length };
+}
+
+function scopeLinks(m) {
+  if (m.filtered) return '<button class="link" type="button" data-open-all>Include all ' + m.total + ' sellers that stock it</button>';
+  if (browseSel && openAll) return '<button class="link" type="button" data-open-all>Only the sellers you chose</button>';
+  return '';
+}
+
+// Desktop: every seller against every size, price on top and price per ml below
+function sizesPanel(p) {
+  const m = matrixSellers(p);
+  const offers = p.offers.filter(o => m.list.includes(o.s));
+  if (!offers.length) return '<div class="sizes-inner"><p class="hint" style="padding:14px 0">None of the sellers you chose stock this. ' + scopeLinks(m) + '</p></div>';
+  const sizes = [...new Set(offers.map(o => o.size))].sort((a, b) => a - b);
+  const colMin = {};
+  sizes.forEach(z => { colMin[z] = Math.min(...offers.filter(o => o.size === z).map(o => o.price)); });
+  const best = offers.slice().sort((a, b) => a.price / a.size - b.price / b.size)[0];
+  const tapped = openSeller >= 0 && offers.find(o => o.s === openSeller && o.size === openSize);
+  const head = '<div class="sizes-head"><h3>' + esc(p.name) + ', every size</h3><span class="hint">' +
+    (m.filtered ? 'From the ' + plural(m.list.length, 'seller') + ' you chose. ' : plural(m.list.length, 'seller') + '. ') +
+    'Price on top, price per ml below. Tap any price to add it.</span></div>';
+  const table = '<div class="matrix-box"><table class="matrix"><thead><tr><th scope="col">Seller</th>' + sizes.map(z => '<th scope="col">' + z + ' ml</th>').join('') + '</tr></thead><tbody>' +
+    m.list.filter(s => offers.some(o => o.s === s)).map(s => '<tr' + (s === openSeller ? ' class="pickrow"' : '') + '><th scope="row">' + sellerLink(s, false) +
+      (s === openSeller ? ' <span class="hint">you picked</span>' : '') + '</th>' +
+      sizes.map(z => {
+        const o = offers.find(q => q.s === s && q.size === z);
+        return '<td>' + (o ? priceButton(p, o, { low: o.price === colMin[z] && offers.filter(q => q.size === z).length > 1, sub: perMl(o) + '/ml' }) : '<span class="na" aria-hidden="true">–</span>') + '</td>';
+      }).join('') + '</tr>').join('') + '</tbody></table></div>';
+  const foot = '<div class="sizes-foot"><span>Best value here: <strong>' + best.size + ' ml from ' + esc(DATA.sellers[best.s].name) + ', ' + perMl(best) + ' per ml</strong>' +
+    (tapped && tapped !== best ? ', against ' + perMl(tapped) + ' per ml for the ' + tapped.size + ' ml you tapped' : '') + '.</span>' +
+    '<span class="acts">' + scopeLinks(m) + '<button class="link" type="button" data-close>Hide sizes</button></span></div>';
+  return '<div class="sizes-inner">' + head + table + foot + '</div>';
+}
+
+function tableHtml(rows, bk, shown) {
+  const cols = browseSeller >= 0 ? [browseSeller] : shown;
+  return '<table class="browse"><thead><tr><th scope="col" class="pcol">Perfume · ' + esc(browseSize) + (browseUnit === 'ml' ? ', ₹ per ml' : '') + '</th>' +
+    cols.map((s, k) => '<th scope="col"' + (s === browseSeller ? ' class="mine"' : '') + '>' + sellerLink(s, false) + '</th>' +
+      (k === 0 && browseSeller >= 0 ? '<th scope="col" class="cmp-h" title="Compared per ml with the cheapest other seller">Compared with the rest</th>' : '')).join('') +
+    '</tr></thead><tbody>' + rows.map(r => browseTr(r, bk, cols)).join('') + '</tbody></table>';
+}
+
+// Phone: one card per perfume
+function offerRow(p, o, opts) {
+  return '<div class="offer-row' + (opts.mine ? ' mine' : '') + '"><div class="who">' + sellerLink(o.s, false) +
+    (opts.low ? '<span class="tag-low">Lowest</span>' : opts.mine ? '<span class="tag-mine">your seller</span>' : '') +
+    '<span class="ml">' + (opts.showSize ? o.size + ' ml · ' : '') + perMl(o) + ' per ml</span></div>' +
+    priceButton(p, o, { low: opts.low }) + '</div>';
+}
+
+function groupOf(size) { const b = DATA.buckets.find(x => x.sizes.includes(size)); return b ? b.label : ''; }
+
+function cardHtml(r, bk) {
+  const p = r.p, open = openP === p.i;
+  let html = '<li class="card' + (open ? ' open' : '') + '" id="br-' + p.i + '"><div class="card-head"><div class="grow"><h3>' + esc(p.name) + ' <span class="brand">' + esc(p.brand) + '</span></h3>' +
+    '<div class="sub">' + (p.insp ? 'Inspired by ' + esc(p.insp) + ' · ' : '') + plural(p.sellerCount, 'seller') + '</div></div>' +
+    '<button class="flag-btn" type="button" data-report="' + p.i + '" aria-label="Report a problem with ' + esc(p.name) + '">' + FLAG + '</button></div>';
+  if (!open) {
+    const top = Object.values(r.cells).sort((a, b) => a.price / a.size - b.price / b.size);
+    const lead = browseSeller >= 0 ? [r.cells[browseSeller]].filter(Boolean) : top.slice(0, 3);
+    html += lead.map((o, k) => offerRow(p, o, { low: browseSeller < 0 && k === 0 && top.length > 1, showSize: o.size !== bk.main })).join('') +
+      (browseSeller >= 0 && r.vs >= 0 ? '<p class="hint" style="margin:2px 0 0">' + (r.diff < 0 ? rupees(-r.diff) + ' less than anyone else' : r.diff === 0 ? 'Same as the cheapest' : rupees(r.diff) + ' more than ' + esc(DATA.sellers[r.vs].name)) + '</p>' : '') +
+      '<div class="card-foot"><button class="open-btn" type="button" data-open="' + p.i + '" aria-expanded="false">Every size' + CHEV + '</button>' +
+      (top.length > lead.length ? '<span class="hint">' + plural(top.length, 'seller') + ' at ' + esc(browseSize) + '</span>' : '') + '</div>';
+    return html + '</li>';
+  }
+  const m = matrixSellers(p);
+  const offers = p.offers.filter(o => m.list.includes(o.s));
+  const at = Object.values(r.cells).sort((a, b) => a.price / a.size - b.price / b.size)[0];
+  const seller = openSeller >= 0 ? openSeller : browseSeller >= 0 ? browseSeller : at ? at.s : (offers[0] || {}).s;
+  const own = p.offers.filter(o => o.s === seller).sort((a, b) => a.size - b.size);
+  if (seller != null && own.length) {
+    html += '<h4>Every size from ' + sellerLink(seller, false) + '</h4><div class="own-grid">' +
+      own.map(o => priceButton(p, o, { top: o.size + ' ml', sub: perMl(o) + '/ml' })).join('') + '</div>';
+  }
+  const groups = CONFIG.sizeGroups.filter(l => { const b = DATA.buckets.find(x => x.label === l); return b && offers.some(o => b.sizes.includes(o.size)); });
+  const want = openCmp || groupOf(openSize) || browseSize;
+  const cmp = groups.includes(want) ? want : groups[0];
+  if (cmp) {
+    const b = DATA.buckets.find(x => x.label === cmp);
+    const inGroup = offers.filter(o => b.sizes.includes(o.size)).sort((a, c) => a.price / a.size - c.price / c.size || a.price - c.price);
+    const shownRows = openMore ? inGroup : inGroup.slice(0, CONFIG.sizeListRows);
+    if (seller != null && !shownRows.some(o => o.s === seller)) { const mine = inGroup.find(o => o.s === seller); if (mine) shownRows.push(mine); }
+    html += '<div class="cmp-head"><h4>Compare one size</h4><div class="seg small" role="group" aria-label="Size to compare">' +
+      groups.map(l => '<button type="button" data-cmp-size="' + esc(l) + '" aria-pressed="' + (l === cmp) + '" aria-label="' + esc(l) + '">' + esc(l.replace(' ml', '')) + '</button>').join('') + '</div></div>' +
+      shownRows.map((o, k) => offerRow(p, o, { low: k === 0 && inGroup.length > 1, mine: o.s === seller, showSize: b.sizes.length > 1 })).join('') +
+      (inGroup.length > shownRows.length ? '<button class="link" type="button" data-more style="margin-top:6px">' + (inGroup.length - shownRows.length) + ' more at ' + esc(cmp) + '</button>' : '');
+  }
+  html += '<div class="card-foot"><span class="acts">' + scopeLinks(m) + '</span><button class="open-btn" type="button" data-close aria-expanded="true">Hide sizes' + CHEV + '</button></div>';
+  return html + '</li>';
 }
 
 function shippingRule(x) {
@@ -1550,7 +1917,7 @@ function shippingRule(x) {
   return (parts.length ? parts[0] + ', otherwise ' : 'shipping ') + fee;
 }
 
-// Where the order with the chosen seller stands, so you can see what it takes to reach free shipping
+// Where the order with the one chosen seller stands, so you can see what it takes to reach free shipping
 function renderSellerBanner() {
   const box = $('seller-banner');
   if (browseSeller < 0) { box.hidden = true; return; }
@@ -1558,14 +1925,14 @@ function renderSellerBanner() {
   const g = lastPlan && lastPlan.parcels.find(q => q.s === browseSeller);
   let status;
   if (g) {
-    status = 'In your order from <b>' + esc(x.name) + '</b>: ' + g.items.length + (g.items.length === 1 ? ' decant, ' : ' decants, ') + rupees(g.sub) +
+    status = 'In your order from <b>' + esc(x.name) + '</b>: ' + plural(g.items.length, 'decant') + ', ' + rupees(g.sub) +
       (g.ship ? ' + ' + rupees(g.ship) + ' shipping.' + (g.nudge ? ' <span class="nudge">' + esc(g.nudge) + '</span>' : '') : ', <span class="free">free shipping</span>.');
   } else {
     status = 'Nothing from <b>' + esc(x.name) + '</b> in your order yet.';
   }
   box.innerHTML = '<div><p>' + status + '</p><p class="hint">' + esc(x.name) + ': ' + shippingRule(x) + '.</p></div>' +
     '<div class="banner-actions">' + (x.url ? '<a class="btn" href="' + esc(x.url) + '" target="_blank" rel="noopener">Their price list' + EXT + '</a>' : '') +
-    '<button class="btn" data-clear-seller>All sellers</button>' + (LIST.length ? '<button class="btn primary" data-go-order>Back to your order</button>' : '') + '</div>';
+    '<button class="btn" type="button" data-clear-seller>All sellers</button>' + (LIST.length ? '<button class="btn primary" type="button" data-go-order>Back to your order</button>' : '') + '</div>';
   box.hidden = false;
 }
 
@@ -1573,31 +1940,61 @@ function renderBrowse(reset) {
   if (reset || !browseShown) browseShown = CONFIG.browsePage;
   syncBrowseControls();
   renderSellerBanner();
-  const { bk, rows } = browseRows();
-  const cols = browseCols(bk);
   const box = $('browse-box');
   const keep = [box.scrollLeft, box.scrollTop];
-  const who = browseSeller >= 0 ? DATA.sellers[browseSeller].name : '';
-  $('browse-hint').textContent = !rows.length ? 'No perfumes to show.' : rows.length.toLocaleString('en-IN') + (rows.length === 1 ? ' perfume' : ' perfumes') + ' at ' + browseSize +
-    (who ? ' from ' + who + ', compared with ' + (cols.length - 1) + ' other sellers.' : ', from ' + bk.cols.length + ' sellers.') +
-    ' Tap a price to add that decant from that seller to your order.';
-  if (!rows.length) {
-    box.innerHTML = '<p class="browse-empty">' + (who
-      ? esc(who) + ' has nothing at ' + esc(browseSize) + (words() ? ' that matches that search' : '') + '. Try another size.'
-      : 'Nothing matches that search at ' + esc(browseSize) + '. Try another size or fewer words.') + '</p>';
+  const phone = isPhone();
+  box.classList.toggle('as-cards', phone);
+  if (browseSel && !browseSel.length) {
+    $('browse-hint').textContent = '';
+    box.innerHTML = '<p class="browse-empty">Choose at least one seller to see prices.</p>';
     $('browse-more').hidden = true;
     return;
   }
-  box.innerHTML = '<table class="browse' + (who ? ' by-seller' : '') + '"><thead><tr><th scope="col" class="pcol">Perfume</th>' +
-    cols.map((s, k) => '<th scope="col"' + (s === browseSeller ? ' class="mine"' : '') + '>' + sellerLink(s) + '</th>' +
-      (k === 0 && who ? '<th scope="col" class="cmp-h" title="Compared per ml with the cheapest other seller">Compared with the rest</th>' : '')).join('') +
-    '</tr></thead><tbody>' + rows.slice(0, browseShown).map(r => browseTr(r, bk)).join('') + '</tbody></table>';
+  const { bk, shown, rows } = browseRows();
+  const who = browseSeller >= 0 ? DATA.sellers[browseSeller].name : '';
+  $('browse-hint').textContent = !rows.length ? '' : rows.length.toLocaleString('en-IN') + (rows.length === 1 ? ' perfume' : ' perfumes') + ' at ' + browseSize +
+    (who ? ' from ' + who + ', compared with every other seller.' : browseSel ? ' from ' + shown.length + ' of ' + bk.cols.length + ' sellers.' : ' from ' + bk.cols.length + ' sellers.');
+  if (!rows.length) {
+    box.innerHTML = '<p class="browse-empty">' + (who
+      ? esc(who) + ' has nothing at ' + esc(browseSize) + (norm($('browse-filter').value) ? ' that matches that search' : '') + '. Try another size.'
+      : 'Nothing matches that at ' + esc(browseSize) + '. Try another size, other sellers or fewer words.') + '</p>';
+    $('browse-more').hidden = true;
+    return;
+  }
+  const page = rows.slice(0, browseShown);
+  box.innerHTML = phone ? '<ul class="cards">' + page.map(r => cardHtml(r, bk)).join('') + '</ul>' : tableHtml(page, bk, shown);
   if (reset) { box.scrollTop = 0; box.scrollLeft = 0; } else { box.scrollLeft = keep[0]; box.scrollTop = keep[1]; }
   const left = rows.length - browseShown;
   $('browse-more').hidden = left <= 0;
   $('browse-more').textContent = 'Show ' + Math.min(CONFIG.browsePage, left) + ' more (' + left.toLocaleString('en-IN') + ' left)';
 }
-function words() { return norm($('browse-filter').value).trim(); }
+
+// The seller picker
+function sellerCounts() {
+  const bk = bucketOf(browseSize);
+  if (bk.counts) return bk.counts;
+  const c = {};
+  DATA.products.forEach(p => { new Set(p.offers.filter(o => bk.sizes.includes(o.size)).map(o => o.s)).forEach(s => { c[s] = (c[s] || 0) + 1; }); });
+  return (bk.counts = c);
+}
+function renderSellersPop() {
+  const q = norm($('sellers-q').value);
+  const counts = sellerCounts();
+  $('sellers-list').innerHTML = DATA.sellers.slice().sort((a, b) => a.name.localeCompare(b.name))
+    .filter(x => !q || norm(x.name).includes(q))
+    .map(x => '<li><label><input type="checkbox" data-sel="' + x.i + '"' + (!browseSel || browseSel.includes(x.i) ? ' checked' : '') + '>' + esc(x.name) +
+      '<span class="n" title="Perfumes at ' + esc(browseSize) + '">' + (counts[x.i] || 0) + '</span></label></li>').join('') ||
+    '<li class="hint" style="padding:8px">No seller by that name.</li>';
+  renderSellersCount();
+}
+function renderSellersCount() {
+  $('sellers-count').textContent = (browseSel ? browseSel.length : DATA.sellers.length) + ' of ' + DATA.sellers.length + ' selected';
+}
+function openSellersPop(open) {
+  $('sellers-pop').hidden = !open;
+  $('sellers-btn').setAttribute('aria-expanded', String(open));
+  if (open) { $('sellers-q').value = ''; renderSellersPop(); $('sellers-q').focus(); }
+}
 
 // The size group to show for a seller: the one most of your order with them is in, else the
 // current one if they sell anything in it, else the one where they have the most
@@ -1614,16 +2011,16 @@ function sizeForSeller(s) {
 
 // Opens Browse showing one seller's perfumes
 function openSellerBrowse(s) {
-  browseSeller = s;
+  setSel([s]);
   browseSize = sizeForSeller(s);
   browseSort = 'saving';
-  browseField = 'all';
+  openP = -1;
   $('browse-filter').value = '';
   showTab('browse');
   renderBrowseSizes();
   renderBrowse(true);
   refreshBar();
-  $('panel-browse').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  $('panel-browse').scrollIntoView({ block: 'start', behavior: motion() });
 }
 
 // Tapping a price: add that decant from that seller, switch seller, or (tapped again) remove it
@@ -1636,17 +2033,106 @@ function toggleCell(pi, size, s) {
   else { LIST.push({ p: pi, size, s }); msg = 'Added ' + p.name + ' ' + size + ' ml from ' + who; }
   saveList();
   renderAll();
-  const bk = bucketOf(browseSize), row = $('br-' + pi), r = browseRow(p, bk);
-  if (row && r) {
-    row.outerHTML = browseTr(r, bk);
-    const again = document.querySelector('[data-cell="' + pi + '|' + size + '|' + s + '"]');
-    if (again) again.focus({ preventScroll: true });
-  }
-  renderSellerBanner();
   const count = $('list-count');
   count.classList.remove('bump'); void count.offsetWidth; count.classList.add('bump');
   refreshBar();
-  toast(msg + '. ' + LIST.length + (LIST.length === 1 ? ' decant' : ' decants') + ' in your order.');
+  toast(msg + '. ' + plural(LIST.length, 'decant') + ' in your order.');
+}
+
+function rerenderBrowseKeepFocus(sel) {
+  renderBrowse(false);
+  if (sel) { const again = document.querySelector(sel); if (again) again.focus({ preventScroll: true }); }
+}
+
+/* ======================= REPORT A PROBLEM ======================= */
+const REASONS = [
+  ['price', 'The price is wrong'],
+  ['stock', "It's out of stock or no longer listed"],
+  ['insp', '"Inspired by" is wrong'],
+  ['match', 'Wrong perfume, brand or size'],
+  ['seller', 'Suggest a seller to add'],
+  ['other', 'Something else'],
+];
+function openReport(ctx) {
+  reportCtx = ctx || {};
+  const p = reportCtx.pi != null ? DATA.products[reportCtx.pi] : null;
+  $('report-form').hidden = false;
+  $('report-done').hidden = true;
+  $('report-details').value = '';
+  $('report-what').value = '';
+  $('report-hp').value = '';
+  $('report-ctx').hidden = !p;
+  $('report-pick').hidden = !p;
+  $('report-what-wrap').hidden = !!p;
+  if (p) {
+    $('report-ctx').innerHTML = '<span class="name">' + esc(p.name) + '</span> · ' + esc(p.brand) + (p.insp ? '<div class="hint">Listed as inspired by ' + esc(p.insp) + '</div>' : '');
+    const sellers = [...new Set(p.offers.map(o => o.s))].sort((a, b) => DATA.sellers[a].name.localeCompare(DATA.sellers[b].name));
+    $('report-seller').innerHTML = '<option value="">Any or not sure</option>' + sellers.map(s => '<option value="' + s + '"' + (s === reportCtx.s ? ' selected' : '') + '>' + esc(DATA.sellers[s].name) + '</option>').join('');
+    $('report-size').innerHTML = '<option value="">Any or not sure</option>' + p.sizes.map(z => '<option value="' + z + '"' + (z === reportCtx.size ? ' selected' : '') + '>' + z + ' ml</option>').join('');
+  }
+  const reasons = REASONS.filter(r => p ? r[0] !== 'seller' : true);
+  const first = reportCtx.suggest ? 'seller' : reasons[0][0];
+  $('report-reasons').innerHTML = '<legend>What\'s wrong?</legend>' + reasons.map(r => '<label class="radio"><input type="radio" name="reason" value="' + r[0] + '"' + (r[0] === first ? ' checked' : '') + '>' + r[1] + '</label>').join('');
+  $('report-details').placeholder = reportCtx.suggest ? "The seller's name and a link to their price list" : 'e.g. Their sheet says ₹199 for 5 ml';
+  showDialog($('report'));
+}
+
+function recentReports() {
+  try { return JSON.parse(localStorage.getItem(CONFIG.reportsKey) || '[]').filter(r => Date.now() - r.t < 864e5); } catch (e) { return []; }
+}
+
+async function sendReport(e) {
+  e.preventDefault();
+  if ($('report-hp').value) { $('report').close(); return; }
+  const p = reportCtx && reportCtx.pi != null ? DATA.products[reportCtx.pi] : null;
+  const reason = (document.querySelector('#report-reasons input:checked') || {}).value || 'other';
+  const s = p && $('report-seller').value !== '' ? Number($('report-seller').value) : null;
+  const size = p && $('report-size').value !== '' ? Number($('report-size').value) : null;
+  const offer = p && s != null && size != null ? p.offers.find(o => o.s === s && o.size === size) : null;
+  const payload = {
+    kind: (REASONS.find(r => r[0] === reason) || REASONS[5])[1],
+    perfume: p ? p.name : $('report-what').value.trim(),
+    brand: p ? p.brand : '',
+    size: size || '',
+    seller: s != null ? DATA.sellers[s].name : '',
+    price: offer ? offer.price : '',
+    details: $('report-details').value.trim(),
+  };
+  const key = [payload.kind, payload.perfume, payload.seller, payload.size, payload.details].join('|');
+  const recent = recentReports();
+  if (recent.some(r => r.k === key)) { toast("You've already sent that one today. Thanks!"); $('report').close(); return; }
+  if (recent.length >= 20) { toast("That's a lot of reports for one day. Please try again tomorrow."); return; }
+  if (!p && !payload.perfume && !payload.details) { toast('Add a few words so we know what to fix'); $('report-details').focus(); return; }
+  $('report-send').disabled = true;
+  $('report-send').textContent = 'Sending…';
+  try {
+    await fetch(CONFIG.feedUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+    recent.push({ k: key, t: Date.now() });
+    try { localStorage.setItem(CONFIG.reportsKey, JSON.stringify(recent)); } catch (err) {}
+    $('report-form').hidden = true;
+    $('report-done').hidden = false;
+    $('report-done').querySelector('button').focus();
+  } catch (err) {
+    toast("Couldn't send that. Check your connection and try again.");
+  }
+  $('report-send').disabled = false;
+  $('report-send').textContent = 'Send report';
+}
+
+/* ======================= DIALOGS ======================= */
+function showDialog(d) {
+  if (typeof d.showModal === 'function') { if (!d.open) d.showModal(); }
+  else d.setAttribute('open', '');
+}
+function maybeWelcome() {
+  let seen = false;
+  try { seen = localStorage.getItem(CONFIG.ackKey) === '1'; } catch (e) {}
+  if (!seen) showDialog($('welcome'));
+}
+function toggleDisclaimer(open) {
+  const now = open == null ? $('disc-full').hidden : open;
+  $('disc-full').hidden = !now;
+  $('disc-toggle').setAttribute('aria-expanded', String(now));
 }
 
 /* ======================= MISC ======================= */
@@ -1658,16 +2144,17 @@ function updateMobileBar(total, n, parcels) {
   bar.hidden = !(n > 0 && (!onOrder || !planVisible));
   $('mbar-go').textContent = onOrder ? 'See the plan' : 'View order';
   document.body.classList.toggle('has-bar', n > 0);
-  if (n) { $('mbar-total').textContent = rupees(total); $('mbar-sub').textContent = n + (n === 1 ? ' decant, ' : ' decants, ') + parcels + (parcels === 1 ? ' parcel' : ' parcels'); }
+  if (n) { $('mbar-total').textContent = rupees(total); $('mbar-sub').textContent = plural(n, 'decant') + ', ' + plural(parcels, 'parcel'); }
 }
 function refreshBar() { updateMobileBar(lastPlan ? lastPlan.total : 0, lastPlan ? currentItems().length : 0, lastPlan ? lastPlan.parcels.length : 0); }
 
 function renderAll() {
+  SENT = {};
   ITEMS = currentItems();
   PLANS = ITEMS.length ? bestPlans(ITEMS) : null;
   renderView();
 }
-function renderView() { renderPlan(); renderList(); if (picked) renderPicker(); scheduleCompare(); }
+function renderView() { renderPlan(); renderList(); renderGuide(); if (picked) renderPicker(); scheduleCompare(); }
 
 function showTab(name) {
   ['order', 'browse', 'new'].forEach(t => {
@@ -1682,7 +2169,7 @@ function toast(msg) {
   const t = $('toast');
   t.textContent = msg; t.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { t.hidden = true; }, 1800);
+  toastTimer = setTimeout(() => { t.hidden = true; }, 2200);
 }
 
 function loadSample() {
@@ -1701,32 +2188,76 @@ $('tab-new').onclick = () => { showTab('new'); refreshBar(); };
 $('tab-browse').onclick = () => { showTab('browse'); renderBrowse(false); refreshBar(); };
 $('browse-sizes').addEventListener('click', e => {
   const c = e.target.closest('[data-browse-size]');
-  if (c) { browseSize = c.dataset.browseSize; renderBrowseSizes(); renderBrowse(true); }
+  if (c) { browseSize = c.dataset.browseSize; openP = -1; renderBrowseSizes(); renderBrowse(true); }
+});
+$('browse-unit').addEventListener('click', e => {
+  const b = e.target.closest('[data-unit]');
+  if (b) { browseUnit = b.dataset.unit; renderBrowse(false); }
 });
 $('browse-filter').addEventListener('input', () => renderBrowse(true));
-$('browse-field').addEventListener('change', e => { browseField = e.target.value; renderBrowse(true); });
 $('browse-sort').addEventListener('change', e => { browseSort = e.target.value; renderBrowse(true); });
-$('browse-seller').addEventListener('change', e => {
-  browseSeller = Number(e.target.value);
-  browseSort = browseSeller >= 0 ? 'saving' : 'sellers';
-  if (browseSeller >= 0) browseSize = sizeForSeller(browseSeller);
-  renderBrowseSizes();
+$('sellers-btn').addEventListener('click', () => openSellersPop($('sellers-pop').hidden));
+$('sellers-done').addEventListener('click', () => { openSellersPop(false); $('sellers-btn').focus(); });
+$('sellers-q').addEventListener('input', renderSellersPop);
+$('sellers-pop').addEventListener('change', e => {
+  const c = e.target.closest('[data-sel]');
+  if (!c) return;
+  const s = Number(c.dataset.sel);
+  const now = browseSel ? browseSel.slice() : DATA.sellers.map(x => x.i);
+  const next = c.checked ? now.concat(s) : now.filter(x => x !== s);
+  const wasSolo = browseSeller;
+  setSel(next);
+  if (browseSeller >= 0 && browseSeller !== wasSolo) browseSort = 'saving';
+  renderSellersCount();
   renderBrowse(true);
 });
+$('sellers-pop').addEventListener('click', e => {
+  if (e.target.closest('[data-sel-all]')) { setSel(null); renderSellersPop(); renderBrowse(true); }
+  if (e.target.closest('[data-sel-none]')) { setSel([]); renderSellersPop(); renderBrowse(true); }
+});
+$('sellers-pop').addEventListener('keydown', e => { if (e.key === 'Escape') { openSellersPop(false); $('sellers-btn').focus(); } });
+document.addEventListener('click', e => {
+  if (!$('sellers-pop').hidden && !e.target.closest('.pop-wrap')) openSellersPop(false);
+});
 $('seller-banner').addEventListener('click', e => {
-  if (e.target.closest('[data-clear-seller]')) { browseSeller = -1; browseSort = 'sellers'; renderBrowseSizes(); renderBrowse(true); return; }
-  if (e.target.closest('[data-go-order]')) $('mbar-go').click();
+  if (e.target.closest('[data-clear-seller]')) { setSel(null); browseSort = 'sellers'; renderBrowse(true); return; }
+  if (e.target.closest('[data-go-order]')) { showTab('order'); refreshBar(); window.scrollTo({ top: 0, behavior: motion() }); }
 });
 $('browse-more').onclick = () => { browseShown += CONFIG.browsePage; renderBrowse(false); };
+$('browse-box').addEventListener('click', e => {
+  const c = e.target.closest('[data-cell]');
+  if (c) {
+    const [pi, size, si] = c.dataset.cell.split('|').map(Number);
+    const inPanel = !!c.closest('.sizes-inner, .own-grid, .cmp-head ~ .offer-row') || (openP === pi && !!c.closest('.card.open'));
+    toggleCell(pi, size, si);
+    if (openP !== pi) { openCmp = ''; openMore = false; openAll = false; }
+    if (!inPanel || openP !== pi) { openSeller = si; openSize = size; }
+    openP = pi;
+    rerenderBrowseKeepFocus('[data-cell="' + c.dataset.cell + '"]');
+    return;
+  }
+  const o = e.target.closest('[data-open]');
+  if (o) {
+    const pi = Number(o.dataset.open);
+    if (openP === pi) openP = -1;
+    else { openP = pi; openSeller = -1; openSize = 0; openCmp = ''; openMore = false; openAll = false; }
+    rerenderBrowseKeepFocus('[data-open="' + pi + '"], #br-' + pi + ' [data-close]');
+    return;
+  }
+  if (e.target.closest('[data-close]')) { const pi = openP; openP = -1; rerenderBrowseKeepFocus('[data-open="' + pi + '"]'); return; }
+  if (e.target.closest('[data-open-all]')) { openAll = !openAll; rerenderBrowseKeepFocus('#br-' + openP + ' [data-close]'); return; }
+  const cs = e.target.closest('[data-cmp-size]');
+  if (cs) { openCmp = cs.dataset.cmpSize; openMore = false; rerenderBrowseKeepFocus('[data-cmp-size="' + openCmp + '"]'); return; }
+  if (e.target.closest('[data-more]')) { openMore = true; renderBrowse(false); return; }
+  const r = e.target.closest('[data-report]');
+  if (r) { const pi = Number(r.dataset.report); openReport({ pi, s: openP === pi && openSeller >= 0 ? openSeller : null, size: openP === pi ? openSize : null }); }
+});
+try { phoneMQ.addEventListener('change', () => { if (DATA && !$('panel-browse').hidden) renderBrowse(false); }); } catch (e) {}
 $('compare-more').onclick = () => { compareAll = !compareAll; renderCompare(); };
 $('compare-rows').addEventListener('click', e => {
   const u = e.target.closest('[data-use-seller]');
   if (u) { useSeller(Number(u.dataset.useSeller)); return; }
   if (e.target.closest('[data-use-recommended]')) useRecommended();
-});
-$('browse-box').addEventListener('click', e => {
-  const c = e.target.closest('[data-cell]');
-  if (c) { const [pi, size, si] = c.dataset.cell.split('|').map(Number); toggleCell(pi, size, si); }
 });
 $('theme').onclick = () => {
   const next = currentTheme() === 'dark' ? 'light' : 'dark';
@@ -1735,7 +2266,6 @@ $('theme').onclick = () => {
   paintThemeButton();
 };
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paintThemeButton); } catch (e) {}
-paintThemeButton();
 $('new-filter').addEventListener('input', renderNew);
 document.querySelector('.modes').addEventListener('click', e => {
   const b = e.target.closest('[data-add-mode]');
@@ -1776,9 +2306,10 @@ $('review').addEventListener('click', e => {
   const look = e.target.closest('[data-search]');
   if (look) { setAddMode('search'); $('q').value = look.dataset.search; renderResults(); $('q').focus(); }
 });
+
 $('mbar-go').onclick = () => {
   if ($('panel-order').hidden) { showTab('order'); refreshBar(); }
-  $('plan').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  $('plan').scrollIntoView({ behavior: motion() });
 };
 if ('IntersectionObserver' in window) {
   new IntersectionObserver(entries => { planVisible = entries[0].isIntersecting; refreshBar(); }, { threshold: 0.15 }).observe($('plan'));
@@ -1814,27 +2345,52 @@ $('picker').addEventListener('click', e => {
     $('q').value = ''; $('q').focus();
   }
 });
+
 $('list').addEventListener('click', e => {
   const b = e.target.closest('.remove');
   if (b) { removeItem(Number(b.dataset.idx)); return; }
   const u = e.target.closest('[data-unpin]');
   if (u) { delete LIST[Number(u.dataset.unpin)].s; saveList(); renderAll(); toast('The plan will pick the seller for this one'); }
 });
+$('list').addEventListener('change', e => {
+  const s = e.target.closest('[data-size-for]');
+  if (s) changeSize(Number(s.dataset.sizeFor), Number(s.value));
+});
 $('clear').onclick = () => { LIST = []; saveList(); renderAll(); };
 $('sample').onclick = loadSample;
+$('plan').addEventListener('change', e => {
+  if (e.target.id === 'plan-mode') { planMode = e.target.value; SENT = {}; renderView(); }
+});
 $('plan').addEventListener('click', e => {
   const sb = e.target.closest('[data-browse-seller]');
   if (sb) { openSellerBrowse(Number(sb.dataset.browseSeller)); return; }
-  const m = e.target.closest('[data-mode]');
-  if (m) { planMode = m.dataset.mode; renderView(); return; }
-  if (e.target.closest('#copy-wa') && lastPlan) copy(whatsappText(), 'Copied. Paste it into WhatsApp.');
-  if (e.target.closest('#copy-reddit') && lastPlan) copy(redditText(), 'Copied. Paste it in Reddit\'s Markdown mode.');
+  const c = e.target.closest('[data-copy-order]');
+  if (c && lastPlan) {
+    const s = Number(c.dataset.copyOrder), g = lastPlan.parcels.find(q => q.s === s);
+    if (g) { copy(sellerMessage(g), 'Copied ' + DATA.sellers[s].name + "'s order"); markSent(s, 'copy'); }
+    return;
+  }
+  const w = e.target.closest('[data-sent]');
+  if (w) { const s = Number(w.dataset.sent); setTimeout(() => markSent(s, 'wa'), 0); }
 });
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-add]');
   if (b) addItem(Number(b.dataset.add), Number(b.dataset.size));
 });
+$('disc-toggle').onclick = () => toggleDisclaimer();
+$('foot-disc').onclick = () => { toggleDisclaimer(true); window.scrollTo({ top: 0, behavior: motion() }); $('disc-toggle').focus({ preventScroll: true }); };
+$('report-open').onclick = () => openReport({});
+$('foot-report').onclick = () => openReport({});
+$('foot-suggest').onclick = () => openReport({ suggest: true });
+$('report-form').addEventListener('submit', sendReport);
+document.querySelectorAll('[data-close-dialog]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+$('welcome-ok').onclick = () => {
+  try { localStorage.setItem(CONFIG.ackKey, '1'); } catch (e) {}
+  $('welcome').close();
+};
 
+applyName();
+paintThemeButton();
 load();
 </script>
 </body>
