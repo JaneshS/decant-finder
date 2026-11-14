@@ -9,7 +9,7 @@ Add the perfume decants you want, one at a time or by pasting a whole WhatsApp/R
 - **Plan an order:** your list on the left, your plan on the right. A three-step guide at the top (add decants, check the plan, message each seller) highlights the step you're on.
   - **Message each seller:** every seller in the plan gets a card with only their decants. "Message on WhatsApp" opens a chat with that seller with the order typed in (when their number is in the Sources tab); "Copy order" copies the same message.
   - **Compare sellers:** what the same list costs bought other ways (everything one seller has from them, the rest the cheapest way elsewhere). "Use this" switches your plan to that option.
-- **Browse prices:** every perfume against the sellers you choose (one, several or all). Tap a price to add it; that also opens every size of the perfume with the price per ml. On phones the table becomes one card per perfume, with the seller's own sizes and a "compare one size" list. "₹ per ml" switches the table to price per ml.
+- **Browse prices:** pick a size at the top, then see every perfume against the sellers you choose (one, several or all). Tap a price to add it to your order. "₹ per ml" switches the table to price per ml. On phones the table becomes one card per perfume, listing the sellers' prices at that size, cheapest per ml first.
 - **New this week:** perfumes that showed up for the first time in the last 7 days.
 - **Report a problem:** a short form (from the header, footer or the flag on any perfume) that adds a row to the tracker's **Reports** tab. No WhatsApp messages or emails.
 - **Disclaimers:** two short lines under the header with an expandable full disclaimer, and a "Before you use" notice people accept on their first visit.

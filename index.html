@@ -348,11 +348,7 @@
   table.browse td.cmp { text-align: left; font-size: 13px; line-height: 1.3; color: var(--muted); padding: 4px 10px; min-width: 130px; max-width: 170px; border-right: 1px solid var(--line); }
   table.browse td.cmp.good { color: var(--accent); font-weight: 600; }
   .na { color: var(--line-strong); }
-  .row-tools { display: flex; align-items: center; gap: 4px; margin-top: 1px; }
-  .open-btn { background: none; border: 0; padding: 3px 0; font-size: 13.5px; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; gap: 4px;
-    text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
-  .open-btn svg { width: 12px; height: 12px; transition: transform .15s; }
-  .open-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .row-tools { float: right; margin: -6px -8px 0 6px; }
   .flag-btn { margin-left: auto; width: 32px; height: 32px; display: grid; place-items: center; border: 0; background: none; color: var(--muted); border-radius: 6px; flex: none; }
   .flag-btn:hover { color: var(--ink); background: var(--bg); }
   .flag-btn svg { width: 15px; height: 15px; }
@@ -368,46 +364,20 @@
   .cell.added { background: var(--btn); border-color: var(--btn); color: var(--btn-ink); }
   .cell.added small { color: inherit; opacity: .8; }
   .cell svg { width: 12px; height: 12px; }
-  tr.sizes-row > td { padding: 0 !important; background: var(--surface-2); border-bottom: 1px solid var(--line-strong); text-align: left !important; }
-  .sizes-inner { position: sticky; left: 0; max-width: calc(100vw - 72px); padding: 4px 16px 18px; }
-  @media (min-width: 1250px) { .sizes-inner { max-width: 1150px; } }
-  .sizes-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 20px; padding: 12px 0 10px; }
-  .sizes-head h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
-  .matrix-box { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
-  table.matrix { border-collapse: collapse; width: 100%; }
-  table.matrix th, table.matrix td { padding: 4px 3px; border-bottom: 1px solid var(--line-2); text-align: center; }
-  table.matrix thead th { font: 600 13px "IBM Plex Mono", monospace; padding: 8px 6px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
-  table.matrix thead th:first-child { font: 500 13px "Schibsted Grotesk", sans-serif; color: var(--muted); text-align: left; padding-left: 12px; }
-  table.matrix tbody th { text-align: left; padding: 6px 12px; font-weight: 400; white-space: nowrap; font-size: 14.5px; }
-  table.matrix tr.pickrow { background: var(--tint); }
-  table.matrix .cell { min-width: 70px; }
-  .sizes-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 20px; padding-top: 10px; font-size: 14px; color: var(--ink-2); }
-  .sizes-foot strong { color: var(--accent); font-weight: 600; }
-  .sizes-foot .acts { display: flex; gap: 16px; flex-wrap: wrap; }
   .cards { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px 10px; }
-  .card.open { border-color: var(--line-strong); }
   .card-head { display: flex; gap: 6px; align-items: flex-start; margin-bottom: 4px; }
   .card-head .grow { flex: 1 1 auto; min-width: 0; }
   .card h3 { margin: 0; font-size: 16.5px; font-weight: 700; line-height: 1.3; }
   .card h3 .brand { font-weight: 400; color: var(--muted); font-size: 15px; }
   .card .sub { font-size: 13px; color: var(--muted); }
-  .card h4 { margin: 10px 0 6px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
   .offer-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line-2); }
   .offer-row .who { flex: 1 1 auto; min-width: 0; font-size: 14.5px; }
   .offer-row .who .ml { display: block; font: 500 12.5px "IBM Plex Mono", monospace; color: var(--ink-2); }
   .offer-row .cell { width: auto; min-width: 82px; flex: none; }
-  .offer-row.mine { background: var(--tint); margin: 0 -8px; padding: 6px 8px; border-radius: 4px; }
   .tag-low { font-size: 12px; font-weight: 600; color: var(--accent); margin-left: 4px; }
-  .tag-mine { font-size: 12px; color: var(--ink-2); margin-left: 4px; }
-  .own-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-  .own-grid .cell { min-width: 0; padding: 5px 2px 4px; }
-  .own-grid .cell .z { font: 500 11.5px "IBM Plex Mono", monospace; color: var(--muted); }
-  .own-grid .cell.added .z { color: inherit; opacity: .8; }
-  .cmp-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 12px 0 6px; flex-wrap: wrap; }
-  .cmp-head h4 { margin: 0; }
-  .seg.small button { font: 500 12.5px "IBM Plex Mono", monospace; padding: 5px 7px; min-height: 34px; }
-  .card-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 8px; margin-top: 4px; border-top: 1px solid var(--line-2); font-size: 14px; }
+  .card-cmp { margin: 6px 0 0; font-size: 13.5px; color: var(--ink-2); }
+  .more-btn { display: block; margin: 8px 0 2px; font-size: 14px; min-height: 32px; }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13.5px; color: var(--ink-2); margin: 10px 0 0; }
   .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1px solid; }
   .legend .l-low { background: var(--accent-soft); border-color: var(--accent-line); }
@@ -596,7 +566,7 @@
   <section id="panel-browse" role="tabpanel" aria-labelledby="tab-browse" hidden>
     <div class="browse-head">
       <h1 class="page-title">Browse prices</h1>
-      <p class="lead">Choose the sellers you want to compare. Tap any price to add it to your order and see every size of that perfume.</p>
+      <p class="lead">Pick a size and the sellers you want to compare. Tap any price to add it to your order.</p>
     </div>
     <div class="browse-bar">
       <div class="pop-wrap">
@@ -705,7 +675,7 @@ const CONFIG = {
   browsePage: 60,         // rows shown at a time on the Browse tab
   compareMs: 120,         // time limit per seller for the "Compare sellers" rows
   compareRows: 4,         // comparison rows shown before "Show all"
-  sizeListRows: 5,        // sellers shown per size on a phone before "more"
+  cardRows: 4,            // sellers shown on a phone card before "Show all"
   storageKey: 'decant-finder-list',
   ackKey: 'decant-saver-ack',
   reportsKey: 'decant-saver-reports',
@@ -724,7 +694,7 @@ let SENT = {};                 // seller index -> 'wa' | 'copy', once you've mes
 let browseSize = '5 ml', browseSort = 'sellers', browseShown = 0, browseUnit = 'price';
 let browseSel = null;          // null = every seller, else the seller indexes you chose
 let browseSeller = -1;         // the one seller chosen, when exactly one is
-let openP = -1, openSeller = -1, openSize = 0, openAll = false, openCmp = '', openMore = false; // the "every size" panel
+const moreRows = new Set(); // phone cards showing every seller
 let reportCtx = null;
 
 const $ = id => document.getElementById(id);
@@ -1774,7 +1744,6 @@ function priceButton(p, o, opts) {
   const main = opts.unit === 'ml' ? perMl(o) : rupees(o.price);
   const small = opts.sub != null ? opts.sub : '';
   return '<button class="cell' + st.cls + '" type="button" data-cell="' + p.i + '|' + o.size + '|' + o.s + '" aria-pressed="' + st.added + '" aria-label="' + esc(label) + '" title="' + esc(label) + '">' +
-    (opts.top ? '<span class="z">' + opts.top + '</span>' : '') +
     '<span class="amt">' + (st.added ? CHECK : '') + main + '</span>' + (small ? '<small>' + small + '</small>' : '') + '</button>';
 }
 
@@ -1796,60 +1765,14 @@ function compareCell(r) {
 }
 
 function rowTools(p) {
-  const open = openP === p.i;
-  return '<div class="row-tools"><button class="open-btn" type="button" data-open="' + p.i + '" aria-expanded="' + open + '">' + (open ? 'Hide sizes' : 'Every size') + CHEV + '</button>' +
-    '<button class="flag-btn" type="button" data-report="' + p.i + '" aria-label="Report a problem with ' + esc(p.name) + '" title="Report a problem">' + FLAG + '</button></div>';
+  return '<div class="row-tools"><button class="flag-btn" type="button" data-report="' + p.i + '" aria-label="Report a problem with ' + esc(p.name) + '" title="Report a problem">' + FLAG + '</button></div>';
 }
 
 function browseTr(r, bk, cols) {
   const p = r.p;
-  return '<tr id="br-' + p.i + '"><th scope="row" class="pcol"><span class="name">' + esc(p.name) + '</span> <span class="brand">' + esc(p.brand) + '</span>' +
-    (p.insp ? '<span class="insp">Inspired by ' + esc(p.insp) + '</span>' : '') + rowTools(p) + '</th>' +
-    cols.map((s, k) => browseCell(r, s, bk) + (k === 0 && browseSeller >= 0 ? compareCell(r) : '')).join('') + '</tr>' +
-    (openP === p.i ? '<tr class="sizes-row"><td colspan="' + (cols.length + 1 + (browseSeller >= 0 ? 1 : 0)) + '">' + sizesPanel(p) + '</td></tr>' : '');
-}
-
-// The sellers in the "every size" view: the ones you chose (or all that stock it), the one you tapped first
-function matrixSellers(p) {
-  const stock = [...new Set(p.offers.map(o => o.s))];
-  const list = browseSel && !openAll ? stock.filter(s => browseSel.includes(s)) : stock.slice();
-  list.sort((a, b) => (b === openSeller) - (a === openSeller) || DATA.sellers[a].name.localeCompare(DATA.sellers[b].name));
-  return { list, total: stock.length, filtered: !!browseSel && !openAll && list.length < stock.length };
-}
-
-// With one seller chosen, the every-size view compares them with everyone who stocks it
-function soloSeller() { return !!browseSel && browseSel.length === 1; }
-
-function scopeLinks(m) {
-  if (m.filtered) return '<button class="link" type="button" data-open-all>Include all ' + m.total + ' sellers that stock it</button>';
-  if (browseSel && openAll) return '<button class="link" type="button" data-open-all>' + (browseSel.length === 1 ? 'Only ' + esc(DATA.sellers[browseSel[0]].name) : 'Only the sellers you chose') + '</button>';
-  return '';
-}
-
-// Desktop: every seller against every size, price on top and price per ml below
-function sizesPanel(p) {
-  const m = matrixSellers(p);
-  const offers = p.offers.filter(o => m.list.includes(o.s));
-  if (!offers.length) return '<div class="sizes-inner"><p class="hint" style="padding:14px 0">None of the sellers you chose stock this. ' + scopeLinks(m) + '</p></div>';
-  const sizes = [...new Set(offers.map(o => o.size))].sort((a, b) => a - b);
-  const colMin = {};
-  sizes.forEach(z => { colMin[z] = Math.min(...offers.filter(o => o.size === z).map(o => o.price)); });
-  const best = offers.slice().sort((a, b) => a.price / a.size - b.price / b.size)[0];
-  const tapped = openSeller >= 0 && offers.find(o => o.s === openSeller && o.size === openSize);
-  const head = '<div class="sizes-head"><h3>' + esc(p.name) + ', every size</h3><span class="hint">' +
-    (m.filtered ? 'From the ' + plural(m.list.length, 'seller') + ' you chose. ' : plural(m.list.length, 'seller') + '. ') +
-    'Price on top, price per ml below. Tap any price to add it.</span></div>';
-  const table = '<div class="matrix-box"><table class="matrix"><thead><tr><th scope="col">Seller</th>' + sizes.map(z => '<th scope="col">' + z + ' ml</th>').join('') + '</tr></thead><tbody>' +
-    m.list.filter(s => offers.some(o => o.s === s)).map(s => '<tr' + (s === openSeller ? ' class="pickrow"' : '') + '><th scope="row">' + sellerLink(s, false) +
-      (s === openSeller ? ' <span class="hint">you picked</span>' : '') + '</th>' +
-      sizes.map(z => {
-        const o = offers.find(q => q.s === s && q.size === z);
-        return '<td>' + (o ? priceButton(p, o, { low: o.price === colMin[z] && offers.filter(q => q.size === z).length > 1, sub: perMl(o) + '/ml' }) : '<span class="na" aria-hidden="true">–</span>') + '</td>';
-      }).join('') + '</tr>').join('') + '</tbody></table></div>';
-  const foot = '<div class="sizes-foot"><span>Best value here: <strong>' + best.size + ' ml from ' + esc(DATA.sellers[best.s].name) + ', ' + perMl(best) + ' per ml</strong>' +
-    (tapped && tapped !== best ? ', against ' + perMl(tapped) + ' per ml for the ' + tapped.size + ' ml you tapped' : '') + '.</span>' +
-    '<span class="acts">' + scopeLinks(m) + '<button class="link" type="button" data-close>Hide sizes</button></span></div>';
-  return '<div class="sizes-inner">' + head + table + foot + '</div>';
+  return '<tr id="br-' + p.i + '"><th scope="row" class="pcol">' + rowTools(p) + '<span class="name">' + esc(p.name) + '</span> <span class="brand">' + esc(p.brand) + '</span>' +
+    (p.insp ? '<span class="insp">Inspired by ' + esc(p.insp) + '</span>' : '') + '</th>' +
+    cols.map((s, k) => browseCell(r, s, bk) + (k === 0 && browseSeller >= 0 ? compareCell(r) : '')).join('') + '</tr>';
 }
 
 function tableHtml(rows, bk, shown) {
@@ -1860,54 +1783,25 @@ function tableHtml(rows, bk, shown) {
     '</tr></thead><tbody>' + rows.map(r => browseTr(r, bk, cols)).join('') + '</tbody></table>';
 }
 
-// Phone: one card per perfume
+// Phone: one card per perfume, listing the chosen sellers at the chosen size, cheapest per ml first
 function offerRow(p, o, opts) {
-  return '<div class="offer-row' + (opts.mine ? ' mine' : '') + '"><div class="who">' + sellerLink(o.s, false) +
-    (opts.low ? '<span class="tag-low">Lowest</span>' : opts.mine ? '<span class="tag-mine">your seller</span>' : '') +
+  return '<div class="offer-row"><div class="who">' + sellerLink(o.s, false) + (opts.low ? '<span class="tag-low">Lowest</span>' : '') +
     '<span class="ml">' + (opts.showSize ? o.size + ' ml · ' : '') + perMl(o) + ' per ml</span></div>' +
     priceButton(p, o, { low: opts.low }) + '</div>';
 }
 
-function groupOf(size) { const b = DATA.buckets.find(x => x.sizes.includes(size)); return b ? b.label : ''; }
-
 function cardHtml(r, bk) {
-  const p = r.p, open = openP === p.i;
-  let html = '<li class="card' + (open ? ' open' : '') + '" id="br-' + p.i + '"><div class="card-head"><div class="grow"><h3>' + esc(p.name) + ' <span class="brand">' + esc(p.brand) + '</span></h3>' +
-    '<div class="sub">' + (p.insp ? 'Inspired by ' + esc(p.insp) + ' · ' : '') + plural(p.sellerCount, 'seller') + '</div></div>' +
-    '<button class="flag-btn" type="button" data-report="' + p.i + '" aria-label="Report a problem with ' + esc(p.name) + '">' + FLAG + '</button></div>';
-  if (!open) {
-    const top = Object.values(r.cells).sort((a, b) => a.price / a.size - b.price / b.size);
-    const lead = browseSeller >= 0 ? [r.cells[browseSeller]].filter(Boolean) : top.slice(0, 3);
-    html += lead.map((o, k) => offerRow(p, o, { low: browseSeller < 0 && k === 0 && top.length > 1, showSize: o.size !== bk.main })).join('') +
-      (browseSeller >= 0 && r.vs >= 0 ? '<p class="hint" style="margin:2px 0 0">' + (r.diff < 0 ? rupees(-r.diff) + ' less than anyone else' : r.diff === 0 ? 'Same as the cheapest' : rupees(r.diff) + ' more than ' + esc(DATA.sellers[r.vs].name)) + '</p>' : '') +
-      '<div class="card-foot"><button class="open-btn" type="button" data-open="' + p.i + '" aria-expanded="false">Every size' + CHEV + '</button>' +
-      (top.length > lead.length ? '<span class="hint">' + plural(top.length, 'seller') + ' at ' + esc(browseSize) + '</span>' : '') + '</div>';
-    return html + '</li>';
-  }
-  const m = matrixSellers(p);
-  const offers = p.offers.filter(o => m.list.includes(o.s));
-  const at = Object.values(r.cells).sort((a, b) => a.price / a.size - b.price / b.size)[0];
-  const seller = openSeller >= 0 ? openSeller : browseSeller >= 0 ? browseSeller : at ? at.s : (offers[0] || {}).s;
-  const own = p.offers.filter(o => o.s === seller).sort((a, b) => a.size - b.size);
-  if (seller != null && own.length) {
-    html += '<h4>Every size from ' + sellerLink(seller, false) + '</h4><div class="own-grid">' +
-      own.map(o => priceButton(p, o, { top: o.size + ' ml', sub: perMl(o) + '/ml' })).join('') + '</div>';
-  }
-  const groups = CONFIG.sizeGroups.filter(l => { const b = DATA.buckets.find(x => x.label === l); return b && offers.some(o => b.sizes.includes(o.size)); });
-  const want = openCmp || groupOf(openSize) || browseSize;
-  const cmp = groups.includes(want) ? want : groups[0];
-  if (cmp) {
-    const b = DATA.buckets.find(x => x.label === cmp);
-    const inGroup = offers.filter(o => b.sizes.includes(o.size)).sort((a, c) => a.price / a.size - c.price / c.size || a.price - c.price);
-    const shownRows = openMore ? inGroup : inGroup.slice(0, CONFIG.sizeListRows);
-    if (seller != null && !shownRows.some(o => o.s === seller)) { const mine = inGroup.find(o => o.s === seller); if (mine) shownRows.push(mine); }
-    html += '<div class="cmp-head"><h4>Compare one size</h4><div class="seg small" role="group" aria-label="Size to compare">' +
-      groups.map(l => '<button type="button" data-cmp-size="' + esc(l) + '" aria-pressed="' + (l === cmp) + '" aria-label="' + esc(l) + '">' + esc(l.replace(' ml', '')) + '</button>').join('') + '</div></div>' +
-      shownRows.map((o, k) => offerRow(p, o, { low: k === 0 && inGroup.length > 1, mine: o.s === seller, showSize: b.sizes.length > 1 })).join('') +
-      (inGroup.length > shownRows.length ? '<button class="link" type="button" data-more style="margin-top:6px">' + (inGroup.length - shownRows.length) + ' more at ' + esc(cmp) + '</button>' : '');
-  }
-  html += '<div class="card-foot"><span class="acts">' + scopeLinks(m) + '</span><button class="open-btn" type="button" data-close aria-expanded="true">Hide sizes' + CHEV + '</button></div>';
-  return html + '</li>';
+  const p = r.p;
+  const rows = Object.values(r.cells).sort((a, b) => a.price / a.size - b.price / b.size || a.price - b.price);
+  const all = moreRows.has(p.i) || rows.length <= CONFIG.cardRows + 1;
+  const shown = all ? rows : rows.slice(0, CONFIG.cardRows);
+  return '<li class="card" id="br-' + p.i + '"><div class="card-head"><div class="grow"><h3>' + esc(p.name) + ' <span class="brand">' + esc(p.brand) + '</span></h3>' +
+    '<div class="sub">' + (p.insp ? 'Inspired by ' + esc(p.insp) + ' · ' : '') + esc(plural(r.total, 'seller') + ' at ' + browseSize) + '</div></div>' +
+    '<button class="flag-btn" type="button" data-report="' + p.i + '" aria-label="Report a problem with ' + esc(p.name) + '">' + FLAG + '</button></div>' +
+    shown.map(o => offerRow(p, o, { low: r.n > 1 && o.price / o.size <= r.low + 1e-9, showSize: o.size !== bk.main })).join('') +
+    (browseSeller >= 0 && r.vs >= 0 ? '<p class="card-cmp">' + (r.diff < 0 ? rupees(-r.diff) + ' less than anyone else' : r.diff === 0 ? 'Same as the cheapest' : rupees(r.diff) + ' more than ' + esc(DATA.sellers[r.vs].name)) + '</p>' : '') +
+    (rows.length > CONFIG.cardRows + 1 ? '<button class="link more-btn" type="button" data-more="' + p.i + '" aria-expanded="' + moreRows.has(p.i) + '">' +
+      (moreRows.has(p.i) ? 'Show fewer' : 'Show all ' + rows.length + ' sellers') + '</button>' : '') + '</li>';
 }
 
 function shippingRule(x) {
@@ -2017,7 +1911,7 @@ function openSellerBrowse(s) {
   setSel([s]);
   browseSize = sizeForSeller(s);
   browseSort = 'saving';
-  openP = -1;
+  moreRows.clear();
   $('browse-filter').value = '';
   showTab('browse');
   renderBrowseSizes();
@@ -2191,7 +2085,7 @@ $('tab-new').onclick = () => { showTab('new'); refreshBar(); };
 $('tab-browse').onclick = () => { showTab('browse'); renderBrowse(false); refreshBar(); };
 $('browse-sizes').addEventListener('click', e => {
   const c = e.target.closest('[data-browse-size]');
-  if (c) { browseSize = c.dataset.browseSize; openP = -1; renderBrowseSizes(); renderBrowse(true); }
+  if (c) { browseSize = c.dataset.browseSize; moreRows.clear(); renderBrowseSizes(); renderBrowse(true); }
 });
 $('browse-unit').addEventListener('click', e => {
   const b = e.target.closest('[data-unit]');
@@ -2231,29 +2125,19 @@ $('browse-box').addEventListener('click', e => {
   const c = e.target.closest('[data-cell]');
   if (c) {
     const [pi, size, si] = c.dataset.cell.split('|').map(Number);
-    const inPanel = !!c.closest('.sizes-inner, .own-grid, .cmp-head ~ .offer-row') || (openP === pi && !!c.closest('.card.open'));
     toggleCell(pi, size, si);
-    if (openP !== pi) { openCmp = ''; openMore = false; openAll = soloSeller(); }
-    if (!inPanel || openP !== pi) { openSeller = si; openSize = size; }
-    openP = pi;
     rerenderBrowseKeepFocus('[data-cell="' + c.dataset.cell + '"]');
     return;
   }
-  const o = e.target.closest('[data-open]');
-  if (o) {
-    const pi = Number(o.dataset.open);
-    if (openP === pi) openP = -1;
-    else { openP = pi; openSeller = -1; openSize = 0; openCmp = ''; openMore = false; openAll = soloSeller(); }
-    rerenderBrowseKeepFocus('[data-open="' + pi + '"], #br-' + pi + ' [data-close]');
+  const m = e.target.closest('[data-more]');
+  if (m) {
+    const pi = Number(m.dataset.more);
+    if (moreRows.has(pi)) moreRows.delete(pi); else moreRows.add(pi);
+    rerenderBrowseKeepFocus('[data-more="' + pi + '"]');
     return;
   }
-  if (e.target.closest('[data-close]')) { const pi = openP; openP = -1; rerenderBrowseKeepFocus('[data-open="' + pi + '"]'); return; }
-  if (e.target.closest('[data-open-all]')) { openAll = !openAll; rerenderBrowseKeepFocus('#br-' + openP + ' [data-close]'); return; }
-  const cs = e.target.closest('[data-cmp-size]');
-  if (cs) { openCmp = cs.dataset.cmpSize; openMore = false; rerenderBrowseKeepFocus('[data-cmp-size="' + openCmp + '"]'); return; }
-  if (e.target.closest('[data-more]')) { openMore = true; renderBrowse(false); return; }
   const r = e.target.closest('[data-report]');
-  if (r) { const pi = Number(r.dataset.report); openReport({ pi, s: openP === pi && openSeller >= 0 ? openSeller : null, size: openP === pi ? openSize : null }); }
+  if (r) openReport({ pi: Number(r.dataset.report), s: browseSeller >= 0 ? browseSeller : null, size: null });
 });
 try { phoneMQ.addEventListener('change', () => { if (DATA && !$('panel-browse').hidden) renderBrowse(false); }); } catch (e) {}
 $('compare-more').onclick = () => { compareAll = !compareAll; renderCompare(); };
